@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrepoPlus — Bot Grepolis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold:        #c9a84c;
+    --gold-light:  #f0d080;
+    --gold-dim:    #7a5e20;
+    --bg:          #0a0805;
+    --bg-panel:    #110e08;
+    --bg-card:     #1a1508;
+    --border:      rgba(201,168,76,0.25);
+    --border-glow: rgba(201,168,76,0.6);
+    --text:        #d4c5a0;
+    --text-dim:    #7a6e5a;
+    --discord:     #5865F2;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── Particules dorées ── */
+  .particles {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: drift linear infinite;
+    opacity: 0;
+  }
+  @keyframes drift {
+    0%   { transform: translateY(100vh) translateX(0); opacity: 0; }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.3; }
+    100% { transform: translateY(-10vh) translateX(40px); opacity: 0; }
+  }
+
+  /* ── Bruit de texture ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 60px 24px;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(201,168,76,0.04) 0%, transparent 60%);
+  }
+
+  .hero-ornament {
+    width: 120px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 32px;
+    animation: fadeIn 1s ease both;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    border: 1px solid var(--border);
+    padding: 6px 18px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+    animation: fadeIn 1s 0.2s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(52px, 10vw, 96px);
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 40%, #8a6020 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeIn 1s 0.3s ease both;
+  }
+
+  .hero-sub {
+    font-size: 22px;
+    font-style: italic;
+    color: var(--text-dim);
+    margin-bottom: 48px;
+    animation: fadeIn 1s 0.5s ease both;
+  }
+
+  .hero-desc {
+    max-width: 540px;
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 52px;
+    animation: fadeIn 1s 0.6s ease both;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeIn 1s 0.8s ease both;
+  }
+
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    border: none;
+    padding: 16px 40px;
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 30px rgba(201,168,76,0.3), 0 4px 20px rgba(0,0,0,0.5);
+  }
+  .hero-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 50px rgba(201,168,76,0.5), 0 8px 30px rgba(0,0,0,0.6);
+  }
+  .hero-cta svg { width: 18px; height: 18px; }
+
+  .hero-discord {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--discord);
+    border: none;
+    padding: 16px 32px;
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 30px rgba(88,101,242,0.3), 0 4px 20px rgba(0,0,0,0.5);
+  }
+  .hero-discord:hover {
+    transform: translateY(-2px);
+    background: #4752c4;
+    box-shadow: 0 0 50px rgba(88,101,242,0.5), 0 8px 30px rgba(0,0,0,0.6);
+  }
+  .hero-discord svg { width: 20px; height: 20px; }
+
+  .hero-scroll {
+    position: absolute; bottom: 32px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: var(--text-dim);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: fadeIn 1s 1.2s ease both;
+  }
+  .hero-scroll::after {
+    content: '';
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--gold-dim), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  /* ── Features ── */
+  .section {
+    position: relative; z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    text-align: center;
+    color: var(--gold-light);
+    margin-bottom: 56px;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+  }
+
+  .feature {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 32px 28px;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  .feature::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .feature:hover { background: #1f1a0c; border-color: var(--border-glow); }
+  .feature:hover::before { opacity: 1; }
+
+  .feature-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .feature-name {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .feature-desc {
+    font-size: 16px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; gap: 24px;
+    max-width: 700px; margin: 0 auto;
+    padding: 0 24px;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border));
+  }
+  .divider::after {
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+  .divider-gem {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  /* ── Install steps ── */
+  .install-section {
+    position: relative; z-index: 1;
+    background: var(--bg-panel);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 24px;
+  }
+
+  .steps {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .step {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.5s ease;
+  }
+  .step:last-child { border-bottom: none; }
+  .step.visible { opacity: 1; transform: translateX(0); }
+
+  .step-num {
+    font-family: 'Cinzel', serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--border);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 48px;
+    transition: color 0.3s;
+  }
+  .step:hover .step-num { color: var(--gold); }
+
+  .step-content { flex: 1; }
+
+  .step-title {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold-light);
+    margin-bottom: 8px;
+  }
+
+  .step-desc {
+    font-size: 16px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .step-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 14px;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 10px 20px;
+    border-radius: 2px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .step-btn:hover {
+    background: rgba(201,168,76,0.1);
+    border-color: var(--border-glow);
+    box-shadow: 0 0 20px rgba(201,168,76,0.15);
+  }
+  .step-btn svg { width: 14px; height: 14px; }
+
+  /* ── Contact section ── */
+  .contact-section {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 80px 24px;
+  }
+
+  .discord-btn {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--discord);
+    border: none;
+    padding: 18px 48px;
+    border-radius: 2px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 40px rgba(88,101,242,0.25), 0 4px 20px rgba(0,0,0,0.5);
+    margin-top: 32px;
+  }
+  .discord-btn:hover {
+    transform: translateY(-2px);
+    background: #4752c4;
+    box-shadow: 0 0 60px rgba(88,101,242,0.45), 0 8px 30px rgba(0,0,0,0.6);
+  }
+  .discord-btn svg { width: 24px; height: 24px; }
+
+  /* ── Footer ── */
+  footer {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 48px 24px;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    border-top: 1px solid var(--border);
+  }
+  footer span { color: var(--gold-dim); }
+
+  /* ── Animations ── */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .step { gap: 16px; }
+    .step-num { font-size: 24px; width: 36px; }
+    .hero-buttons { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Particules -->
+<div class="particles" id="particles"></div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-ornament"></div>
+  <div class="hero-badge">Bot pour Grepolis</div>
+  <h1 class="hero-title">GrepoPlus</h1>
+  <p class="hero-sub">Automatisez. Dominez. Répétez.</p>
+  <p class="hero-desc">
+    Collecteur automatique, Constructeur, Recruteur, Héraut, Commandant, Auto-Esquive et bien plus — tout en un.
+  </p>
+  <div class="hero-buttons">
+    <a href="#install" class="hero-cta">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M12 3v13M5 10l7 7 7-7"/>
+        <path d="M3 20h18"/>
+      </svg>
+      Installer maintenant
+    </a>
+    <a href="https://discord.gg/VWeEWQFUFE" target="_blank" class="hero-discord">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.003.022.015.04.031.051a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+      </svg>
+      Discord
+    </a>
+  </div>
+  <div class="hero-scroll">Découvrir</div>
+</section>
+
+<!-- Features -->
+<div class="section">
+  <div class="section-label">Fonctionnalités</div>
+  <h2 class="section-title">Tout ce dont vous avez besoin</h2>
+  <div class="features">
+    <div class="feature">
+      <span class="feature-icon">🌾</span>
+      <div class="feature-name">Collecteur</div>
+      <div class="feature-desc">Collecte automatique des villages et ressources à intervalles configurables.</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🏗️</span>
+      <div class="feature-name">Constructeur</div>
+      <div class="feature-desc">File de construction automatique avec priorités et terminer gratuitement.</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">⚔️</span>
+      <div class="feature-name">Recruteur</div>
+      <div class="feature-desc">Recrutement continu de vos troupes selon vos priorités.</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">📯</span>
+      <div class="feature-name">Héraut</div>
+      <div class="feature-desc">Détection d'attaques, alertes sonores, milice automatique.</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🚩</span>
+      <div class="feature-name">Commandant</div>
+      <div class="feature-desc">Planification d'attaques timées avec précision à la seconde.</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🛡️</span>
+      <div class="feature-name">Auto-Esquive</div>
+      <div class="feature-desc">Envoie vos troupes automatiquement hors de la ville avant une attaque.</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🎓</span>
+      <div class="feature-name">Docent</div>
+      <div class="feature-desc">Recherches automatiques dans l'académie selon votre file de priorités.</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🏺</span>
+      <div class="feature-name">Marchand</div>
+      <div class="feature-desc">Commerce automatique entre vos villes selon vos seuils configurés.</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🏛️</span>
+      <div class="feature-name">Merveille</div>
+      <div class="feature-desc">Envoi automatique de ressources vers votre merveille d'alliance.</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-gem"></div></div>
+
+<!-- Install -->
+<section class="install-section" id="install">
+  <div class="section-label">Installation</div>
+  <h2 class="section-title" style="margin-bottom:48px;">En 3 étapes</h2>
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-content">
+        <div class="step-title">Installer Tampermonkey</div>
+        <div class="step-desc">
+          Tampermonkey est une extension Chrome gratuite qui permet de charger GrepoPlus. Installez-la depuis le Chrome Web Store.
+        </div>
+        <a href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo"
+           target="_blank" class="step-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+            <polyline points="15,3 21,3 21,9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          Installer Tampermonkey
+        </a>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-content">
+        <div class="step-title">Installer GrepoPlus</div>
+        <div class="step-desc">
+          Cliquez sur le bouton ci-dessous. Tampermonkey s'ouvre automatiquement et vous propose d'installer le script. Cliquez <strong style="color:var(--gold)">Installer</strong>.
+        </div>
+        <a href="https://grepoplus.duckdns.org/bot/GFBot-Loader.user.js" class="step-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 3v13M5 10l7 7 7-7"/>
+            <path d="M3 20h18"/>
+          </svg>
+          Installer GrepoPlus
+        </a>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-content">
+        <div class="step-title">Lancer Grepolis</div>
+        <div class="step-desc">
+          Ouvrez Grepolis normalement. GrepoPlus se charge automatiquement — vous verrez les boutons du bot apparaître dans l'interface du jeu. C'est tout.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact-section">
+  <div class="section-label">Contact &amp; Support</div>
+  <h2 class="section-title">Rejoignez la communauté</h2>
+  <p style="color: var(--text-dim); max-width: 480px; margin: 0 auto; font-size: 17px;">
+    Des questions, un bug, ou envie de suivre les mises à jour ? Rejoignez le serveur Discord.
+  </p>
+  <a href="https://discord.gg/VWeEWQFUFE" target="_blank" class="discord-btn">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.003.022.015.04.031.051a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+    </svg>
+    Rejoindre le Discord
+  </a>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>GrepoPlus &nbsp;·&nbsp; <span>v1.0</span> &nbsp;·&nbsp; Pour Grepolis</p>
+</footer>
+
+<script>
+
+
+  // Particules
+  var container = document.getElementById('particles');
+  for (var i = 0; i < 30; i++) {
+    var p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+    p.style.opacity = Math.random() * 0.6;
+    container.appendChild(p);
+  }
+
+  // Reveal steps on scroll
+  var steps = document.querySelectorAll('.step');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e, i) {
+      if (e.isIntersecting) {
+        setTimeout(function() { e.target.classList.add('visible'); }, i * 120);
+      }
+    });
+  }, { threshold: 0.2 });
+  steps.forEach(function(s) { observer.observe(s); });
+</script>
+</body>
+</html>
