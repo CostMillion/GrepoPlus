@@ -1,10 +1,6 @@
 <div align="center">
 
-# ⚔️ GrepoPlus
-
-### *Automatisez. Dominez. Répétez.*
-
-**Bot tout-en-un pour Grepolis — Collecteur, Constructeur, Recruteur, Héraut, Commandant, Auto-Esquive et plus.**
+[![GrepoPlus](banner.svg)](https://costmillion.github.io/GrepoPlus)
 
 ---
 
