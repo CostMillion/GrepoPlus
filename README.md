@@ -20,7 +20,7 @@
 | 📯 **Héraut** | Détection d'attaques et alertes sonores |
 | 🚩 **Commandant** | Attaques timées à la seconde près |
 | 🛡️ **Auto-Esquive** | Envoie vos troupes hors de la ville avant une attaque |
-| 🎓 **Docent** | Recherches automatiques dans l'académie |
+| 🎓 **Chercheur** | Recherches automatiques dans l'académie |
 | 🏺 **Marchand** | Commerce automatique entre vos villes |
 | 🏛️ **Merveille** | Envoi de ressources vers votre merveille d'alliance |
 
