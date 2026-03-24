@@ -22,7 +22,7 @@
 <rect x="40" y="132" width="600" height="1" fill="url(#line)"/>
 <polygon points="340,18 344,24 340,30 336,24" fill="#c9a84c" opacity="0.8"/>
 <text x="340" y="88" text-anchor="middle" font-family="Georgia, serif" font-size="54" font-weight="900" fill="url(#gold)" letter-spacing="-1">GrepoPlus</text>
-<text x="340" y="114" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-style="italic" fill="#7a6e5a" letter-spacing="2">Automatisez · Dominez · Répétez</text>
+<text x="340" y="114" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-style="italic" fill="#7a6e5a" letter-spacing="2">Automate · Dominate · Repeat</text>
 <rect x="40" y="44" width="1" height="72" fill="#c9a84c" opacity="0.2"/>
 <rect x="639" y="44" width="1" height="72" fill="#c9a84c" opacity="0.2"/>
 <circle cx="40" cy="28" r="2" fill="#c9a84c" opacity="0.5"/>
