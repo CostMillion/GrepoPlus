@@ -12,27 +12,27 @@
 
 ### 🌐 Supported languages — Choose your language:
 
-<img src="https://flagcdn.com/20x15/gb.png" width="20" height="15"> [English](#en) &nbsp;
-<img src="https://flagcdn.com/20x15/fr.png" width="20" height="15"> [Français](#fr) &nbsp;
-<img src="https://flagcdn.com/20x15/de.png" width="20" height="15"> [Deutsch](#de) &nbsp;
-<img src="https://flagcdn.com/20x15/es.png" width="20" height="15"> [Español](#es) &nbsp;
-<img src="https://flagcdn.com/20x15/it.png" width="20" height="15"> [Italiano](#it) &nbsp;
-<img src="https://flagcdn.com/20x15/pt.png" width="20" height="15"> [Português](#pt) &nbsp;
-<img src="https://flagcdn.com/20x15/nl.png" width="20" height="15"> [Nederlands](#nl) &nbsp;
-<img src="https://flagcdn.com/20x15/pl.png" width="20" height="15"> [Polski](#pl) &nbsp;
-<img src="https://flagcdn.com/20x15/ru.png" width="20" height="15"> [Русский](#ru) &nbsp;
-<img src="https://flagcdn.com/20x15/tr.png" width="20" height="15"> [Türkçe](#tr) &nbsp;
-<img src="https://flagcdn.com/20x15/cz.png" width="20" height="15"> [Čeština](#cs) &nbsp;
-<img src="https://flagcdn.com/20x15/hu.png" width="20" height="15"> [Magyar](#hu) &nbsp;
-<img src="https://flagcdn.com/20x15/ro.png" width="20" height="15"> [Română](#ro) &nbsp;
-<img src="https://flagcdn.com/20x15/se.png" width="20" height="15"> [Svenska](#sv) &nbsp;
-<img src="https://flagcdn.com/20x15/no.png" width="20" height="15"> [Norsk](#nb) &nbsp;
-<img src="https://flagcdn.com/20x15/dk.png" width="20" height="15"> [Dansk](#da) &nbsp;
-<img src="https://flagcdn.com/20x15/fi.png" width="20" height="15"> [Suomi](#fi) &nbsp;
-<img src="https://flagcdn.com/20x15/sk.png" width="20" height="15"> [Slovenčina](#sk) &nbsp;
-<img src="https://flagcdn.com/20x15/hr.png" width="20" height="15"> [Hrvatski](#hr) &nbsp;
-<img src="https://flagcdn.com/20x15/gr.png" width="20" height="15"> [Ελληνικά](#el) &nbsp;
-<img src="https://flagcdn.com/20x15/ua.png" width="20" height="15"> [Українська](#uk)
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/gb.png" width="20" height="15" style="vertical-align:middle"> [English](#en)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/fr.png" width="20" height="15" style="vertical-align:middle"> [Français](#fr)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/de.png" width="20" height="15" style="vertical-align:middle"> [Deutsch](#de)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/es.png" width="20" height="15" style="vertical-align:middle"> [Español](#es)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/it.png" width="20" height="15" style="vertical-align:middle"> [Italiano](#it)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/pt.png" width="20" height="15" style="vertical-align:middle"> [Português](#pt)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/nl.png" width="20" height="15" style="vertical-align:middle"> [Nederlands](#nl)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/pl.png" width="20" height="15" style="vertical-align:middle"> [Polski](#pl)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/ru.png" width="20" height="15" style="vertical-align:middle"> [Русский](#ru)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/tr.png" width="20" height="15" style="vertical-align:middle"> [Türkçe](#tr)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/cz.png" width="20" height="15" style="vertical-align:middle"> [Čeština](#cs)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/hu.png" width="20" height="15" style="vertical-align:middle"> [Magyar](#hu)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/ro.png" width="20" height="15" style="vertical-align:middle"> [Română](#ro)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/se.png" width="20" height="15" style="vertical-align:middle"> [Svenska](#sv)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/no.png" width="20" height="15" style="vertical-align:middle"> [Norsk](#nb)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/dk.png" width="20" height="15" style="vertical-align:middle"> [Dansk](#da)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/fi.png" width="20" height="15" style="vertical-align:middle"> [Suomi](#fi)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/sk.png" width="20" height="15" style="vertical-align:middle"> [Slovenčina](#sk)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/hr.png" width="20" height="15" style="vertical-align:middle"> [Hrvatski](#hr)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/gr.png" width="20" height="15" style="vertical-align:middle"> [Ελληνικά](#el)</span> &nbsp;
+<span style="white-space:nowrap"><img src="https://flagcdn.com/20x15/ua.png" width="20" height="15" style="vertical-align:middle"> [Українська](#uk)</span>
 
 </div>
 
