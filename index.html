@@ -7,621 +7,597 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --gold:        #c9a84c;
-    --gold-light:  #f0d080;
-    --gold-dim:    #7a5e20;
-    --bg:          #0a0805;
-    --bg-panel:    #110e08;
-    --bg-card:     #1a1508;
-    --border:      rgba(201,168,76,0.25);
-    --border-glow: rgba(201,168,76,0.6);
-    --text:        #d4c5a0;
-    --text-dim:    #7a6e5a;
-    --discord:     #5865F2;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Crimson Text', Georgia, serif;
-    font-size: 18px;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  /* ── Particules dorées ── */
-  .particles {
-    position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    overflow: hidden;
-  }
-  .particle {
-    position: absolute;
-    width: 2px; height: 2px;
-    background: var(--gold);
-    border-radius: 50%;
-    animation: drift linear infinite;
-    opacity: 0;
-  }
-  @keyframes drift {
-    0%   { transform: translateY(100vh) translateX(0); opacity: 0; }
-    10%  { opacity: 0.6; }
-    90%  { opacity: 0.3; }
-    100% { transform: translateY(-10vh) translateX(40px); opacity: 0; }
-  }
-
-  /* ── Bruit de texture ── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    opacity: 0.4;
-  }
-
-  /* ── Hero ── */
-  .hero {
-    position: relative; z-index: 1;
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center;
-    padding: 60px 24px;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(201,168,76,0.04) 0%, transparent 60%);
-  }
-
-  .hero-ornament {
-    width: 120px; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    margin: 0 auto 32px;
-    animation: fadeIn 1s ease both;
-  }
-
-  .hero-badge {
-    display: inline-block;
-    font-family: 'Cinzel', serif;
-    font-size: 11px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--gold-dim);
-    border: 1px solid var(--border);
-    padding: 6px 18px;
-    border-radius: 2px;
-    margin-bottom: 28px;
-    animation: fadeIn 1s 0.2s ease both;
-  }
-
-  .hero-title {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(52px, 10vw, 96px);
-    font-weight: 900;
-    letter-spacing: -1px;
-    line-height: 1;
-    margin-bottom: 16px;
-    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 40%, #8a6020 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: fadeIn 1s 0.3s ease both;
-  }
-
-  .hero-sub {
-    font-size: 22px;
-    font-style: italic;
-    color: var(--text-dim);
-    margin-bottom: 48px;
-    animation: fadeIn 1s 0.5s ease both;
-  }
-
-  .hero-desc {
-    max-width: 540px;
-    font-size: 18px;
-    color: var(--text);
-    margin-bottom: 52px;
-    animation: fadeIn 1s 0.6s ease both;
-  }
-
-  .hero-buttons {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    justify-content: center;
-    animation: fadeIn 1s 0.8s ease both;
-  }
-
-  .hero-cta {
-    display: inline-flex; align-items: center; gap: 12px;
-    font-family: 'Cinzel', serif;
-    font-size: 14px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--bg);
-    background: linear-gradient(135deg, var(--gold-light), var(--gold));
-    border: none;
-    padding: 16px 40px;
-    border-radius: 2px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 30px rgba(201,168,76,0.3), 0 4px 20px rgba(0,0,0,0.5);
-  }
-  .hero-cta:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 50px rgba(201,168,76,0.5), 0 8px 30px rgba(0,0,0,0.6);
-  }
-  .hero-cta svg { width: 18px; height: 18px; }
-
-  .hero-discord {
-    display: inline-flex; align-items: center; gap: 12px;
-    font-family: 'Cinzel', serif;
-    font-size: 14px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #fff;
-    background: var(--discord);
-    border: none;
-    padding: 16px 32px;
-    border-radius: 2px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 30px rgba(88,101,242,0.3), 0 4px 20px rgba(0,0,0,0.5);
-  }
-  .hero-discord:hover {
-    transform: translateY(-2px);
-    background: #4752c4;
-    box-shadow: 0 0 50px rgba(88,101,242,0.5), 0 8px 30px rgba(0,0,0,0.6);
-  }
-  .hero-discord svg { width: 20px; height: 20px; }
-
-  .hero-scroll {
-    position: absolute; bottom: 32px; left: 50%;
-    transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    color: var(--text-dim);
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    animation: fadeIn 1s 1.2s ease both;
-  }
-  .hero-scroll::after {
-    content: '';
-    width: 1px; height: 40px;
-    background: linear-gradient(to bottom, var(--gold-dim), transparent);
-    animation: scrollPulse 2s ease infinite;
-  }
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 0.3; transform: scaleY(1); }
-    50% { opacity: 1; transform: scaleY(1.2); }
-  }
-
-  /* ── Features ── */
-  .section {
-    position: relative; z-index: 1;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 80px 24px;
-  }
-
-  .section-label {
-    font-family: 'Cinzel', serif;
-    font-size: 11px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--gold-dim);
-    text-align: center;
-    margin-bottom: 16px;
-  }
-
-  .section-title {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 700;
-    text-align: center;
-    color: var(--gold-light);
-    margin-bottom: 56px;
-  }
-
-  .features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2px;
-  }
-
-  .feature {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    padding: 32px 28px;
-    position: relative;
-    transition: all 0.3s ease;
-    overflow: hidden;
-  }
-  .feature::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .feature:hover { background: #1f1a0c; border-color: var(--border-glow); }
-  .feature:hover::before { opacity: 1; }
-
-  .feature-icon {
-    font-size: 28px;
-    margin-bottom: 16px;
-    display: block;
-  }
-
-  .feature-name {
-    font-family: 'Cinzel', serif;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--gold);
-    margin-bottom: 10px;
-    letter-spacing: 0.5px;
-  }
-
-  .feature-desc {
-    font-size: 16px;
-    color: var(--text-dim);
-    line-height: 1.6;
-  }
-
-  /* ── Divider ── */
-  .divider {
-    position: relative; z-index: 1;
-    display: flex; align-items: center; gap: 24px;
-    max-width: 700px; margin: 0 auto;
-    padding: 0 24px;
-  }
-  .divider::before, .divider::after {
-    content: '';
-    flex: 1; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border));
-  }
-  .divider::after {
-    background: linear-gradient(90deg, var(--border), transparent);
-  }
-  .divider-gem {
-    width: 8px; height: 8px;
-    background: var(--gold);
-    transform: rotate(45deg);
-    flex-shrink: 0;
-  }
-
-  /* ── Install steps ── */
-  .install-section {
-    position: relative; z-index: 1;
-    background: var(--bg-panel);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 80px 24px;
-  }
-
-  .steps {
-    max-width: 700px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .step {
-    display: flex;
-    gap: 28px;
-    align-items: flex-start;
-    padding: 28px 0;
-    border-bottom: 1px solid var(--border);
-    opacity: 0;
-    transform: translateX(-20px);
-    transition: all 0.5s ease;
-  }
-  .step:last-child { border-bottom: none; }
-  .step.visible { opacity: 1; transform: translateX(0); }
-
-  .step-num {
-    font-family: 'Cinzel', serif;
-    font-size: 32px;
-    font-weight: 900;
-    color: var(--border);
-    line-height: 1;
-    flex-shrink: 0;
-    width: 48px;
-    transition: color 0.3s;
-  }
-  .step:hover .step-num { color: var(--gold); }
-
-  .step-content { flex: 1; }
-
-  .step-title {
-    font-family: 'Cinzel', serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--gold-light);
-    margin-bottom: 8px;
-  }
-
-  .step-desc {
-    font-size: 16px;
-    color: var(--text-dim);
-    line-height: 1.6;
-  }
-
-  .step-btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    margin-top: 14px;
-    font-family: 'Cinzel', serif;
-    font-size: 12px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    background: transparent;
-    border: 1px solid var(--border);
-    padding: 10px 20px;
-    border-radius: 2px;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .step-btn:hover {
-    background: rgba(201,168,76,0.1);
-    border-color: var(--border-glow);
-    box-shadow: 0 0 20px rgba(201,168,76,0.15);
-  }
-  .step-btn svg { width: 14px; height: 14px; }
-
-  /* ── Contact section ── */
-  .contact-section {
-    position: relative; z-index: 1;
-    text-align: center;
-    padding: 80px 24px;
-  }
-
-  .discord-btn {
-    display: inline-flex; align-items: center; gap: 14px;
-    font-family: 'Cinzel', serif;
-    font-size: 15px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #fff;
-    background: var(--discord);
-    border: none;
-    padding: 18px 48px;
-    border-radius: 2px;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 40px rgba(88,101,242,0.25), 0 4px 20px rgba(0,0,0,0.5);
-    margin-top: 32px;
-  }
-  .discord-btn:hover {
-    transform: translateY(-2px);
-    background: #4752c4;
-    box-shadow: 0 0 60px rgba(88,101,242,0.45), 0 8px 30px rgba(0,0,0,0.6);
-  }
-  .discord-btn svg { width: 24px; height: 24px; }
-
-  /* ── Footer ── */
-  footer {
-    position: relative; z-index: 1;
-    text-align: center;
-    padding: 48px 24px;
-    font-family: 'Cinzel', serif;
-    font-size: 12px;
-    letter-spacing: 2px;
-    color: var(--text-dim);
-    border-top: 1px solid var(--border);
-  }
-  footer span { color: var(--gold-dim); }
-
-  /* ── Animations ── */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── Responsive ── */
-  @media (max-width: 600px) {
-    .step { gap: 16px; }
-    .step-num { font-size: 24px; width: 36px; }
-    .hero-buttons { flex-direction: column; align-items: center; }
-  }
+:root{--gold:#c9a84c;--gold-light:#f0d080;--gold-dim:#7a5e20;--gold-dark:#8a6a1a;--bg:#0a0805;--bg-panel:#110e08;--bg-card:#1a1508;--border:rgba(201,168,76,0.25);--border-glow:rgba(201,168,76,0.6);--text:#d4c5a0;--text-dim:#7a6e5a;--discord:#5865F2;--bot-border:rgba(201,168,76,0.3);--bot-border-active:rgba(201,168,76,0.7);--bot-text:#d4c5a0;--bot-text-light:#f0e8d0;--bot-text-muted:#7a6e5a;--bot-green:#4caf6e;--bot-red:#e05555;--bot-blue:#5b8dd9;--bot-card:#1a2332}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Crimson Text',Georgia,serif;font-size:18px;line-height:1.7;overflow-x:hidden}
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.particle{position:absolute;width:2px;height:2px;background:var(--gold);border-radius:50%;animation:drift linear infinite;opacity:0}
+@keyframes drift{0%{transform:translateY(100vh) translateX(0);opacity:0}10%{opacity:.6}90%{opacity:.3}100%{transform:translateY(-10vh) translateX(40px);opacity:0}}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4}
+#lang-picker{position:fixed;top:16px;right:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;user-select:none}
+#lang-btn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;background:rgba(13,17,23,.88);border:1px solid var(--border);border-radius:8px;padding:6px 10px;backdrop-filter:blur(10px);transition:border-color .2s}
+#lang-btn:hover{border-color:var(--gold)}
+#lang-flag-img{width:24px;height:18px;border-radius:2px;display:block;image-rendering:auto}
+#lang-arrow{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--gold-dim);transition:transform .2s}
+#lang-picker.open #lang-arrow{transform:rotate(180deg)}
+#lang-dropdown{display:none;position:absolute;top:calc(100% + 6px);right:0;background:rgba(10,8,5,.97);border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.8);min-width:110px}
+#lang-picker.open #lang-dropdown{display:block}
+.lang-opt{display:flex;align-items:center;gap:8px;padding:7px 12px;cursor:pointer;transition:background .15s;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.8px;color:var(--text-dim)}
+.lang-opt:hover{background:rgba(201,168,76,.1);color:var(--gold)}
+.lang-opt.active{background:rgba(201,168,76,.08);color:var(--gold)}
+.lang-opt img{width:20px;height:15px;border-radius:2px;flex-shrink:0}
+.lang-opt span{font-size:9px;color:var(--text-dim);opacity:.7}
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 120px;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,168,76,.08) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 80% 80%,rgba(201,168,76,.04) 0%,transparent 60%)}
+.hero-ornament{width:120px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 32px;animation:fadeIn 1s ease both}
+.hero-badge{display:inline-block;font-family:'Cinzel',serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-dim);border:1px solid var(--border);padding:6px 18px;border-radius:2px;margin-bottom:28px;animation:fadeIn 1s .2s ease both}
+.hero-title{font-family:'Cinzel',serif;font-size:clamp(52px,10vw,96px);font-weight:900;letter-spacing:-1px;line-height:1;margin-bottom:16px;background:linear-gradient(135deg,var(--gold-light) 0%,var(--gold) 40%,#8a6020 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:fadeIn 1s .3s ease both}
+.hero-sub{font-size:22px;font-style:italic;color:var(--text-dim);margin-bottom:48px;animation:fadeIn 1s .5s ease both}
+.hero-desc{max-width:540px;font-size:18px;color:var(--text);margin-bottom:52px;animation:fadeIn 1s .6s ease both}
+.hero-buttons{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:80px;animation:fadeIn 1s .8s ease both}
+.hero-cta{display:inline-flex;align-items:center;gap:12px;font-family:'Cinzel',serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--bg);background:linear-gradient(135deg,var(--gold-light),var(--gold));border:none;padding:16px 40px;border-radius:2px;cursor:pointer;text-decoration:none;transition:all .3s ease;box-shadow:0 0 30px rgba(201,168,76,.3),0 4px 20px rgba(0,0,0,.5)}
+.hero-cta:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(201,168,76,.5),0 8px 30px rgba(0,0,0,.6)}
+.hero-cta svg{width:18px;height:18px}
+.hero-discord{display:inline-flex;align-items:center;gap:12px;font-family:'Cinzel',serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:#fff;background:var(--discord);border:none;padding:16px 32px;border-radius:2px;cursor:pointer;text-decoration:none;transition:all .3s ease;box-shadow:0 0 30px rgba(88,101,242,.3),0 4px 20px rgba(0,0,0,.5)}
+.hero-discord:hover{transform:translateY(-2px);background:#4752c4;box-shadow:0 0 50px rgba(88,101,242,.5),0 8px 30px rgba(0,0,0,.6)}
+.hero-discord svg{width:20px;height:20px;flex-shrink:0}
+.hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-dim);font-size:12px;letter-spacing:2px;text-transform:uppercase;animation:fadeIn 1s 1.2s ease both}
+.hero-scroll::after{content:'';width:1px;height:40px;background:linear-gradient(to bottom,var(--gold-dim),transparent);animation:scrollPulse 2s ease infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)}}
+.mockup-label{font-family:'Cinzel',serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-dim);text-align:center;margin-bottom:20px;animation:fadeIn 1s .9s ease both}
+.mockup-cluster{position:relative;width:100%;max-width:1300px;height:520px;margin:0 auto;animation:fadeIn 1.2s 1s ease both}
+.bot-win{position:absolute;background:linear-gradient(160deg,#0d1117 0%,#151c26 50%,#0d1117 100%);color:var(--bot-text);border:1px solid var(--bot-border);border-top:2px solid var(--gold);border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.85),0 0 0 1px rgba(201,168,76,.05);font-family:Arial,sans-serif;font-size:8pt;width:300px;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease;cursor:default}
+.bot-win:hover{transform:translateY(-6px) rotate(0deg) scale(1.02)!important;box-shadow:0 16px 60px rgba(0,0,0,.9),0 0 80px rgba(201,168,76,.1);z-index:100!important}
+.win-senat{left:0;top:0;z-index:5;transform:rotate(-1.5deg)}
+.win-heraut{left:23%;top:20px;z-index:4;transform:rotate(.5deg);width:320px}
+.win-cmd{right:23%;top:10px;z-index:4;transform:rotate(-.8deg);width:310px}
+.win-marchand{left:8%;bottom:0;z-index:3;transform:rotate(1deg);width:290px}
+.win-recruteur{right:5%;bottom:10px;z-index:3;transform:rotate(-1.2deg);width:290px}
+.mock-badge{position:absolute;top:-22px;left:50%;transform:translateX(-50%);background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:20px;padding:2px 10px;font-family:'Cinzel',serif;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);white-space:nowrap}
+.bw-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px 7px;background:rgba(0,0,0,.35);border-bottom:1px solid var(--bot-border)}
+.bw-logo{display:flex;align-items:center;gap:8px}
+.bw-icon{width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:14px}
+.bw-title{font-family:Georgia,'Times New Roman',serif;font-size:9.5pt;font-weight:700;color:var(--gold-light);letter-spacing:1.2px;text-transform:uppercase}
+.bw-sub{font-size:6.5pt;color:var(--bot-text-muted);margin-top:1px}
+.bw-actions{display:flex;gap:4px}
+.bw-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--bot-border);background:rgba(255,255,255,.02);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--bot-text-muted);transition:all .15s}
+.bw-btn:hover{background:rgba(201,168,76,.12);border-color:var(--bot-border-active);color:var(--gold)}
+.bw-btn-red:hover{background:rgba(224,85,85,.15);border-color:rgba(224,85,85,.5);color:var(--bot-red)}
+.bw-nav{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--bot-border);background:rgba(0,0,0,.2)}
+.bw-nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 5px 6px;cursor:pointer;border-right:1px solid rgba(201,168,76,.1);transition:all .15s;position:relative;min-width:0;font-size:5.5pt;font-weight:700;color:var(--bot-text-muted);letter-spacing:.3px;text-transform:uppercase}
+.bw-nav-item:last-child{border-right:none}
+.bw-nav-item:hover{background:rgba(201,168,76,.07);color:var(--gold)}
+.bw-nav-item.active{background:rgba(201,168,76,.1);color:var(--gold)}
+.bw-nav-item.active::after{content:'';position:absolute;bottom:0;left:15%;right:15%;height:2px;background:var(--gold);border-radius:2px 2px 0 0}
+.bw-nav-icon{font-size:14px;line-height:1}
+.bw-nav2{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--bot-border);background:rgba(0,0,0,.18)}
+.bw-nav2-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:7px 5px;cursor:pointer;border-right:1px solid rgba(201,168,76,.1);font-size:5.5pt;font-weight:700;color:var(--bot-text-muted);letter-spacing:.3px;text-transform:uppercase;transition:all .15s;position:relative}
+.bw-nav2-item:last-child{border-right:none}
+.bw-nav2-item:hover{background:rgba(201,168,76,.07);color:var(--gold)}
+.bw-nav2-icon{font-size:14px;line-height:1}
+.bw-scroll{padding:10px 12px;overflow-y:auto;max-height:260px;scrollbar-width:thin;scrollbar-color:var(--gold-dark) transparent}
+.bw-scroll::-webkit-scrollbar{width:3px}
+.bw-scroll::-webkit-scrollbar-thumb{background:var(--gold-dark);border-radius:2px}
+.bw-caption{text-align:center;padding:6px 10px;color:var(--gold);background:rgba(0,0,0,.2);font-size:7.5pt;font-weight:700;font-family:Georgia,serif;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--bot-border);margin:0 0 8px}
+.bw-row{display:flex;align-items:center;justify-content:space-between;width:100%;padding:3px 0;font-size:7.5pt;color:var(--bot-text);gap:6px}
+.bw-row>span:first-child{flex:1}
+.bw-toggle{display:inline-flex;align-items:center;width:28px;height:15px;border-radius:8px;cursor:pointer;flex-shrink:0;position:relative;transition:all .2s}
+.bw-toggle-on{background:var(--bot-green)}
+.bw-toggle-off{background:rgba(120,120,120,.3);border:1px solid rgba(201,168,76,.2)}
+.bw-toggle::after{content:'';position:absolute;width:11px;height:11px;border-radius:50%;background:#fff;top:2px;transition:left .2s}
+.bw-toggle-on::after{left:15px}
+.bw-toggle-off::after{left:2px}
+.bw-status{display:inline-flex;align-items:center;gap:3px;font-size:6pt;font-weight:700;text-transform:uppercase;letter-spacing:.3px;padding:1px 5px;border-radius:4px}
+.bw-status-on{background:rgba(76,175,110,.15);border:1px solid rgba(76,175,110,.35);color:var(--bot-green)}
+.bw-select{background:var(--bot-card);color:var(--bot-text-light);border:1px solid var(--bot-border);border-radius:5px;padding:2px 5px;font-size:7pt;font-family:Arial,sans-serif;cursor:pointer;outline:none}
+.bw-footer{display:flex;align-items:center;justify-content:space-between;padding:6px 12px;background:rgba(0,0,0,.3);border-top:1px solid var(--bot-border);font-size:6.5pt;color:var(--bot-text-muted)}
+.bw-footer-btn{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:5px;border:1px solid var(--bot-border);background:rgba(201,168,76,.1);color:var(--gold);font-size:7pt;font-weight:700;text-transform:uppercase;letter-spacing:.3px;cursor:pointer}
+.bw-footer-btn-red{border-color:rgba(224,85,85,.3);background:rgba(224,85,85,.1);color:var(--bot-red)}
+.bw-mod-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.bw-mod-card{background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.12);border-radius:8px;padding:8px 9px;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.bw-mod-card.mod-on{border-color:rgba(76,175,110,.35);background:rgba(76,175,110,.05)}
+.bw-mod-card.mod-off{opacity:.7}
+.bw-mod-card.mod-lock{opacity:.55}
+.bw-mod-info{display:flex;align-items:center;gap:6px;min-width:0;flex:1}
+.bw-mod-icon{font-size:16px;flex-shrink:0;line-height:1}
+.bw-mod-name{font-size:7pt;font-weight:700;color:var(--bot-text-light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bw-mod-st{font-size:5.5pt;margin-top:1px}
+.st-on{color:var(--bot-green)}.st-off{color:var(--bot-red)}.st-lock{color:var(--gold)}
+.hw-attack{background:rgba(0,0,0,.25);border:1px solid rgba(201,168,76,.1);border-left:3px solid rgba(201,168,76,.3);border-radius:7px;padding:7px 9px;margin-bottom:5px}
+.hw-attack-cs{border-left-color:var(--bot-red);background:rgba(224,85,85,.04)}
+.hw-attack-header{display:flex;align-items:center;gap:4px;margin-bottom:4px}
+.hw-attack-num{font-size:6.5pt;color:var(--bot-text-muted);font-weight:700;min-width:12px}
+.hw-attack-icon{font-size:13px;line-height:1}
+.hw-player{font-size:7pt;color:var(--gold-light);flex:1}
+.hw-remove{margin-left:auto;color:var(--bot-red);cursor:pointer;font-size:9pt;opacity:.6}
+.hw-attack-route{font-size:7.5pt;color:var(--bot-text);margin-bottom:5px;display:flex;align-items:center;gap:4px}
+.hw-arrow{color:var(--gold);font-weight:700}
+.hw-attack-footer{display:flex;align-items:center;gap:5px}
+.hw-attack-footer-left{display:flex;align-items:center;gap:5px;flex:1;min-width:0;overflow:hidden}
+.hw-time{font-size:7pt;color:var(--gold);font-weight:700;white-space:nowrap}
+.hw-status{font-size:6.5pt;color:var(--bot-text-muted);overflow:hidden;text-overflow:ellipsis}
+.hw-status-confirmed{color:#4caf6e}.hw-status-dodging{color:#5b8dd9}.hw-status-cs{color:#e05555;font-weight:700}
+.hw-options{display:flex;gap:3px;align-items:center;flex-shrink:0}
+.hw-opt{padding:2px 6px;border-radius:4px;border:1px solid rgba(201,168,76,.2);background:transparent;color:var(--bot-text-muted);font-size:6pt;font-weight:700;cursor:pointer;transition:all .15s;text-transform:uppercase}
+.hw-opt.active{background:rgba(76,175,110,.15);border-color:rgba(76,175,110,.4);color:#4caf6e}
+.cmd-order{background:rgba(0,0,0,.25);border:1px solid rgba(201,168,76,.1);border-left:3px solid rgba(201,168,76,.25);border-radius:7px;padding:7px 9px;margin-bottom:5px}
+.cmd-order-header{display:flex;align-items:center;gap:5px;margin-bottom:3px}
+.cmd-order-type{font-size:12px;line-height:1}
+.cmd-order-name{font-size:7.5pt;font-weight:700;color:var(--bot-text-light);flex:1}
+.cmd-order-state{font-size:6pt;font-weight:700;text-transform:uppercase;letter-spacing:.3px;padding:1px 5px;border-radius:4px}
+.state-pending{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);color:var(--gold)}
+.state-active{background:rgba(91,141,217,.1);border:1px solid rgba(91,141,217,.3);color:var(--bot-blue)}
+.state-success{background:rgba(76,175,110,.12);border:1px solid rgba(76,175,110,.3);color:var(--bot-green)}
+.cmd-order-route{font-size:7pt;color:var(--bot-text-muted);margin-bottom:4px}
+.cmd-order-footer{display:flex;align-items:center;justify-content:space-between}
+.cmd-order-time{font-size:7pt;color:var(--gold);font-weight:700}
+.cmd-order-acc{font-size:6.5pt;color:var(--bot-text-muted)}
+.cmd-order-del{color:var(--bot-red);cursor:pointer;font-size:9pt;opacity:.6}
+.rec-section-label{font-size:6.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gold-dim);margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.rec-section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(201,168,76,.2),transparent)}
+.rec-units{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.rec-unit{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 6px;border-radius:7px;border:1px solid rgba(201,168,76,.12);background:rgba(0,0,0,.25);cursor:pointer;transition:border-color .15s;min-width:44px}
+.rec-unit:hover{border-color:rgba(201,168,76,.35)}
+.rec-unit.selected{border-color:rgba(201,168,76,.6);background:rgba(201,168,76,.1)}
+.rec-unit-emoji{font-size:18px;line-height:1}
+.rec-unit-name{font-size:5.5pt;color:var(--bot-text-muted);text-transform:uppercase;text-align:center}
+.rec-unit-count{font-size:6.5pt;font-weight:700;color:var(--gold)}
+.rec-queue{display:flex;flex-direction:column;gap:4px}
+.rec-q-item{display:flex;align-items:center;gap:7px;background:rgba(0,0,0,.2);border:1px solid rgba(201,168,76,.1);border-radius:6px;padding:5px 8px}
+.rec-q-icon{font-size:15px;line-height:1}
+.rec-q-name{font-size:7pt;color:var(--bot-text-light);font-weight:700;flex:1}
+.rec-q-count{font-size:7pt;color:var(--gold);font-weight:700}
+.rec-q-bar{height:3px;background:rgba(201,168,76,.15);border-radius:2px;margin-top:2px;overflow:hidden}
+.rec-q-prog{height:100%;background:var(--gold);border-radius:2px}
+.tr-town-row{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid rgba(201,168,76,.06)}
+.tr-town-row:last-child{border-bottom:none}
+.tr-town-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-prov{background:var(--bot-green)}.dot-cons{background:var(--bot-blue)}.dot-off{background:var(--bot-text-muted)}
+.tr-town-name{font-size:7.5pt;color:var(--bot-text-light);font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.tr-town-role{font-size:6pt;font-weight:700;text-transform:uppercase;letter-spacing:.3px;padding:1px 5px;border-radius:4px}
+.role-prov{background:rgba(76,175,110,.12);border:1px solid rgba(76,175,110,.3);color:var(--bot-green)}
+.role-cons{background:rgba(91,141,217,.12);border:1px solid rgba(91,141,217,.3);color:var(--bot-blue)}
+.role-off{background:rgba(120,120,120,.08);border:1px solid rgba(120,120,120,.2);color:var(--bot-text-muted)}
+.tr-res{display:flex;gap:4px;align-items:center}
+.tr-res-chip{display:flex;align-items:center;gap:2px;font-size:6.5pt;font-weight:700;color:var(--bot-text-muted);background:rgba(0,0,0,.2);border:1px solid rgba(201,168,76,.08);border-radius:4px;padding:1px 4px}
+.tr-res-chip.r-on{color:var(--gold);border-color:rgba(201,168,76,.2)}
+.section{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:80px 24px}
+.section-label{font-family:'Cinzel',serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-dim);text-align:center;margin-bottom:16px}
+.section-title{font-family:'Cinzel',serif;font-size:clamp(28px,4vw,42px);font-weight:700;text-align:center;color:var(--gold-light);margin-bottom:56px}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2px}
+.feature{background:var(--bg-card);border:1px solid var(--border);padding:32px 28px;position:relative;transition:all .3s ease;overflow:hidden}
+.feature::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0;transition:opacity .3s}
+.feature:hover{background:#1f1a0c;border-color:var(--border-glow)}
+.feature:hover::before{opacity:1}
+.feature-icon{font-size:28px;margin-bottom:16px;display:block}
+.feature-name{font-family:'Cinzel',serif;font-size:15px;font-weight:700;color:var(--gold);margin-bottom:10px;letter-spacing:.5px}
+.feature-desc{font-size:16px;color:var(--text-dim);line-height:1.6}
+.divider{position:relative;z-index:1;display:flex;align-items:center;gap:24px;max-width:700px;margin:0 auto;padding:0 24px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border))}
+.divider::after{background:linear-gradient(90deg,var(--border),transparent)}
+.divider-gem{width:8px;height:8px;background:var(--gold);transform:rotate(45deg);flex-shrink:0}
+.install-section{position:relative;z-index:1;background:var(--bg-panel);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 24px}
+.steps{max-width:700px;margin:0 auto;display:flex;flex-direction:column}
+.step{display:flex;gap:28px;align-items:flex-start;padding:28px 0;border-bottom:1px solid var(--border);opacity:0;transform:translateX(-20px);transition:all .5s ease}
+.step:last-child{border-bottom:none}
+.step.visible{opacity:1;transform:translateX(0)}
+.step-num{font-family:'Cinzel',serif;font-size:32px;font-weight:900;color:var(--border);line-height:1;flex-shrink:0;width:48px;transition:color .3s}
+.step:hover .step-num{color:var(--gold)}
+.step-content{flex:1}
+.step-title{font-family:'Cinzel',serif;font-size:16px;font-weight:700;color:var(--gold-light);margin-bottom:8px}
+.step-desc{font-size:16px;color:var(--text-dim);line-height:1.6}
+.step-btn{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-family:'Cinzel',serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);background:transparent;border:1px solid var(--border);padding:10px 20px;border-radius:2px;text-decoration:none;cursor:pointer;transition:all .2s ease}
+.step-btn:hover{background:rgba(201,168,76,.1);border-color:var(--border-glow);box-shadow:0 0 20px rgba(201,168,76,.15)}
+.step-btn svg{width:14px;height:14px}
+.contact-section{position:relative;z-index:1;text-align:center;padding:80px 24px}
+.discord-btn{display:inline-flex;align-items:center;gap:14px;font-family:'Cinzel',serif;font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;background:var(--discord);border:none;padding:18px 48px;border-radius:2px;text-decoration:none;cursor:pointer;transition:all .3s ease;box-shadow:0 0 40px rgba(88,101,242,.25),0 4px 20px rgba(0,0,0,.5);margin-top:32px}
+.discord-btn:hover{transform:translateY(-2px);background:#4752c4;box-shadow:0 0 60px rgba(88,101,242,.45),0 8px 30px rgba(0,0,0,.6)}
+.discord-btn svg{width:24px;height:24px;flex-shrink:0}
+footer{position:relative;z-index:1;text-align:center;padding:48px 24px;font-family:'Cinzel',serif;font-size:12px;letter-spacing:2px;color:var(--text-dim);border-top:1px solid var(--border)}
+footer span{color:var(--gold-dim)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:900px){.mockup-cluster{height:auto;display:flex;flex-direction:column;gap:16px}.bot-win{position:static!important;transform:none!important;width:100%!important;max-width:340px;margin:0 auto}.step{gap:16px}.step-num{font-size:24px;width:36px}.hero-buttons{flex-direction:column;align-items:center}#lang-picker{top:10px;right:10px}}
+/* close dropdown when clicking outside */
 </style>
 </head>
 <body>
 
-<!-- Particules -->
+<div id="lang-picker">
+  <div style="font-family:'Cinzel',serif;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-dim);text-align:center;margin-bottom:2px;">Choisir le language</div>
+  <div id="lang-btn" onclick="toggleLangPicker()">
+    <img id="lang-flag-img" src="" alt="" />
+    <div id="lang-arrow"></div>
+  </div>
+  <div id="lang-dropdown"></div>
+</div>
+
 <div class="particles" id="particles"></div>
 
-<!-- Hero -->
 <section class="hero">
   <div class="hero-ornament"></div>
-  <div class="hero-badge">Bot pour Grepolis</div>
+  <div class="hero-badge" data-i18n="badge">Bot pour Grepolis</div>
   <h1 class="hero-title">GrepoPlus</h1>
-  <p class="hero-sub">Automatisez. Dominez. Répétez.</p>
-  <p class="hero-desc">
-    Collecteur automatique, Constructeur, Recruteur, Héraut, Commandant, Auto-Esquive et bien plus — tout en un.
-  </p>
+  <p class="hero-sub" data-i18n="hero_sub">Automatisez. Dominez. R&#233;p&#233;tez.</p>
+  <p class="hero-desc" data-i18n="hero_desc">Collecteur automatique, Constructeur, Recruteur, H&#233;raut, Commandant, Auto-Esquive et bien plus &#8212; tout en un.</p>
   <div class="hero-buttons">
     <a href="#install" class="hero-cta">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M12 3v13M5 10l7 7 7-7"/>
-        <path d="M3 20h18"/>
-      </svg>
-      Installer maintenant
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v13M5 10l7 7 7-7"/><path d="M3 20h18"/></svg>
+      <span data-i18n="btn_install">Installer maintenant</span>
     </a>
     <a href="https://discord.gg/VWeEWQFUFE" target="_blank" class="hero-discord">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.003.022.015.04.031.051a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
-      </svg>
-      Discord
+      <svg viewBox="0 0 127.14 96.36" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
+      <span data-i18n="btn_discord">Discord</span>
     </a>
   </div>
-  <div class="hero-scroll">Découvrir</div>
+
+  <div class="mockup-label" data-i18n="mockup_label">Aper&#231;u du bot en action</div>
+  <div class="mockup-cluster">
+
+    <!-- SENAT -->
+    <div class="bot-win win-senat">
+      <div style="position:relative"><div class="mock-badge" data-i18n="mock_senat">Onglet S&#233;nat</div></div>
+      <div class="bw-header">
+        <div class="bw-logo"><div class="bw-icon">&#127963;</div><div><div class="bw-title">GrepoPlus</div><div class="bw-sub" data-i18n="senat_sub">v1.0 &middot; Modules actifs</div></div></div>
+        <div class="bw-actions"><div class="bw-btn">&#9881;&#65039;</div><div class="bw-btn">&#10067;</div><div class="bw-btn bw-btn-red">&#10005;</div></div>
+      </div>
+      <div class="bw-nav">
+        <div class="bw-nav-item active"><div class="bw-nav-icon">&#127963;</div><div class="bw-nav-label" data-i18n="nav_senat">S&#233;nat</div></div>
+        <div class="bw-nav-item"><div class="bw-nav-icon">&#9876;&#65039;</div><div class="bw-nav-label" data-i18n="nav_heraut">H&#233;raut</div></div>
+        <div class="bw-nav-item"><div class="bw-nav-icon">&#128681;</div><div class="bw-nav-label" data-i18n="nav_cmd">Cmd</div></div>
+        <div class="bw-nav-item"><div class="bw-nav-icon">&#127891;</div><div class="bw-nav-label" data-i18n="nav_research">Chercheur</div></div>
+      </div>
+      <div class="bw-nav2">
+        <div class="bw-nav2-item"><div class="bw-nav2-icon">&#127806;</div><div data-i18n="nav_farm">Collecteur</div></div>
+        <div class="bw-nav2-item"><div class="bw-nav2-icon">&#128702;</div><div data-i18n="nav_trader">Marchand</div></div>
+        <div class="bw-nav2-item"><div class="bw-nav2-icon">&#128296;</div><div data-i18n="nav_foreman">Construct.</div></div>
+        <div class="bw-nav2-item"><div class="bw-nav2-icon">&#127993;</div><div data-i18n="nav_recruiter">Recruteur</div></div>
+      </div>
+      <div class="bw-scroll">
+        <div class="bw-caption" data-i18n="senat_caption">Vue d&apos;ensemble</div>
+        <div class="bw-mod-grid">
+          <div class="bw-mod-card mod-on"><div class="bw-mod-info"><div class="bw-mod-icon">&#9876;&#65039;</div><div><div class="bw-mod-name" data-i18n="nav_heraut">H&#233;raut</div><div class="bw-mod-st st-on">&#9679; <span data-i18n="status_active">Actif</span></div></div></div><div class="bw-toggle bw-toggle-on"></div></div>
+          <div class="bw-mod-card mod-on"><div class="bw-mod-info"><div class="bw-mod-icon">&#128681;</div><div><div class="bw-mod-name" data-i18n="nav_cmd">Commandant</div><div class="bw-mod-st st-on">&#9679; <span data-i18n="status_active">Actif</span></div></div></div><div class="bw-toggle bw-toggle-on"></div></div>
+          <div class="bw-mod-card mod-off"><div class="bw-mod-info"><div class="bw-mod-icon">&#127806;</div><div><div class="bw-mod-name" data-i18n="nav_farm">Collecteur</div><div class="bw-mod-st st-off">&#9679; <span data-i18n="status_stopped">Arr&#234;t&#233;</span></div></div></div><div class="bw-toggle bw-toggle-off"></div></div>
+          <div class="bw-mod-card mod-lock"><div class="bw-mod-info"><div class="bw-mod-icon">&#128702;</div><div><div class="bw-mod-name" data-i18n="nav_trader">Marchand</div><div class="bw-mod-st st-lock">&#9733; <span data-i18n="status_premium">Premium</span></div></div></div><div class="bw-toggle bw-toggle-off"></div></div>
+          <div class="bw-mod-card mod-on"><div class="bw-mod-info"><div class="bw-mod-icon">&#128296;</div><div><div class="bw-mod-name" data-i18n="nav_foreman">Constructeur</div><div class="bw-mod-st st-on">&#9679; <span data-i18n="status_active">Actif</span></div></div></div><div class="bw-toggle bw-toggle-on"></div></div>
+          <div class="bw-mod-card mod-lock"><div class="bw-mod-info"><div class="bw-mod-icon">&#127993;</div><div><div class="bw-mod-name" data-i18n="nav_recruiter">Recruteur</div><div class="bw-mod-st st-lock">&#9733; <span data-i18n="status_premium">Premium</span></div></div></div><div class="bw-toggle bw-toggle-off"></div></div>
+        </div>
+      </div>
+      <div class="bw-footer"><span>Thyatis &middot; 12 <span data-i18n="footer_towns">villes</span></span><div class="bw-footer-btn">&#128722; Shop</div></div>
+    </div>
+
+    <!-- HERAUT -->
+    <div class="bot-win win-heraut">
+      <div style="position:relative"><div class="mock-badge" data-i18n="mock_heraut">Onglet H&#233;raut</div></div>
+      <div class="bw-header">
+        <div class="bw-logo"><div class="bw-icon">&#9876;&#65039;</div><div><div class="bw-title" data-i18n="nav_heraut">H&#233;raut</div><div class="bw-sub" data-i18n="heraut_sub">D&#233;tection d&apos;attaques &middot; 3 menaces</div></div></div>
+        <div class="bw-actions"><div class="bw-btn">&#128260;</div><div class="bw-btn bw-btn-red">&#10005;</div></div>
+      </div>
+      <div class="bw-nav">
+        <div class="bw-nav-item active"><div class="bw-nav-icon">&#127984;</div><div class="bw-nav-label" data-i18n="heraut_my_towns">Mes villes</div></div>
+        <div class="bw-nav-item"><div class="bw-nav-icon">&#127757;</div><div class="bw-nav-label" data-i18n="heraut_all">Toutes</div></div>
+        <div class="bw-nav-item"><div class="bw-nav-icon">&#9881;&#65039;</div><div class="bw-nav-label" data-i18n="nav_options">Options</div></div>
+        <div class="bw-nav-item"><div class="bw-nav-icon">&#128276;</div><div class="bw-nav-label" data-i18n="heraut_alerts">Alertes</div></div>
+      </div>
+      <div class="bw-scroll">
+        <div class="hw-attack hw-attack-cs">
+          <div class="hw-attack-header"><div class="hw-attack-num">1</div><div class="hw-attack-icon">&#128128;&#9876;&#65039;</div><div class="hw-player">Achille le Grand</div><div class="hw-remove">&#215;</div></div>
+          <div class="hw-attack-route"><span>Argos</span><span class="hw-arrow">&#8594;</span><span style="color:var(--gold-light);font-weight:700">Thyatis</span></div>
+          <div class="hw-attack-footer">
+            <div class="hw-attack-footer-left"><div class="hw-time"><span data-i18n="hw_in">dans</span> 08:43</div><div class="hw-status hw-status-cs">&#9888; Conquest</div></div>
+            <div class="hw-options"><div class="hw-opt active" data-i18n="hw_dodge">&#127744; Esquive</div><div class="hw-opt" data-i18n="hw_militia">&#128305; Milice</div></div>
+          </div>
+        </div>
+        <div class="hw-attack">
+          <div class="hw-attack-header"><div class="hw-attack-num">2</div><div class="hw-attack-icon">&#9876;&#65039;</div><div class="hw-player">Ulysse de Ithaque</div><div class="hw-remove">&#215;</div></div>
+          <div class="hw-attack-route"><span>Corinthe</span><span class="hw-arrow">&#8594;</span><span style="color:var(--gold-light);font-weight:700">Thyatis</span></div>
+          <div class="hw-attack-footer">
+            <div class="hw-attack-footer-left"><div class="hw-time"><span data-i18n="hw_in">dans</span> 24:17</div><div class="hw-status hw-status-dodging" data-i18n="hw_dodging">&#127744; Esquive en cours&#8230;</div></div>
+            <div class="hw-options"><div class="hw-opt active" data-i18n="hw_dodge">&#127744; Esquive</div><div class="hw-opt" data-i18n="hw_militia">&#128305; Milice</div></div>
+          </div>
+        </div>
+        <div class="hw-attack">
+          <div class="hw-attack-header"><div class="hw-attack-num">3</div><div class="hw-attack-icon">&#9876;&#65039;</div><div class="hw-player">Hector de Troie</div><div class="hw-remove">&#215;</div></div>
+          <div class="hw-attack-route"><span>Troie</span><span class="hw-arrow">&#8594;</span><span style="color:var(--gold-light);font-weight:700">Neapolis</span></div>
+          <div class="hw-attack-footer">
+            <div class="hw-attack-footer-left"><div class="hw-time"><span data-i18n="hw_in">dans</span> 01:12:05</div><div class="hw-status hw-status-confirmed" data-i18n="hw_confirmed">&#10003; Confirm&#233;e</div></div>
+            <div class="hw-options"><div class="hw-opt" data-i18n="hw_dodge">&#127744; Esquive</div><div class="hw-opt active" data-i18n="hw_militia">&#128305; Milice</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="bw-footer"><span data-i18n="hw_autododge">Auto-esquive</span> <span style="color:var(--bot-green);font-weight:700;margin-left:4px">ON</span><div class="bw-footer-btn bw-footer-btn-red" data-i18n="hw_mute">&#128277; Couper son</div></div>
+    </div>
+
+    <!-- COMMANDANT -->
+    <div class="bot-win win-cmd">
+      <div style="position:relative"><div class="mock-badge" data-i18n="mock_cmd">Onglet Commandant</div></div>
+      <div class="bw-header">
+        <div class="bw-logo"><div class="bw-icon">&#128681;</div><div><div class="bw-title" data-i18n="nav_cmd">Commandant</div><div class="bw-sub" data-i18n="cmd_sub">Attaques tim&#233;es &middot; 3 ordres</div></div></div>
+        <div class="bw-actions"><div class="bw-btn">&#65291;</div><div class="bw-btn bw-btn-red">&#10005;</div></div>
+      </div>
+      <div class="bw-nav">
+        <div class="bw-nav-item active"><div class="bw-nav-icon">&#128203;</div><div class="bw-nav-label" data-i18n="cmd_orders">Ordres</div></div>
+        <div class="bw-nav-item"><div class="bw-nav-icon">&#10133;</div><div class="bw-nav-label" data-i18n="cmd_new">Nouveau</div></div>
+        <div class="bw-nav-item"><div class="bw-nav-icon">&#9881;&#65039;</div><div class="bw-nav-label" data-i18n="nav_options">R&#233;glages</div></div>
+        <div class="bw-nav-item"><div class="bw-nav-icon">&#128202;</div><div class="bw-nav-label" data-i18n="cmd_stats">Stats</div></div>
+      </div>
+      <div class="bw-scroll">
+        <div class="bw-caption" data-i18n="cmd_caption">Ordres planifi&#233;s</div>
+        <div class="cmd-order"><div class="cmd-order-header"><div class="cmd-order-type">&#9876;&#65039;</div><div class="cmd-order-name" data-i18n="cmd_land">Attaque terrestre</div><div class="cmd-order-state state-active" data-i18n="state_active">En cours</div><div class="cmd-order-del">&#215;</div></div><div class="cmd-order-route">Thyatis &#8594; Argos (Achille)</div><div class="cmd-order-footer"><div class="cmd-order-time"><span data-i18n="cmd_arrival">Arriv&#233;e</span> : 21:34:07</div><div class="cmd-order-acc">&#177;0.2s</div></div></div>
+        <div class="cmd-order"><div class="cmd-order-header"><div class="cmd-order-type">&#128674;</div><div class="cmd-order-name" data-i18n="cmd_naval">Attaque navale</div><div class="cmd-order-state state-pending" data-i18n="state_pending">En attente</div><div class="cmd-order-del">&#215;</div></div><div class="cmd-order-route">Neapolis &#8594; Port de Troie</div><div class="cmd-order-footer"><div class="cmd-order-time"><span data-i18n="cmd_arrival">Arriv&#233;e</span> : 22:00:00</div><div class="cmd-order-acc">&#177;0.1s</div></div></div>
+        <div class="cmd-order"><div class="cmd-order-header"><div class="cmd-order-type">&#127984;</div><div class="cmd-order-name" data-i18n="cmd_support">Soutien alli&#233;</div><div class="cmd-order-state state-success" data-i18n="state_success">Succ&#232;s</div><div class="cmd-order-del">&#215;</div></div><div class="cmd-order-route">Thyatis &#8594; Sparte (L&#233;onidas)</div><div class="cmd-order-footer"><div class="cmd-order-time"><span data-i18n="cmd_arrived">Arriv&#233; &#224;</span> 19:45:01</div><div class="cmd-order-acc">&#177;0.0s</div></div></div>
+      </div>
+      <div class="bw-footer"><span data-i18n="cmd_precision">Pr&#233;cision</span> : <span style="color:var(--gold);font-weight:700;margin-left:4px">&#177;0.15s</span><div class="bw-footer-btn" data-i18n="cmd_plan">+ Planifier</div></div>
+    </div>
+
+    <!-- MARCHAND -->
+    <div class="bot-win win-marchand">
+      <div style="position:relative"><div class="mock-badge" data-i18n="mock_trader">Module Marchand</div></div>
+      <div class="bw-header">
+        <div class="bw-logo"><div class="bw-icon">&#128702;</div><div><div class="bw-title" data-i18n="nav_trader">Marchand</div><div class="bw-sub" data-i18n="trader_sub">Commerce auto &middot; Premium</div></div></div>
+        <div class="bw-actions"><div class="bw-btn bw-btn-red">&#10005;</div></div>
+      </div>
+      <div class="bw-nav">
+        <div class="bw-nav-item active"><div class="bw-nav-icon">&#127961;&#65039;</div><div class="bw-nav-label" data-i18n="trader_cities">Villes</div></div>
+        <div class="bw-nav-item"><div class="bw-nav-icon">&#128230;</div><div class="bw-nav-label" data-i18n="trader_queue">File</div></div>
+        <div class="bw-nav-item"><div class="bw-nav-icon">&#9881;&#65039;</div><div class="bw-nav-label" data-i18n="nav_options">Config</div></div>
+        <div class="bw-nav-item"><div class="bw-nav-icon">&#128202;</div><div class="bw-nav-label" data-i18n="cmd_stats">Stats</div></div>
+      </div>
+      <div class="bw-scroll">
+        <div class="bw-caption" data-i18n="trader_caption">R&#244;les des villes</div>
+        <div class="tr-town-row"><div class="tr-town-dot dot-prov"></div><div class="tr-town-name">Thyatis</div><div class="tr-town-role role-prov" data-i18n="trader_provider">Fournisseur</div><div class="tr-res"><div class="tr-res-chip r-on">&#129717; 1200</div><div class="tr-res-chip r-on">&#129704; 800</div></div></div>
+        <div class="tr-town-row"><div class="tr-town-dot dot-cons"></div><div class="tr-town-name">Neapolis</div><div class="tr-town-role role-cons" data-i18n="trader_consumer">Consommateur</div><div class="tr-res"><div class="tr-res-chip r-on">&#129717;</div><div class="tr-res-chip r-on">&#9881;&#65039;</div></div></div>
+        <div class="tr-town-row"><div class="tr-town-dot dot-prov"></div><div class="tr-town-name">Milos</div><div class="tr-town-role role-prov" data-i18n="trader_provider">Fournisseur</div><div class="tr-res"><div class="tr-res-chip r-on">&#9881;&#65039; 2000</div></div></div>
+        <div class="tr-town-row"><div class="tr-town-dot dot-off"></div><div class="tr-town-name">Phares</div><div class="tr-town-role role-off" data-i18n="trader_disabled">D&#233;sactiv&#233;</div><div class="tr-res"><div class="tr-res-chip">&#8212;</div></div></div>
+        <div style="margin-top:8px">
+          <div class="bw-row"><span data-i18n="trader_mode">Mode de commerce</span><select class="bw-select"><option data-i18n="trader_mode_threshold">Seuil</option><option data-i18n="trader_mode_fixed">Fixe</option></select></div>
+          <div class="bw-row"><span data-i18n="trader_interval">Intervalle</span><select class="bw-select"><option>30 min</option><option>1h</option><option>2h</option></select></div>
+          <div class="bw-row"><span data-i18n="trader_enable">Activer le marchand</span><div class="bw-toggle bw-toggle-on"></div></div>
+        </div>
+      </div>
+      <div class="bw-footer"><span data-i18n="trader_next">Prochaine rotation</span> : <span style="color:var(--gold);font-weight:700;margin-left:4px">14 min</span></div>
+    </div>
+
+    <!-- RECRUTEUR -->
+    <div class="bot-win win-recruteur">
+      <div style="position:relative"><div class="mock-badge" data-i18n="mock_recruiter">Module Recruteur</div></div>
+      <div class="bw-header">
+        <div class="bw-logo"><div class="bw-icon">&#127993;</div><div><div class="bw-title" data-i18n="nav_recruiter">Recruteur</div><div class="bw-sub" data-i18n="recruiter_sub">Recrutement auto &middot; Premium</div></div></div>
+        <div class="bw-actions"><div class="bw-btn bw-btn-red">&#10005;</div></div>
+      </div>
+      <div class="bw-nav">
+        <div class="bw-nav-item active" style="grid-column:span 2"><div class="bw-nav-icon">&#129686;</div><div class="bw-nav-label" data-i18n="rec_barracks">Caserne</div></div>
+        <div class="bw-nav-item" style="grid-column:span 2"><div class="bw-nav-icon">&#9875;</div><div class="bw-nav-label" data-i18n="rec_docks">Docks</div></div>
+      </div>
+      <div class="bw-scroll">
+        <div class="bw-caption">Thyatis &#8212; <span data-i18n="rec_queue_title">File caserne</span></div>
+        <div class="rec-section-label" data-i18n="rec_available">Unit&#233;s disponibles</div>
+        <div class="rec-units">
+          <div class="rec-unit selected"><div class="rec-unit-emoji">&#127993;</div><div class="rec-unit-name" data-i18n="unit_archer">Archer</div><div class="rec-unit-count">&#215;50</div></div>
+          <div class="rec-unit"><div class="rec-unit-emoji">&#9876;&#65039;</div><div class="rec-unit-name" data-i18n="unit_sword">Ep&#233;iste</div><div class="rec-unit-count">&#215;30</div></div>
+          <div class="rec-unit selected"><div class="rec-unit-emoji">&#128737;&#65039;</div><div class="rec-unit-name" data-i18n="unit_hoplite">Hoplite</div><div class="rec-unit-count">&#215;20</div></div>
+          <div class="rec-unit"><div class="rec-unit-emoji">&#128014;</div><div class="rec-unit-name" data-i18n="unit_cavalry">Cavalier</div><div class="rec-unit-count">&#215;10</div></div>
+          <div class="rec-unit"><div class="rec-unit-emoji">&#128293;</div><div class="rec-unit-name" data-i18n="unit_catapult">Catapulte</div><div class="rec-unit-count">&#215;5</div></div>
+        </div>
+        <div class="rec-section-label" data-i18n="rec_queue">File de recrutement</div>
+        <div class="rec-queue">
+          <div class="rec-q-item"><div class="rec-q-icon">&#127993;</div><div><div class="rec-q-name" data-i18n="unit_archer">Archer</div><div class="rec-q-bar"><div class="rec-q-prog" style="width:65%"></div></div></div><div class="rec-q-count">&#215;50</div><div style="color:var(--bot-red);cursor:pointer;font-size:9pt;opacity:.6">&#215;</div></div>
+          <div class="rec-q-item"><div class="rec-q-icon">&#128737;&#65039;</div><div><div class="rec-q-name" data-i18n="unit_hoplite">Hoplite</div><div class="rec-q-bar"><div class="rec-q-prog" style="width:0%"></div></div></div><div class="rec-q-count">&#215;20</div><div style="color:var(--bot-red);cursor:pointer;font-size:9pt;opacity:.6">&#215;</div></div>
+        </div>
+        <div style="margin-top:8px;padding-top:6px;border-top:1px solid rgba(201,168,76,.08)">
+          <div class="bw-row"><span data-i18n="rec_slots">Slots caserne</span><select class="bw-select"><option>2</option><option>3</option></select></div>
+          <div class="bw-row"><span data-i18n="rec_enable">Activer le recruteur</span><div class="bw-toggle bw-toggle-on"></div></div>
+        </div>
+      </div>
+      <div class="bw-footer"><span data-i18n="rec_ongoing">En cours</span> : <span style="color:var(--gold);font-weight:700;margin-left:4px" data-i18n="unit_archer">Archer</span> &#215;50<div class="bw-status bw-status-on">&#9679; <span data-i18n="status_active">Actif</span></div></div>
+    </div>
+
+  </div>
+  <div class="hero-scroll" data-i18n="scroll_discover">D&#233;couvrir</div>
 </section>
 
-<!-- Features -->
+<!-- FEATURES -->
 <div class="section">
-  <div class="section-label">Fonctionnalités</div>
-  <h2 class="section-title">Tout ce dont vous avez besoin</h2>
+  <div class="section-label" data-i18n="features_label">Fonctionnalit&#233;s</div>
+  <h2 class="section-title" data-i18n="features_title">Tout ce dont vous avez besoin</h2>
   <div class="features">
-    <div class="feature">
-      <span class="feature-icon">🌾</span>
-      <div class="feature-name">Collecteur</div>
-      <div class="feature-desc">Collecte automatique des villages et ressources à intervalles configurables.</div>
-    </div>
-    <div class="feature">
-      <span class="feature-icon">🏗️</span>
-      <div class="feature-name">Constructeur</div>
-      <div class="feature-desc">File de construction automatique avec priorités et terminer gratuitement.</div>
-    </div>
-    <div class="feature">
-      <span class="feature-icon">⚔️</span>
-      <div class="feature-name">Recruteur</div>
-      <div class="feature-desc">Recrutement continu de vos troupes selon vos priorités.</div>
-    </div>
-    <div class="feature">
-      <span class="feature-icon">📯</span>
-      <div class="feature-name">Héraut</div>
-      <div class="feature-desc">Détection d'attaques, alertes sonores, milice automatique.</div>
-    </div>
-    <div class="feature">
-      <span class="feature-icon">🚩</span>
-      <div class="feature-name">Commandant</div>
-      <div class="feature-desc">Planification d'attaques timées avec précision à la seconde.</div>
-    </div>
-    <div class="feature">
-      <span class="feature-icon">🛡️</span>
-      <div class="feature-name">Auto-Esquive</div>
-      <div class="feature-desc">Envoie vos troupes automatiquement hors de la ville avant une attaque.</div>
-    </div>
-    <div class="feature">
-      <span class="feature-icon">🎓</span>
-      <div class="feature-name">Chercheur</div>
-      <div class="feature-desc">Recherches automatiques dans l'académie selon votre file de priorités.</div>
-    </div>
-    <div class="feature">
-      <span class="feature-icon">🏺</span>
-      <div class="feature-name">Marchand</div>
-      <div class="feature-desc">Commerce automatique entre vos villes selon vos seuils configurés.</div>
-    </div>
-    <div class="feature">
-      <span class="feature-icon">🏛️</span>
-      <div class="feature-name">Merveille</div>
-      <div class="feature-desc">Envoi automatique de ressources vers votre merveille d'alliance.</div>
-    </div>
+    <div class="feature"><span class="feature-icon">&#128239;</span><div class="feature-name" data-i18n="nav_heraut">H&#233;raut</div><div class="feature-desc" data-i18n="feat_heraut">D&#233;tection d&apos;attaques, milice automatique.</div></div>
+    <div class="feature"><span class="feature-icon">&#128681;</span><div class="feature-name" data-i18n="nav_cmd">Commandant</div><div class="feature-desc" data-i18n="feat_cmd">Planification d&apos;attaques tim&#233;es avec pr&#233;cision &#224; la seconde.</div></div>
+    <div class="feature"><span class="feature-icon">&#128737;&#65039;</span><div class="feature-name" data-i18n="feat_dodge_name">Auto-Esquive</div><div class="feature-desc" data-i18n="feat_dodge">Envoie vos troupes automatiquement hors de la ville avant une attaque.</div></div>
+    <div class="feature"><span class="feature-icon">&#127891;</span><div class="feature-name" data-i18n="nav_research">Chercheur</div><div class="feature-desc" data-i18n="feat_research">Recherches automatiques dans l&apos;acad&#233;mie selon votre file de priorit&#233;s.</div></div>
+    <div class="feature"><span class="feature-icon">&#127806;</span><div class="feature-name" data-i18n="nav_farm">Collecteur</div><div class="feature-desc" data-i18n="feat_farm">Collecte automatique des villages et ressources &#224; intervalles configurables.</div></div>
+    <div class="feature"><span class="feature-icon">&#127866;</span><div class="feature-name" data-i18n="nav_trader">Marchand</div><div class="feature-desc" data-i18n="feat_trader">Commerce automatique entre vos villes selon vos seuils configur&#233;s.</div></div>
+    <div class="feature"><span class="feature-icon">&#9876;&#65039;</span><div class="feature-name" data-i18n="nav_recruiter">Recruteur</div><div class="feature-desc" data-i18n="feat_recruiter">Recrutement continu de vos troupes selon vos priorit&#233;s.</div></div>
+    <div class="feature"><span class="feature-icon">&#127959;&#65039;</span><div class="feature-name" data-i18n="nav_foreman">Constructeur</div><div class="feature-desc" data-i18n="feat_foreman">File de construction automatique avec priorit&#233;s et acc&#233;l&#233;ration de la fin de construction.</div></div>
+    <div class="feature"><span class="feature-icon">&#127963;&#65039;</span><div class="feature-name" data-i18n="feat_wonder_name">Merveille</div><div class="feature-desc" data-i18n="feat_wonder">Envoi automatique de ressources vers votre merveille d&apos;alliance.</div></div>
   </div>
 </div>
 
 <div class="divider"><div class="divider-gem"></div></div>
 
-<!-- Install -->
+<!-- INSTALL -->
 <section class="install-section" id="install">
-  <div class="section-label">Installation</div>
-  <h2 class="section-title" style="margin-bottom:48px;">En 3 étapes</h2>
+  <div class="section-label" data-i18n="install_label">Installation</div>
+  <h2 class="section-title" style="margin-bottom:48px" data-i18n="install_title">En 3 &#233;tapes</h2>
   <div class="steps">
-
     <div class="step">
       <div class="step-num">01</div>
       <div class="step-content">
-        <div class="step-title">Installer Tampermonkey</div>
-        <div class="step-desc">
-          Tampermonkey est une extension Chrome gratuite qui permet de charger GrepoPlus. Installez-la depuis le Chrome Web Store.
-        </div>
-        <a href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo"
-           target="_blank" class="step-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
-            <polyline points="15,3 21,3 21,9"/>
-            <line x1="10" y1="14" x2="21" y2="3"/>
-          </svg>
-          Installer Tampermonkey
+        <div class="step-title" data-i18n="step1_title">Installer Tampermonkey</div>
+        <div class="step-desc" data-i18n="step1_desc">Tampermonkey est une extension de navigateur gratuite qui permet de charger GrepoPlus. Installez-la ci-dessous.</div>
+        <a href="https://www.tampermonkey.net/" target="_blank" class="step-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          <span data-i18n="step1_btn">Installer Tampermonkey</span>
         </a>
       </div>
     </div>
-
     <div class="step">
       <div class="step-num">02</div>
       <div class="step-content">
-        <div class="step-title">Installer GrepoPlus</div>
-        <div class="step-desc">
-          Cliquez sur le bouton ci-dessous. Tampermonkey s'ouvre automatiquement et vous propose d'installer le script. Cliquez <strong style="color:var(--gold)">Installer</strong>.
-        </div>
+        <div class="step-title" data-i18n="step2_title">Installer GrepoPlus</div>
+        <div class="step-desc" data-i18n="step2_desc">Cliquez sur le bouton ci-dessous. Tampermonkey s&apos;ouvre automatiquement et vous propose d&apos;installer le script. Cliquez <strong style="color:var(--gold)">Installer</strong>.</div>
         <a href="https://grepoplus.duckdns.org/bot/GFBot-Loader.user.js" class="step-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 3v13M5 10l7 7 7-7"/>
-            <path d="M3 20h18"/>
-          </svg>
-          Installer GrepoPlus
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M5 10l7 7 7-7"/><path d="M3 20h18"/></svg>
+          <span data-i18n="step2_btn">Installer GrepoPlus</span>
         </a>
       </div>
     </div>
-
     <div class="step">
       <div class="step-num">03</div>
       <div class="step-content">
-        <div class="step-title">Lancer Grepolis</div>
-        <div class="step-desc">
-          Ouvrez Grepolis normalement. GrepoPlus se charge automatiquement — vous verrez les boutons du bot apparaître dans l'interface du jeu. C'est tout.
-        </div>
+        <div class="step-title" data-i18n="step3_title">Lancer Grepolis</div>
+        <div class="step-desc" data-i18n="step3_desc">Ouvrez Grepolis normalement. GrepoPlus se charge automatiquement &#8212; vous verrez les boutons du bot appara&#238;tre dans l&apos;interface du jeu. C&apos;est tout.</div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- Contact -->
+<!-- CONTACT -->
 <section class="contact-section">
-  <div class="section-label">Contact &amp; Support</div>
-  <h2 class="section-title">Rejoignez la communauté</h2>
-  <p style="color: var(--text-dim); max-width: 480px; margin: 0 auto; font-size: 17px;">
-    Des questions, un bug, ou envie de suivre les mises à jour ? Rejoignez le serveur Discord.
-  </p>
+  <div class="section-label" data-i18n="contact_label">Contact &amp; Support</div>
+  <h2 class="section-title" data-i18n="contact_title">Rejoignez la communaut&#233;</h2>
+  <p style="color:var(--text-dim);max-width:480px;margin:0 auto;font-size:17px" data-i18n="contact_desc">Des questions, un bug, ou envie de suivre les mises &#224; jour ? Rejoignez le serveur Discord.</p>
   <a href="https://discord.gg/VWeEWQFUFE" target="_blank" class="discord-btn">
-    <svg viewBox="0 0 24 24" fill="currentColor">
-      <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.003.022.015.04.031.051a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
-    </svg>
-    Rejoindre le Discord
+    <svg viewBox="0 0 127.14 96.36" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
+    <span data-i18n="btn_join_discord">Rejoindre le Discord</span>
   </a>
 </section>
 
-<!-- Footer -->
-<footer>
-  <p>GrepoPlus &nbsp;·&nbsp; <span>v1.0</span> &nbsp;·&nbsp; Pour Grepolis</p>
-</footer>
+<footer><p>GrepoPlus &nbsp;&middot;&nbsp; <span>v1.0</span> &nbsp;&middot;&nbsp; <span data-i18n="footer_for">Pour Grepolis</span></p></footer>
 
 <script>
+var T={fr:{flag:'\ud83c\uddeb\ud83c\uddf7',badge:'Bot pour Grepolis',hero_sub:'Automatisez. Dominez. R\u00e9p\u00e9tez.',hero_desc:'Collecteur automatique, Constructeur, Recruteur, H\u00e9raut, Commandant, Auto-Esquive et bien plus \u2014 tout en un.',btn_install:'Installer maintenant',btn_discord:'Discord',btn_join_discord:'Rejoindre le Discord',mockup_label:'Aper\u00e7u du bot en action',mock_senat:'Onglet S\u00e9nat',mock_heraut:'Onglet H\u00e9raut',mock_cmd:'Onglet Commandant',mock_trader:'Module Marchand',mock_recruiter:'Module Recruteur',nav_senat:'S\u00e9nat',nav_heraut:'H\u00e9raut',nav_cmd:'Commandant',nav_research:'Chercheur',nav_farm:'Collecteur',nav_trader:'Marchand',nav_foreman:'Constructeur',nav_recruiter:'Recruteur',nav_options:'Options',senat_sub:'v1.0 \u00b7 Modules actifs',senat_caption:"Vue d'ensemble",status_active:'Actif',status_stopped:'Arr\u00eat\u00e9',status_premium:'Premium',footer_towns:'villes',heraut_sub:"D\u00e9tection d'attaques \u00b7 3 menaces",heraut_my_towns:'Mes villes',heraut_all:'Toutes',heraut_alerts:'Alertes',hw_in:'dans',hw_dodge:'\ud83c\udf00 Esquive',hw_militia:'\ud83d\udd31 Milice',hw_dodging:'\ud83c\udf00 Esquive en cours\u2026',hw_confirmed:'\u2713 Confirm\u00e9e',hw_autododge:'Auto-esquive',hw_mute:'\ud83d\udd15 Couper son',cmd_sub:'Attaques tim\u00e9es \u00b7 3 ordres',cmd_orders:'Ordres',cmd_new:'Nouveau',cmd_stats:'Stats',cmd_caption:'Ordres planifi\u00e9s',cmd_land:'Attaque terrestre',cmd_naval:'Attaque navale',cmd_support:'Soutien alli\u00e9',cmd_arrival:'Arriv\u00e9e',cmd_arrived:'Arriv\u00e9 \u00e0',state_active:'En cours',state_pending:'En attente',state_success:'Succ\u00e8s',cmd_precision:'Pr\u00e9cision',cmd_plan:'+ Planifier',trader_sub:'Commerce auto \u00b7 Premium',trader_cities:'Villes',trader_queue:'File',trader_caption:'R\u00f4les des villes',trader_provider:'Fournisseur',trader_consumer:'Consommateur',trader_disabled:'D\u00e9sactiv\u00e9',trader_mode:'Mode de commerce',trader_mode_threshold:'Seuil',trader_mode_fixed:'Fixe',trader_interval:'Intervalle',trader_enable:'Activer le marchand',trader_next:'Prochaine rotation',recruiter_sub:'Recrutement auto \u00b7 Premium',rec_barracks:'Caserne',rec_docks:'Docks',rec_queue_title:'File caserne',rec_available:'Unit\u00e9s disponibles',rec_queue:'File de recrutement',rec_slots:'Slots caserne',rec_enable:'Activer le recruteur',rec_ongoing:'En cours',unit_archer:'Archer',unit_sword:'\u00c9p\u00e9iste',unit_hoplite:'Hoplite',unit_cavalry:'Cavalier',unit_catapult:'Catapulte',features_label:'Fonctionnalit\u00e9s',features_title:'Tout ce dont vous avez besoin',feat_heraut:"D\u00e9tection d'attaques, milice automatique.",feat_cmd:"Planification d'attaques tim\u00e9es avec pr\u00e9cision \u00e0 la seconde.",feat_dodge_name:'Auto-Esquive',feat_dodge:'Envoie vos troupes automatiquement hors de la ville avant une attaque.',feat_research:"Recherches automatiques dans l'acad\u00e9mie selon votre file de priorit\u00e9s.",feat_farm:'Collecte automatique des villages et ressources \u00e0 intervalles configurables.',feat_trader:'Commerce automatique entre vos villes selon vos seuils configur\u00e9s.',feat_recruiter:'Recrutement continu de vos troupes selon vos priorit\u00e9s.',feat_foreman:'File de construction automatique avec priorit\u00e9s et acc\u00e9l\u00e9ration de la fin de construction.',feat_wonder_name:'Merveille',feat_wonder:"Envoi automatique de ressources vers votre merveille d'alliance.",install_label:'Installation',install_title:'En 3 \u00e9tapes',step1_title:'Installer Tampermonkey',step1_desc:'Tampermonkey est une extension de navigateur gratuite qui permet de charger GrepoPlus. Installez-la ci-dessous.',step1_btn:'Installer Tampermonkey',step2_title:'Installer GrepoPlus',step2_desc:"Cliquez sur le bouton ci-dessous. Tampermonkey s'ouvre automatiquement et vous propose d'installer le script. Cliquez <strong style=\"color:var(--gold)\">Installer</strong>.",step2_btn:'Installer GrepoPlus',step3_title:'Lancer Grepolis',step3_desc:"Ouvrez Grepolis normalement. GrepoPlus se charge automatiquement \u2014 vous verrez les boutons du bot appara\u00eetre dans l'interface du jeu. C'est tout.",contact_label:'Contact & Support',contact_title:'Rejoignez la communaut\u00e9',contact_desc:'Des questions, un bug, ou envie de suivre les mises \u00e0 jour\u00a0? Rejoignez le serveur Discord.',scroll_discover:'D\u00e9couvrir',footer_for:'Pour Grepolis'},en:{flag:'\ud83c\uddec\ud83c\udde7',badge:'Bot for Grepolis',hero_sub:'Automate. Dominate. Repeat.',hero_desc:'Automatic Farmer, Builder, Recruiter, Herald, Commander, Auto-Dodge and more \u2014 all in one.',btn_install:'Install now',btn_discord:'Discord',btn_join_discord:'Join Discord',mockup_label:'Bot preview in action',mock_senat:'Senate tab',mock_heraut:'Herald tab',mock_cmd:'Commander tab',mock_trader:'Trader module',mock_recruiter:'Recruiter module',nav_senat:'Senate',nav_heraut:'Herald',nav_cmd:'Commander',nav_research:'Researcher',nav_farm:'Farmer',nav_trader:'Trader',nav_foreman:'Builder',nav_recruiter:'Recruiter',nav_options:'Options',senat_sub:'v1.0 \u00b7 Active modules',senat_caption:'Module overview',status_active:'Active',status_stopped:'Stopped',status_premium:'Premium',footer_towns:'cities',heraut_sub:'Attack detection \u00b7 3 threats',heraut_my_towns:'My cities',heraut_all:'All',heraut_alerts:'Alerts',hw_in:'in',hw_dodge:'\ud83c\udf00 Dodge',hw_militia:'\ud83d\udd31 Militia',hw_dodging:'\ud83c\udf00 Dodging\u2026',hw_confirmed:'\u2713 Confirmed',hw_autododge:'Auto-dodge',hw_mute:'\ud83d\udd15 Mute sound',cmd_sub:'Timed attacks \u00b7 3 orders',cmd_orders:'Orders',cmd_new:'New',cmd_stats:'Stats',cmd_caption:'Scheduled orders',cmd_land:'Land attack',cmd_naval:'Naval attack',cmd_support:'Allied support',cmd_arrival:'Arrival',cmd_arrived:'Arrived at',state_active:'In progress',state_pending:'Pending',state_success:'Success',cmd_precision:'Precision',cmd_plan:'+ Schedule',trader_sub:'Auto trade \u00b7 Premium',trader_cities:'Cities',trader_queue:'Queue',trader_caption:'City roles',trader_provider:'Provider',trader_consumer:'Consumer',trader_disabled:'Disabled',trader_mode:'Trade mode',trader_mode_threshold:'Threshold',trader_mode_fixed:'Fixed',trader_interval:'Interval',trader_enable:'Enable trader',trader_next:'Next rotation',recruiter_sub:'Auto recruit \u00b7 Premium',rec_barracks:'Barracks',rec_docks:'Docks',rec_queue_title:'Barracks queue',rec_available:'Available units',rec_queue:'Recruitment queue',rec_slots:'Barracks slots',rec_enable:'Enable recruiter',rec_ongoing:'Ongoing',unit_archer:'Archer',unit_sword:'Swordsman',unit_hoplite:'Hoplite',unit_cavalry:'Rider',unit_catapult:'Catapult',features_label:'Features',features_title:'Everything you need',feat_heraut:'Attack detection, automatic militia.',feat_cmd:'Plan timed attacks with second-level precision.',feat_dodge_name:'Auto-Dodge',feat_dodge:'Automatically sends your troops out of the city before an attack.',feat_research:'Automatic research in the academy according to your priority queue.',feat_farm:'Automatic farming of villages and resources at configurable intervals.',feat_trader:'Automatic trade between your cities based on your configured thresholds.',feat_recruiter:'Continuous troop recruitment according to your priorities.',feat_foreman:'Automatic build queue with priorities and construction speed-up.',feat_wonder_name:'Wonder',feat_wonder:'Automatically sends resources to your alliance wonder.',install_label:'Installation',install_title:'3 easy steps',step1_title:'Install Tampermonkey',step1_desc:'Tampermonkey is a free browser extension that lets you load GrepoPlus. Install it below.',step1_btn:'Install Tampermonkey',step2_title:'Install GrepoPlus',step2_desc:'Click the button below. Tampermonkey opens automatically and asks you to install the script. Click <strong style="color:var(--gold)">Install</strong>.',step2_btn:'Install GrepoPlus',step3_title:'Launch Grepolis',step3_desc:"Open Grepolis normally. GrepoPlus loads automatically \u2014 you will see the bot buttons appear in the game interface. That's it.",contact_label:'Contact & Support',contact_title:'Join the community',contact_desc:'Questions, a bug, or want to follow updates? Join the Discord server.',scroll_discover:'Discover',footer_for:'For Grepolis'},de:{flag:'\ud83c\udde9\ud83c\uddea',badge:'Bot f\u00fcr Grepolis',hero_sub:'Automatisieren. Dominieren. Wiederholen.',hero_desc:'Automatischer Sammler, Baumeister, Rekrutierer, Herold, Kommandant, Auto-Ausweichen und mehr \u2014 alles in einem.',btn_install:'Jetzt installieren',btn_discord:'Discord',btn_join_discord:'Discord beitreten',mockup_label:'Bot-Vorschau in Aktion',mock_senat:'Senat-Tab',mock_heraut:'Herold-Tab',mock_cmd:'Kommandant-Tab',mock_trader:'H\u00e4ndler-Modul',mock_recruiter:'Rekrutierer-Modul',nav_senat:'Senat',nav_heraut:'Herold',nav_cmd:'Kommandant',nav_research:'Forscher',nav_farm:'Sammler',nav_trader:'H\u00e4ndler',nav_foreman:'Baumeister',nav_recruiter:'Rekrutierer',nav_options:'Optionen',senat_sub:'v1.0 \u00b7 Aktive Module',senat_caption:'Modul\u00fcbersicht',status_active:'Aktiv',status_stopped:'Gestoppt',status_premium:'Premium',footer_towns:'St\u00e4dte',heraut_sub:'Angriffserkennung \u00b7 3 Bedrohungen',heraut_my_towns:'Meine St\u00e4dte',heraut_all:'Alle',heraut_alerts:'Warnungen',hw_in:'in',hw_dodge:'\ud83c\udf00 Ausweichen',hw_militia:'\ud83d\udd31 Miliz',hw_dodging:'\ud83c\udf00 Ausweichen\u2026',hw_confirmed:'\u2713 Best\u00e4tigt',hw_autododge:'Auto-Ausweichen',hw_mute:'\ud83d\udd15 Ton aus',cmd_sub:'Zeitgesteuerte Angriffe \u00b7 3 Auftr\u00e4ge',cmd_orders:'Auftr\u00e4ge',cmd_new:'Neu',cmd_stats:'Stats',cmd_caption:'Geplante Auftr\u00e4ge',cmd_land:'Landangriff',cmd_naval:'Seeangriff',cmd_support:'B\u00fcndnisunterst\u00fctzung',cmd_arrival:'Ankunft',cmd_arrived:'Angekommen um',state_active:'L\u00e4uft',state_pending:'Wartend',state_success:'Erfolg',cmd_precision:'Genauigkeit',cmd_plan:'+ Planen',trader_sub:'Auto-Handel \u00b7 Premium',trader_cities:'St\u00e4dte',trader_queue:'Warteschlange',trader_caption:'Stadtrollen',trader_provider:'Anbieter',trader_consumer:'Verbraucher',trader_disabled:'Deaktiviert',trader_mode:'Handelsmodus',trader_mode_threshold:'Schwelle',trader_mode_fixed:'Fest',trader_interval:'Intervall',trader_enable:'H\u00e4ndler aktivieren',trader_next:'N\u00e4chste Runde',recruiter_sub:'Auto-Rekrutierung \u00b7 Premium',rec_barracks:'Kaserne',rec_docks:'Docks',rec_queue_title:'Kasernen-Warteschlange',rec_available:'Verf\u00fcgbare Einheiten',rec_queue:'Rekrutierungswarteschlange',rec_slots:'Kasernenschlitze',rec_enable:'Rekrutierer aktivieren',rec_ongoing:'L\u00e4uft',unit_archer:'Bogenschütze',unit_sword:'Schwertkämpfer',unit_hoplite:'Hoplit',unit_cavalry:'Reiter',unit_catapult:'Katapult',features_label:'Funktionen',features_title:'Alles was Sie brauchen',feat_heraut:'Angriffserkennung, automatische Miliz.',feat_cmd:'Zeitgesteuerte Angriffe mit Sekundengenauigkeit planen.',feat_dodge_name:'Auto-Ausweichen',feat_dodge:'Sendet Ihre Truppen automatisch aus der Stadt heraus vor einem Angriff.',feat_research:'Automatische Forschung in der Akademie gem\u00e4\u00df Ihrer Priorit\u00e4tswarteschlange.',feat_farm:'Automatisches Sammeln in D\u00f6rfern in konfigurierbaren Intervallen.',feat_trader:'Automatischer Handel zwischen St\u00e4dten nach konfigurierten Schwellenwerten.',feat_recruiter:'Kontinuierliche Truppenrekrutierung nach Ihren Priorit\u00e4ten.',feat_foreman:'Automatische Bauwarteschlange mit Priorit\u00e4ten und Baubeschleunigung.',feat_wonder_name:'Weltwunder',feat_wonder:'Sendet automatisch Ressourcen zu Ihrem Allianzweltwunder.',install_label:'Installation',install_title:'3 einfache Schritte',step1_title:'Tampermonkey installieren',step1_desc:'Tampermonkey ist eine kostenlose Browsererweiterung zum Laden von GrepoPlus. Unten installieren.',step1_btn:'Tampermonkey installieren',step2_title:'GrepoPlus installieren',step2_desc:'Klicken Sie unten. Tampermonkey \u00f6ffnet sich und fragt nach der Installation. Klicken Sie <strong style="color:var(--gold)">Installieren</strong>.',step2_btn:'GrepoPlus installieren',step3_title:'Grepolis starten',step3_desc:'Öffnen Sie Grepolis normal. GrepoPlus l\u00e4dt automatisch \u2014 die Bot-Schaltfl\u00e4chen erscheinen in der Spieloberfl\u00e4che.',contact_label:'Kontakt & Support',contact_title:'Der Community beitreten',contact_desc:'Fragen, ein Bug oder Updates verfolgen? Discord-Server beitreten.',scroll_discover:'Entdecken',footer_for:'F\u00fcr Grepolis'},es:{flag:'\ud83c\uddea\ud83c\uddf8',badge:'Bot para Grepolis',hero_sub:'Automatiza. Domina. Repite.',hero_desc:'Recolector autom\u00e1tico, Constructor, Reclutador, Heraldo, Comandante, Auto-Esquiva y m\u00e1s \u2014 todo en uno.',btn_install:'Instalar ahora',btn_discord:'Discord',btn_join_discord:'Unirse a Discord',mockup_label:'Vista previa del bot en acci\u00f3n',mock_senat:'Pesta\u00f1a Senado',mock_heraut:'Pesta\u00f1a Heraldo',mock_cmd:'Pesta\u00f1a Comandante',mock_trader:'M\u00f3dulo Comerciante',mock_recruiter:'M\u00f3dulo Reclutador',nav_senat:'Senado',nav_heraut:'Heraldo',nav_cmd:'Comandante',nav_research:'Investigador',nav_farm:'Recolector',nav_trader:'Comerciante',nav_foreman:'Constructor',nav_recruiter:'Reclutador',nav_options:'Opciones',senat_sub:'v1.0 \u00b7 M\u00f3dulos activos',senat_caption:'Vista general de m\u00f3dulos',status_active:'Activo',status_stopped:'Detenido',status_premium:'Premium',footer_towns:'ciudades',heraut_sub:'Detecci\u00f3n de ataques \u00b7 3 amenazas',heraut_my_towns:'Mis ciudades',heraut_all:'Todas',heraut_alerts:'Alertas',hw_in:'en',hw_dodge:'\ud83c\udf00 Esquivar',hw_militia:'\ud83d\udd31 Milicia',hw_dodging:'\ud83c\udf00 Esquivando\u2026',hw_confirmed:'\u2713 Confirmado',hw_autododge:'Auto-esquiva',hw_mute:'\ud83d\udd15 Silenciar',cmd_sub:'Ataques cronometrados \u00b7 3 \u00f3rdenes',cmd_orders:'\u00d3rdenes',cmd_new:'Nuevo',cmd_stats:'Stats',cmd_caption:'\u00d3rdenes programadas',cmd_land:'Ataque terrestre',cmd_naval:'Ataque naval',cmd_support:'Apoyo aliado',cmd_arrival:'Llegada',cmd_arrived:'Lleg\u00f3 a',state_active:'En curso',state_pending:'Pendiente',state_success:'\u00c9xito',cmd_precision:'Precisi\u00f3n',cmd_plan:'+ Programar',trader_sub:'Comercio auto \u00b7 Premium',trader_cities:'Ciudades',trader_queue:'Cola',trader_caption:'Roles de ciudades',trader_provider:'Proveedor',trader_consumer:'Consumidor',trader_disabled:'Desactivado',trader_mode:'Modo comercio',trader_mode_threshold:'Umbral',trader_mode_fixed:'Fijo',trader_interval:'Intervalo',trader_enable:'Activar comerciante',trader_next:'Pr\u00f3xima rotaci\u00f3n',recruiter_sub:'Reclutamiento auto \u00b7 Premium',rec_barracks:'Cuartel',rec_docks:'Muelles',rec_queue_title:'Cola cuartel',rec_available:'Unidades disponibles',rec_queue:'Cola de reclutamiento',rec_slots:'Ranuras cuartel',rec_enable:'Activar reclutador',rec_ongoing:'En curso',unit_archer:'Arquero',unit_sword:'Espadach\u00edn',unit_hoplite:'Hoplita',unit_cavalry:'Jinete',unit_catapult:'Catapulta',features_label:'Funcionalidades',features_title:'Todo lo que necesitas',feat_heraut:'Detecci\u00f3n de ataques, milicia autom\u00e1tica.',feat_cmd:'Planificaci\u00f3n de ataques cronometrados con precisi\u00f3n de segundo.',feat_dodge_name:'Auto-Esquiva',feat_dodge:'Env\u00eda tus tropas fuera de la ciudad autom\u00e1ticamente antes de un ataque.',feat_research:'Investigaciones autom\u00e1ticas en la academia seg\u00fan tu cola de prioridades.',feat_farm:'Recolecci\u00f3n autom\u00e1tica de aldeas y recursos a intervalos configurables.',feat_trader:'Comercio autom\u00e1tico entre tus ciudades seg\u00fan los umbrales configurados.',feat_recruiter:'Reclutamiento continuo de tropas seg\u00fan tus prioridades.',feat_foreman:'Cola de construcci\u00f3n autom\u00e1tica con prioridades y aceleraci\u00f3n de fin de construcci\u00f3n.',feat_wonder_name:'Maravilla',feat_wonder:'Env\u00edo autom\u00e1tico de recursos a tu maravilla de alianza.',install_label:'Instalaci\u00f3n',install_title:'3 pasos simples',step1_title:'Instalar Tampermonkey',step1_desc:'Tampermonkey es una extensi\u00f3n de navegador gratuita para cargar GrepoPlus. Inst\u00e1lala abajo.',step1_btn:'Instalar Tampermonkey',step2_title:'Instalar GrepoPlus',step2_desc:'Haz clic abajo. Tampermonkey se abre y propone instalar el script. Haz clic en <strong style="color:var(--gold)">Instalar</strong>.',step2_btn:'Instalar GrepoPlus',step3_title:'Iniciar Grepolis',step3_desc:'Abre Grepolis normalmente. GrepoPlus se carga autom\u00e1ticamente \u2014 ver\u00e1s los botones del bot en la interfaz del juego.',contact_label:'Contacto & Soporte',contact_title:'\u00danete a la comunidad',contact_desc:'Preguntas, un bug o quieres seguir las actualizaciones? \u00danete al servidor de Discord.',scroll_discover:'Descubrir',footer_for:'Para Grepolis'},it:{flag:'\ud83c\uddee\ud83c\uddf9',badge:'Bot per Grepolis',hero_sub:'Automatizza. Domina. Ripeti.',hero_desc:'Raccoglitore automatico, Costruttore, Reclutatore, Araldo, Comandante, Auto-Schivata e altro \u2014 tutto in uno.',btn_install:'Installa ora',btn_discord:'Discord',btn_join_discord:'Unisciti a Discord',mockup_label:'Anteprima del bot in azione',mock_senat:'Scheda Senato',mock_heraut:'Scheda Araldo',mock_cmd:'Scheda Comandante',mock_trader:'Modulo Mercante',mock_recruiter:'Modulo Reclutatore',nav_senat:'Senato',nav_heraut:'Araldo',nav_cmd:'Comandante',nav_research:'Ricercatore',nav_farm:'Raccoglitore',nav_trader:'Mercante',nav_foreman:'Costruttore',nav_recruiter:'Reclutatore',nav_options:'Opzioni',senat_sub:'v1.0 \u00b7 Moduli attivi',senat_caption:'Panoramica moduli',status_active:'Attivo',status_stopped:'Fermo',status_premium:'Premium',footer_towns:'citt\u00e0',heraut_sub:'Rilevamento attacchi \u00b7 3 minacce',heraut_my_towns:'Le mie citt\u00e0',heraut_all:'Tutte',heraut_alerts:'Avvisi',hw_in:'tra',hw_dodge:'\ud83c\udf00 Schivata',hw_militia:'\ud83d\udd31 Milizia',hw_dodging:'\ud83c\udf00 Schivata in corso\u2026',hw_confirmed:'\u2713 Confermato',hw_autododge:'Auto-schivata',hw_mute:'\ud83d\udd15 Silenzia',cmd_sub:'Attacchi a tempo \u00b7 3 ordini',cmd_orders:'Ordini',cmd_new:'Nuovo',cmd_stats:'Stats',cmd_caption:'Ordini pianificati',cmd_land:'Attacco terrestre',cmd_naval:'Attacco navale',cmd_support:'Supporto alleato',cmd_arrival:'Arrivo',cmd_arrived:'Arrivato alle',state_active:'In corso',state_pending:'In attesa',state_success:'Successo',cmd_precision:'Precisione',cmd_plan:'+ Pianifica',trader_sub:'Commercio auto \u00b7 Premium',trader_cities:'Citt\u00e0',trader_queue:'Coda',trader_caption:'Ruoli citt\u00e0',trader_provider:'Fornitore',trader_consumer:'Consumatore',trader_disabled:'Disabilitato',trader_mode:'Modalit\u00e0 commercio',trader_mode_threshold:'Soglia',trader_mode_fixed:'Fisso',trader_interval:'Intervallo',trader_enable:'Attiva mercante',trader_next:'Prossima rotazione',recruiter_sub:'Reclutamento auto \u00b7 Premium',rec_barracks:'Caserma',rec_docks:'Porto',rec_queue_title:'Coda caserma',rec_available:'Unit\u00e0 disponibili',rec_queue:'Coda di reclutamento',rec_slots:'Slot caserma',rec_enable:'Attiva reclutatore',rec_ongoing:'In corso',unit_archer:'Arciere',unit_sword:'Spadaccino',unit_hoplite:'Oplita',unit_cavalry:'Cavaliere',unit_catapult:'Catapulta',features_label:'Funzionalit\u00e0',features_title:'Tutto ci\u00f2 di cui hai bisogno',feat_heraut:'Rilevamento attacchi, milizia automatica.',feat_cmd:'Pianificazione attacchi a tempo con precisione al secondo.',feat_dodge_name:'Auto-Schivata',feat_dodge:"Invia automaticamente le tue truppe fuori dalla citt\u00e0 prima di un attacco.",feat_research:"Ricerche automatiche nell'accademia secondo la coda priorit\u00e0.",feat_farm:'Raccolta automatica dei villaggi e risorse a intervalli configurabili.',feat_trader:'Commercio automatico tra le citt\u00e0 secondo le soglie configurate.',feat_recruiter:'Reclutamento continuo delle truppe secondo le priorit\u00e0.',feat_foreman:'Coda di costruzione automatica con priorit\u00e0 e accelerazione della fine costruzione.',feat_wonder_name:'Meraviglia',feat_wonder:"Invio automatico di risorse alla meraviglia dell'alleanza.",install_label:'Installazione',install_title:'3 semplici passi',step1_title:'Installa Tampermonkey',step1_desc:"Tampermonkey \u00e8 un'estensione browser gratuita per caricare GrepoPlus. Installala qui sotto.",step1_btn:'Installa Tampermonkey',step2_title:'Installa GrepoPlus',step2_desc:'Clicca il pulsante sotto. Tampermonkey si apre e propone di installare lo script. Clicca <strong style="color:var(--gold)">Installa</strong>.',step2_btn:'Installa GrepoPlus',step3_title:'Avvia Grepolis',step3_desc:"Apri Grepolis normalmente. GrepoPlus si carica automaticamente \u2014 vedrai i pulsanti del bot nell'interfaccia di gioco.",contact_label:'Contatto & Supporto',contact_title:'Unisciti alla community',contact_desc:'Domande, un bug o vuoi seguire gli aggiornamenti? Unisciti al server Discord.',scroll_discover:'Scopri',footer_for:'Per Grepolis'},pt:{flag:'\ud83c\uddf5\ud83c\uddf9',badge:'Bot para Grepolis',hero_sub:'Automatize. Domine. Repita.',hero_desc:'Coletor autom\u00e1tico, Construtor, Recrutador, Arauto, Comandante, Auto-Esquiva e mais \u2014 tudo em um.',btn_install:'Instalar agora',btn_discord:'Discord',btn_join_discord:'Entrar no Discord',mockup_label:'Pr\u00e9via do bot em a\u00e7\u00e3o',mock_senat:'Aba Senado',mock_heraut:'Aba Arauto',mock_cmd:'Aba Comandante',mock_trader:'M\u00f3dulo Comerciante',mock_recruiter:'M\u00f3dulo Recrutador',nav_senat:'Senado',nav_heraut:'Arauto',nav_cmd:'Comandante',nav_research:'Pesquisador',nav_farm:'Coletor',nav_trader:'Comerciante',nav_foreman:'Construtor',nav_recruiter:'Recrutador',nav_options:'Op\u00e7\u00f5es',senat_sub:'v1.0 \u00b7 M\u00f3dulos ativos',senat_caption:'Vis\u00e3o geral dos m\u00f3dulos',status_active:'Ativo',status_stopped:'Parado',status_premium:'Premium',footer_towns:'cidades',heraut_sub:'Dete\u00e7\u00e3o de ataques \u00b7 3 amea\u00e7as',heraut_my_towns:'Minhas cidades',heraut_all:'Todos',heraut_alerts:'Alertas',hw_in:'em',hw_dodge:'\ud83c\udf00 Esquiva',hw_militia:'\ud83d\udd31 Mil\u00edcia',hw_dodging:'\ud83c\udf00 Esquivando\u2026',hw_confirmed:'\u2713 Confirmado',hw_autododge:'Auto-esquiva',hw_mute:'\ud83d\udd15 Silenciar',cmd_sub:'Ataques cronometrados \u00b7 3 ordens',cmd_orders:'Ordens',cmd_new:'Novo',cmd_stats:'Stats',cmd_caption:'Ordens agendadas',cmd_land:'Ataque terrestre',cmd_naval:'Ataque naval',cmd_support:'Suporte aliado',cmd_arrival:'Chegada',cmd_arrived:'Chegou \u00e0s',state_active:'Em curso',state_pending:'Pendente',state_success:'Sucesso',cmd_precision:'Precis\u00e3o',cmd_plan:'+ Agendar',trader_sub:'Com\u00e9rcio auto \u00b7 Premium',trader_cities:'Cidades',trader_queue:'Fila',trader_caption:'Pap\u00e9is das cidades',trader_provider:'Fornecedor',trader_consumer:'Consumidor',trader_disabled:'Desativado',trader_mode:'Modo com\u00e9rcio',trader_mode_threshold:'Limiar',trader_mode_fixed:'Fixo',trader_interval:'Intervalo',trader_enable:'Ativar comerciante',trader_next:'Pr\u00f3xima rota\u00e7\u00e3o',recruiter_sub:'Recrutamento auto \u00b7 Premium',rec_barracks:'Quartel',rec_docks:'Docas',rec_queue_title:'Fila quartel',rec_available:'Unidades dispon\u00edveis',rec_queue:'Fila de recrutamento',rec_slots:'Slots quartel',rec_enable:'Ativar recrutador',rec_ongoing:'Em curso',unit_archer:'Arqueiro',unit_sword:'Espadachim',unit_hoplite:'Hoplita',unit_cavalry:'Cavaleiro',unit_catapult:'Catapulta',features_label:'Funcionalidades',features_title:'Tudo o que voc\u00ea precisa',feat_heraut:'Dete\u00e7\u00e3o de ataques, mil\u00edcia autom\u00e1tica.',feat_cmd:'Planejamento de ataques cronometrados com precis\u00e3o de segundo.',feat_dodge_name:'Auto-Esquiva',feat_dodge:'Envia suas tropas automaticamente para fora da cidade antes de um ataque.',feat_research:'Pesquisas autom\u00e1ticas na academia conforme sua fila de prioridades.',feat_farm:'Coleta autom\u00e1tica de aldeias e recursos em intervalos configur\u00e1veis.',feat_trader:'Com\u00e9rcio autom\u00e1tico entre cidades conforme limiares configurados.',feat_recruiter:'Recrutamento cont\u00ednuo de tropas conforme prioridades.',feat_foreman:'Fila de constru\u00e7\u00e3o autom\u00e1tica com prioridades e acelera\u00e7\u00e3o do fim de constru\u00e7\u00e3o.',feat_wonder_name:'Maravilha',feat_wonder:'Envio autom\u00e1tico de recursos para a maravilha da alian\u00e7a.',install_label:'Instala\u00e7\u00e3o',install_title:'3 etapas simples',step1_title:'Instalar Tampermonkey',step1_desc:'Tampermonkey \u00e9 uma extens\u00e3o de navegador gratuita para carregar GrepoPlus. Instale abaixo.',step1_btn:'Instalar Tampermonkey',step2_title:'Instalar GrepoPlus',step2_desc:'Clique abaixo. Tampermonkey abre e prop\u00f5e instalar o script. Clique em <strong style="color:var(--gold)">Instalar</strong>.',step2_btn:'Instalar GrepoPlus',step3_title:'Iniciar Grepolis',step3_desc:'Abra Grepolis normalmente. GrepoPlus carrega automaticamente \u2014 os bot\u00f5es do bot aparecer\u00e3o na interface do jogo.',contact_label:'Contato & Suporte',contact_title:'Junte-se \u00e0 comunidade',contact_desc:'Perguntas, bug ou quer acompanhar as atualiza\u00e7\u00f5es? Junte-se ao servidor Discord.',scroll_discover:'Descobrir',footer_for:'Para Grepolis'},nl:{flag:'\ud83c\uddf3\ud83c\uddf1',badge:'Bot voor Grepolis',hero_sub:'Automatiseer. Domineer. Herhaal.',hero_desc:'Automatische verzamelaar, Bouwer, Rekruteerder, Heraut, Commandant, Auto-Ontwijking en meer \u2014 alles in \u00e9\u00e9n.',btn_install:'Nu installeren',btn_discord:'Discord',btn_join_discord:'Discord deelnemen',mockup_label:'Bot preview in actie',mock_senat:'Senaat tab',mock_heraut:'Heraut tab',mock_cmd:'Commandant tab',mock_trader:'Handelaar module',mock_recruiter:'Rekruteerder module',nav_senat:'Senaat',nav_heraut:'Heraut',nav_cmd:'Commandant',nav_research:'Onderzoeker',nav_farm:'Verzamelaar',nav_trader:'Handelaar',nav_foreman:'Bouwer',nav_recruiter:'Rekruteerder',nav_options:'Opties',senat_sub:'v1.0 \u00b7 Actieve modules',senat_caption:'Module-overzicht',status_active:'Actief',status_stopped:'Gestopt',status_premium:'Premium',footer_towns:'steden',heraut_sub:'Aanvalsdetectie \u00b7 3 dreigingen',heraut_my_towns:'Mijn steden',heraut_all:'Alle',heraut_alerts:'Meldingen',hw_in:'over',hw_dodge:'\ud83c\udf00 Ontwijken',hw_militia:'\ud83d\udd31 Militie',hw_dodging:'\ud83c\udf00 Ontwijken\u2026',hw_confirmed:'\u2713 Bevestigd',hw_autododge:'Auto-ontwijking',hw_mute:'\ud83d\udd15 Geluid uit',cmd_sub:'Getimede aanvallen \u00b7 3 orders',cmd_orders:'Orders',cmd_new:'Nieuw',cmd_stats:'Stats',cmd_caption:'Geplande orders',cmd_land:'Landaanval',cmd_naval:'Zeenaanval',cmd_support:'Bondgenoot steun',cmd_arrival:'Aankomst',cmd_arrived:'Aangekomen om',state_active:'Bezig',state_pending:'Wachtend',state_success:'Succes',cmd_precision:'Precisie',cmd_plan:'+ Plannen',trader_sub:'Auto-handel \u00b7 Premium',trader_cities:'Steden',trader_queue:'Wachtrij',trader_caption:'Stadsrollen',trader_provider:'Leverancier',trader_consumer:'Verbruiker',trader_disabled:'Uitgeschakeld',trader_mode:'Handelsmodus',trader_mode_threshold:'Drempel',trader_mode_fixed:'Vast',trader_interval:'Interval',trader_enable:'Handelaar inschakelen',trader_next:'Volgende rotatie',recruiter_sub:'Auto-rekrutering \u00b7 Premium',rec_barracks:'Kazerne',rec_docks:'Dok',rec_queue_title:'Kazerne wachtrij',rec_available:'Beschikbare eenheden',rec_queue:'Rekruteringswachtrij',rec_slots:'Kazerne slots',rec_enable:'Rekruteerder inschakelen',rec_ongoing:'Bezig',unit_archer:'Boogschutter',unit_sword:'Zwaardvechter',unit_hoplite:'Hoplieet',unit_cavalry:'Ruiter',unit_catapult:'Katapult',features_label:'Functies',features_title:'Alles wat u nodig heeft',feat_heraut:'Aanvalsdetectie, automatische militie.',feat_cmd:'Getimede aanvallen plannen met secondeprecisie.',feat_dodge_name:'Auto-Ontwijking',feat_dodge:'Stuurt uw troepen automatisch de stad uit voor een aanval.',feat_research:'Automatisch onderzoek in de academie.',feat_farm:'Automatisch verzamelen in dorpen.',feat_trader:'Automatische handel tussen steden.',feat_recruiter:'Continue rekrutering van troepen.',feat_foreman:'Automatische bouwwachtrij met prioriteiten en bouwversnelling.',feat_wonder_name:'Wonder',feat_wonder:'Automatisch sturen van middelen naar het alliancewonder.',install_label:'Installatie',install_title:'3 eenvoudige stappen',step1_title:'Tampermonkey installeren',step1_desc:'Tampermonkey is een gratis browserextensie om GrepoPlus te laden. Installeer hieronder.',step1_btn:'Tampermonkey installeren',step2_title:'GrepoPlus installeren',step2_desc:'Klik hieronder. Tampermonkey opent en vraagt om installatie. Klik op <strong style="color:var(--gold)">Installeren</strong>.',step2_btn:'GrepoPlus installeren',step3_title:'Grepolis starten',step3_desc:'Open Grepolis normaal. GrepoPlus laadt automatisch \u2014 de bot-knoppen verschijnen in de spelinterface.',contact_label:'Contact & Ondersteuning',contact_title:'Word lid van de community',contact_desc:'Vragen, een bug of updates volgen? Word lid van de Discord-server.',scroll_discover:'Ontdekken',footer_for:'Voor Grepolis'},pl:{flag:'\ud83c\uddf5\ud83c\uddf1',badge:'Bot dla Grepolis',hero_sub:'Automatyzuj. Dominuj. Powtarzaj.',hero_desc:'Automatyczny zbieracz, Budowniczy, Rekrut, Herold, Dow\u00f3dca, Auto-Unik i wi\u0119cej \u2014 wszystko w jednym.',btn_install:'Zainstaluj teraz',btn_discord:'Discord',btn_join_discord:'Do\u0142\u0105cz do Discorda',mockup_label:'Podgl\u0105d bota w akcji',mock_senat:'Karta Senat',mock_heraut:'Karta Herold',mock_cmd:'Karta Dow\u00f3dca',mock_trader:'Modu\u0142 Handlarz',mock_recruiter:'Modu\u0142 Rekrut',nav_senat:'Senat',nav_heraut:'Herold',nav_cmd:'Dow\u00f3dca',nav_research:'Badacz',nav_farm:'Zbieracz',nav_trader:'Handlarz',nav_foreman:'Budowniczy',nav_recruiter:'Rekrut',nav_options:'Opcje',senat_sub:'v1.0 \u00b7 Aktywne modu\u0142y',senat_caption:'Przegl\u0105d modu\u0142\u00f3w',status_active:'Aktywny',status_stopped:'Zatrzymany',status_premium:'Premium',footer_towns:'miast',heraut_sub:'Wykrywanie atak\u00f3w \u00b7 3 zagro\u017cenia',heraut_my_towns:'Moje miasta',heraut_all:'Wszystkie',heraut_alerts:'Alerty',hw_in:'za',hw_dodge:'\ud83c\udf00 Unik',hw_militia:'\ud83d\udd31 Milicja',hw_dodging:'\ud83c\udf00 Uciekanie\u2026',hw_confirmed:'\u2713 Potwierdzone',hw_autododge:'Auto-unik',hw_mute:'\ud83d\udd15 Wycisz',cmd_sub:'Ataki czasowe \u00b7 3 rozkazy',cmd_orders:'Rozkazy',cmd_new:'Nowy',cmd_stats:'Stats',cmd_caption:'Zaplanowane rozkazy',cmd_land:'Atak l\u0105dowy',cmd_naval:'Atak morski',cmd_support:'Wsparcie sojusznik\u00f3w',cmd_arrival:'Przybycie',cmd_arrived:'Dotar\u0142 o',state_active:'W toku',state_pending:'Oczekuje',state_success:'Sukces',cmd_precision:'Precyzja',cmd_plan:'+ Zaplanuj',trader_sub:'Auto-handel \u00b7 Premium',trader_cities:'Miasta',trader_queue:'Kolejka',trader_caption:'Role miast',trader_provider:'Dostawca',trader_consumer:'Konsument',trader_disabled:'Wy\u0142\u0105czony',trader_mode:'Tryb handlu',trader_mode_threshold:'Pr\u00f3g',trader_mode_fixed:'Sta\u0142y',trader_interval:'Interwa\u0142',trader_enable:'W\u0142\u0105cz handlarza',trader_next:'Nast\u0119pna rotacja',recruiter_sub:'Auto-rekrutacja \u00b7 Premium',rec_barracks:'Koszary',rec_docks:'Dok',rec_queue_title:'Kolejka koszar',rec_available:'Dost\u0119pne jednostki',rec_queue:'Kolejka rekrutacji',rec_slots:'Sloty koszar',rec_enable:'W\u0142\u0105cz rekrutera',rec_ongoing:'W toku',unit_archer:'\u0141ucznik',unit_sword:'Miecznik',unit_hoplite:'Hoplita',unit_cavalry:'Je\u017adie\u0107',unit_catapult:'Katapulta',features_label:'Funkcje',features_title:'Wszystko czego potrzebujesz',feat_heraut:'Wykrywanie atak\u00f3w, automatyczna milicja.',feat_cmd:'Planowanie atak\u00f3w czasowych z precyzj\u0105 co do sekundy.',feat_dodge_name:'Auto-Unik',feat_dodge:'Automatycznie wysy\u0142a twoje wojska poza miasto przed atakiem.',feat_research:'Automatyczne badania w akademii.',feat_farm:'Automatyczne zbieranie w wioskach.',feat_trader:'Automatyczny handel mi\u0119dzy miastami.',feat_recruiter:'Ci\u0105g\u0142a rekrutacja wojsk.',feat_foreman:'Automatyczna kolejka budowy z priorytetami i przyspieszeniem ko\u0144ca budowy.',feat_wonder_name:'Cud',feat_wonder:'Automatyczne wysy\u0142anie zasob\u00f3w do cudu sojuszu.',install_label:'Instalacja',install_title:'3 proste kroki',step1_title:'Zainstaluj Tampermonkey',step1_desc:'Tampermonkey to darmowe rozszerzenie przegl\u0105darki do \u0142adowania GrepoPlus. Zainstaluj poni\u017cej.',step1_btn:'Zainstaluj Tampermonkey',step2_title:'Zainstaluj GrepoPlus',step2_desc:'Kliknij poni\u017cej. Tampermonkey otwiera si\u0119 i proponuje instalacj\u0119 skryptu. Kliknij <strong style="color:var(--gold)">Zainstaluj</strong>.',step2_btn:'Zainstaluj GrepoPlus',step3_title:'Uruchom Grepolis',step3_desc:'Otwórz Grepolis normalnie. GrepoPlus \u0142aduje si\u0119 automatycznie.',contact_label:'Kontakt & Wsparcie',contact_title:'Do\u0142\u0105cz do spo\u0142eczno\u015bci',contact_desc:'Pytania, b\u0142\u0105d lub chcesz \u015bledzi\u0107 aktualizacje? Do\u0142\u0105cz do serwera Discord.',scroll_discover:'Odkryj',footer_for:'Dla Grepolis'},ru:{flag:'\ud83c\uddf7\ud83c\uddfa',badge:'\u0411\u043e\u0442 \u0434\u043b\u044f Grepolis',hero_sub:'\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0437\u0438\u0440\u0443\u0439. \u0414\u043e\u043c\u0438\u043d\u0438\u0440\u0443\u0439. \u041f\u043e\u0432\u0442\u043e\u0440\u044f\u0439.',hero_desc:'\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0441\u0431\u043e\u0440\u0449\u0438\u043a, \u0421\u0442\u0440\u043e\u0438\u0442\u0435\u043b\u044c, \u0412\u0435\u0440\u0431\u043e\u0432\u0449\u0438\u043a, \u0413\u0435\u0440\u043e\u043b\u044c\u0434, \u041a\u043e\u043c\u0430\u043d\u0434\u0438\u0440, \u0410\u0432\u0442\u043e-\u0443\u043a\u043b\u043e\u043d\u0435\u043d\u0438\u0435 \u0438 \u0431\u043e\u043b\u044c\u0448\u0435 \u2014 \u0432\u0441\u0451 \u0432 \u043e\u0434\u043d\u043e\u043c.',btn_install:'\u0423\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c \u0441\u0435\u0439\u0447\u0430\u0441',btn_discord:'Discord',btn_join_discord:'\u041f\u0440\u0438\u0441\u043e\u0435\u0434\u0438\u043d\u0438\u0442\u044c\u0441\u044f \u043a Discord',mockup_label:'\u041f\u0440\u0435\u0434\u043f\u0440\u043e\u0441\u043c\u043e\u0442\u0440 \u0431\u043e\u0442\u0430 \u0432 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0438',mock_senat:'\u0412\u043a\u043b\u0430\u0434\u043a\u0430 \u0421\u0435\u043d\u0430\u0442',mock_heraut:'\u0412\u043a\u043b\u0430\u0434\u043a\u0430 \u0413\u0435\u0440\u043e\u043b\u044c\u0434',mock_cmd:'\u0412\u043a\u043b\u0430\u0434\u043a\u0430 \u041a\u043e\u043c\u0430\u043d\u0434\u0438\u0440',mock_trader:'\u041c\u043e\u0434\u0443\u043b\u044c \u0422\u043e\u0440\u0433\u043e\u0432\u0435\u0446',mock_recruiter:'\u041c\u043e\u0434\u0443\u043b\u044c \u0412\u0435\u0440\u0431\u043e\u0432\u0449\u0438\u043a',nav_senat:'\u0421\u0435\u043d\u0430\u0442',nav_heraut:'\u0413\u0435\u0440\u043e\u043b\u044c\u0434',nav_cmd:'\u041a\u043e\u043c\u0430\u043d\u0434\u0438\u0440',nav_research:'\u0418\u0441\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c',nav_farm:'\u0421\u0431\u043e\u0440\u0449\u0438\u043a',nav_trader:'\u0422\u043e\u0440\u0433\u043e\u0432\u0435\u0446',nav_foreman:'\u0421\u0442\u0440\u043e\u0438\u0442\u0435\u043b\u044c',nav_recruiter:'\u0412\u0435\u0440\u0431\u043e\u0432\u0449\u0438\u043a',nav_options:'\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438',senat_sub:'v1.0 \u00b7 \u0410\u043a\u0442\u0438\u0432\u043d\u044b\u0435 \u043c\u043e\u0434\u0443\u043b\u0438',senat_caption:'\u041e\u0431\u0437\u043e\u0440 \u043c\u043e\u0434\u0443\u043b\u0435\u0439',status_active:'\u0410\u043a\u0442\u0438\u0432\u0435\u043d',status_stopped:'\u041e\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d',status_premium:'\u041f\u0440\u0435\u043c\u0438\u0443\u043c',footer_towns:'\u0433\u043e\u0440\u043e\u0434\u043e\u0432',heraut_sub:'\u041e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u0435 \u0430\u0442\u0430\u043a \u00b7 3 \u0443\u0433\u0440\u043e\u0437\u044b',heraut_my_towns:'\u041c\u043e\u0438 \u0433\u043e\u0440\u043e\u0434\u0430',heraut_all:'\u0412\u0441\u0435',heraut_alerts:'\u041e\u043f\u043e\u0432\u0435\u0449\u0435\u043d\u0438\u044f',hw_in:'\u0447\u0435\u0440\u0435\u0437',hw_dodge:'\ud83c\udf00 \u0423\u043a\u043b\u043e\u043d\u0435\u043d\u0438\u0435',hw_militia:'\ud83d\udd31 \u041e\u043f\u043e\u043b\u0447\u0435\u043d\u0438\u0435',hw_dodging:'\ud83c\udf00 \u0423\u043a\u043b\u043e\u043d\u0435\u043d\u0438\u0435\u2026',hw_confirmed:'\u2713 \u041f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u043e',hw_autododge:'\u0410\u0432\u0442\u043e-\u0443\u043a\u043b\u043e\u043d\u0435\u043d\u0438\u0435',hw_mute:'\ud83d\udd15 \u0417\u0430\u0433\u043b\u0443\u0448\u0438\u0442\u044c',cmd_sub:'\u0410\u0442\u0430\u043a\u0438 \u043f\u043e \u0442\u0430\u0439\u043c\u0435\u0440\u0443 \u00b7 3 \u043f\u0440\u0438\u043a\u0430\u0437\u0430',cmd_orders:'\u041f\u0440\u0438\u043a\u0430\u0437\u044b',cmd_new:'\u041d\u043e\u0432\u044b\u0439',cmd_stats:'\u0421\u0442\u0430\u0442\u044b',cmd_caption:'\u0417\u0430\u043f\u043b\u0430\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0435 \u043f\u0440\u0438\u043a\u0430\u0437\u044b',cmd_land:'\u041d\u0430\u0437\u0435\u043c\u043d\u0430\u044f \u0430\u0442\u0430\u043a\u0430',cmd_naval:'\u041c\u043e\u0440\u0441\u043a\u0430\u044f \u0430\u0442\u0430\u043a\u0430',cmd_support:'\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 \u0441\u043e\u044e\u0437\u043d\u0438\u043a\u0430',cmd_arrival:'\u041f\u0440\u0438\u0431\u044b\u0442\u0438\u0435',cmd_arrived:'\u041f\u0440\u0438\u0431\u044b\u043b\u043e \u0432',state_active:'\u0412 \u043f\u0440\u043e\u0446\u0435\u0441\u0441\u0435',state_pending:'\u041e\u0436\u0438\u0434\u0430\u043d\u0438\u0435',state_success:'\u0423\u0441\u043f\u0435\u0445',cmd_precision:'\u0422\u043e\u0447\u043d\u043e\u0441\u0442\u044c',cmd_plan:'+ \u0417\u0430\u043f\u043b\u0430\u043d\u0438\u0440\u043e\u0432\u0430\u0442\u044c',trader_sub:'\u0410\u0432\u0442\u043e-\u0442\u043e\u0440\u0433\u043e\u0432\u043b\u044f \u00b7 \u041f\u0440\u0435\u043c\u0438\u0443\u043c',trader_cities:'\u0413\u043e\u0440\u043e\u0434\u0430',trader_queue:'\u041e\u0447\u0435\u0440\u0435\u0434\u044c',trader_caption:'\u0420\u043e\u043b\u0438 \u0433\u043e\u0440\u043e\u0434\u043e\u0432',trader_provider:'\u041f\u043e\u0441\u0442\u0430\u0432\u0449\u0438\u043a',trader_consumer:'\u041f\u043e\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043b\u044c',trader_disabled:'\u041e\u0442\u043a\u043b\u044e\u0447\u0435\u043d\u043e',trader_mode:'\u0420\u0435\u0436\u0438\u043c \u0442\u043e\u0440\u0433\u043e\u0432\u043b\u0438',trader_mode_threshold:'\u041f\u043e\u0440\u043e\u0433',trader_mode_fixed:'\u0424\u0438\u043a\u0441\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439',trader_interval:'\u0418\u043d\u0442\u0435\u0440\u0432\u0430\u043b',trader_enable:'\u0412\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u043e\u0440\u0433\u043e\u0432\u0446\u0430',trader_next:'\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0430\u044f \u0440\u043e\u0442\u0430\u0446\u0438\u044f',recruiter_sub:'\u0410\u0432\u0442\u043e-\u043d\u0430\u0431\u043e\u0440 \u00b7 \u041f\u0440\u0435\u043c\u0438\u0443\u043c',rec_barracks:'\u041a\u0430\u0437\u0430\u0440\u043c\u0430',rec_docks:'\u0414\u043e\u043a\u0438',rec_queue_title:'\u041e\u0447\u0435\u0440\u0435\u0434\u044c \u043a\u0430\u0437\u0430\u0440\u043c\u044b',rec_available:'\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 \u044e\u043d\u0438\u0442\u044b',rec_queue:'\u041e\u0447\u0435\u0440\u0435\u0434\u044c \u043d\u0430\u0431\u043e\u0440\u0430',rec_slots:'\u0421\u043b\u043e\u0442\u044b \u043a\u0430\u0437\u0430\u0440\u043c\u044b',rec_enable:'\u0412\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0432\u0435\u0440\u0431\u043e\u0432\u0449\u0438\u043a\u0430',rec_ongoing:'\u0412 \u043f\u0440\u043e\u0446\u0435\u0441\u0441\u0435',unit_archer:'\u041b\u0443\u0447\u043d\u0438\u043a',unit_sword:'\u041c\u0435\u0447\u043d\u0438\u043a',unit_hoplite:'\u0413\u043e\u043f\u043b\u0438\u0442',unit_cavalry:'\u0412\u0441\u0430\u0434\u043d\u0438\u043a',unit_catapult:'\u041a\u0430\u0442\u0430\u043f\u0443\u043b\u044c\u0442\u0430',features_label:'\u0424\u0443\u043d\u043a\u0446\u0438\u0438',features_title:'\u0412\u0441\u0451 \u0447\u0442\u043e \u0432\u0430\u043c \u043d\u0443\u0436\u043d\u043e',feat_heraut:'\u041e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u0435 \u0430\u0442\u0430\u043a, \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u043e\u043f\u043e\u043b\u0447\u0435\u043d\u0438\u0435.',feat_cmd:'\u041f\u043b\u0430\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435 \u0430\u0442\u0430\u043a \u043f\u043e \u0442\u0430\u0439\u043c\u0435\u0440\u0443 \u0441 \u0442\u043e\u0447\u043d\u043e\u0441\u0442\u044c\u044e \u0434\u043e \u0441\u0435\u043a\u0443\u043d\u0434\u044b.',feat_dodge_name:'\u0410\u0432\u0442\u043e-\u0423\u043a\u043b\u043e\u043d\u0435\u043d\u0438\u0435',feat_dodge:'\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438 \u043e\u0442\u043f\u0440\u0430\u0432\u043b\u044f\u0435\u0442 \u0432\u043e\u0439\u0441\u043a\u0430 \u0438\u0437 \u0433\u043e\u0440\u043e\u0434\u0430 \u0434\u043e \u0430\u0442\u0430\u043a\u0438.',feat_research:'\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0438\u0441\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u043d\u0438\u044f \u0432 \u0430\u043a\u0430\u0434\u0435\u043c\u0438\u0438.',feat_farm:'\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0441\u0431\u043e\u0440 \u0432 \u0434\u0435\u0440\u0435\u0432\u043d\u044f\u0445 \u0441 \u043d\u0430\u0441\u0442\u0440\u0430\u0438\u0432\u0430\u0435\u043c\u044b\u043c\u0438 \u0438\u043d\u0442\u0435\u0440\u0432\u0430\u043b\u0430\u043c\u0438.',feat_trader:'\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0442\u043e\u0440\u0433\u043e\u0432\u043b\u044f \u043c\u0435\u0436\u0434\u0443 \u0433\u043e\u0440\u043e\u0434\u0430\u043c\u0438.',feat_recruiter:'\u041d\u0435\u043f\u0440\u0435\u0440\u044b\u0432\u043d\u044b\u0439 \u043d\u0430\u0431\u043e\u0440 \u0432\u043e\u0439\u0441\u043a.',feat_foreman:'\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043e\u0447\u0435\u0440\u0435\u0434\u044c \u0441\u0442\u0440\u043e\u0438\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u0430 \u0441 \u043f\u0440\u0438\u043e\u0440\u0438\u0442\u0435\u0442\u0430\u043c\u0438 \u0438 \u0443\u0441\u043a\u043e\u0440\u0435\u043d\u0438\u0435\u043c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u044f.',feat_wonder_name:'\u0427\u0443\u0434\u043e',feat_wonder:'\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043e\u0442\u043f\u0440\u0430\u0432\u043a\u0430 \u0440\u0435\u0441\u0443\u0440\u0441\u043e\u0432 \u043a \u0447\u0443\u0434\u0443 \u0430\u043b\u044c\u044f\u043d\u0441\u0430.',install_label:'\u0423\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0430',install_title:'3 \u043f\u0440\u043e\u0441\u0442\u044b\u0445 \u0448\u0430\u0433\u0430',step1_title:'\u0423\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c Tampermonkey',step1_desc:'Tampermonkey \u2014 \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e\u0435 \u0440\u0430\u0441\u0448\u0438\u0440\u0435\u043d\u0438\u0435 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430 \u0434\u043b\u044f \u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0438 GrepoPlus. \u0423\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u0435 \u043d\u0438\u0436\u0435.',step1_btn:'\u0423\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c Tampermonkey',step2_title:'\u0423\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c GrepoPlus',step2_desc:'\u041d\u0430\u0436\u043c\u0438\u0442\u0435 \u043d\u0438\u0436\u0435. Tampermonkey \u043e\u0442\u043a\u0440\u043e\u0435\u0442\u0441\u044f \u0438 \u043f\u0440\u0435\u0434\u043b\u043e\u0436\u0438\u0442 \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0443 \u0441\u043a\u0440\u0438\u043f\u0442\u0430. \u041d\u0430\u0436\u043c\u0438\u0442\u0435 <strong style="color:var(--gold)">\u0423\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c</strong>.',step2_btn:'\u0423\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c GrepoPlus',step3_title:'\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c Grepolis',step3_desc:'\u041e\u0442\u043a\u0440\u043e\u0439\u0442\u0435 Grepolis \u043e\u0431\u044b\u0447\u043d\u044b\u043c \u0441\u043f\u043e\u0441\u043e\u0431\u043e\u043c. GrepoPlus \u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u0441\u044f \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438.',contact_label:'\u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b & \u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430',contact_title:'\u041f\u0440\u0438\u0441\u043e\u0435\u0434\u0438\u043d\u044f\u0439\u0442\u0435\u0441\u044c \u043a \u0441\u043e\u043e\u0431\u0449\u0435\u0441\u0442\u0432\u0443',contact_desc:'\u0412\u043e\u043f\u0440\u043e\u0441\u044b, \u0431\u0430\u0433 \u0438\u043b\u0438 \u0445\u043e\u0442\u0438\u0442\u0435 \u0441\u043b\u0435\u0434\u0438\u0442\u044c \u0437\u0430 \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u044f\u043c\u0438? \u041f\u0440\u0438\u0441\u043e\u0435\u0434\u0438\u043d\u044f\u0439\u0442\u0435\u0441\u044c \u043a \u0441\u0435\u0440\u0432\u0435\u0440\u0443 Discord.',scroll_discover:'\u041e\u0442\u043a\u0440\u044b\u0442\u044c',footer_for:'\u0414\u043b\u044f Grepolis'}};
+// Greek (el)
+T['el']={flag:'🇬🇷',badge:'Bot για Grepolis',hero_sub:'Αυτοματοποίησε. Κυριάρχησε. Επανέλαβε.',hero_desc:'Αυτόματος Συλλέκτης, Κατασκευαστής, Στρατολόγος, Κήρυκας, Αρχηγός, Αυτο-αποφυγή και άλλα — όλα σε ένα.',btn_install:'Εγκατάσταση τώρα',btn_discord:'Discord',btn_join_discord:'Εγγραφή στο Discord',mockup_label:'Προεπισκόπηση bot σε δράση',mock_senat:'Καρτέλα Συγκλήτου',mock_heraut:'Καρτέλα Κήρυκα',mock_cmd:'Καρτέλα Αρχηγού',mock_trader:'Μονάδα Εμπόρου',mock_recruiter:'Μονάδα Στρατολόγου',nav_senat:'Σύγκλητος',nav_heraut:'Κήρυκας',nav_cmd:'Αρχηγός',nav_research:'Ερευνητής',nav_farm:'Συλλέκτης',nav_trader:'Έμπορος',nav_foreman:'Κατασκευαστής',nav_recruiter:'Στρατολόγος',nav_options:'Επιλογές',senat_sub:'v1.0 · Ενεργές μονάδες',senat_caption:'Επισκόπηση μονάδων',status_active:'Ενεργό',status_stopped:'Σταματημένο',status_premium:'Premium',footer_towns:'πόλεις',heraut_sub:'Ανίχνευση επιθέσεων · 3 απειλές',heraut_my_towns:'Οι πόλεις μου',heraut_all:'Όλες',heraut_alerts:'Ειδοποιήσεις',hw_in:'σε',hw_dodge:'🌀 Αποφυγή',hw_militia:'🔱 Πολιτοφυλακή',hw_dodging:'🌀 Αποφυγή…',hw_confirmed:'✓ Επιβεβαιώθηκε',hw_autododge:'Αυτο-αποφυγή',hw_mute:'🔕 Σίγαση ήχου',cmd_sub:'Χρονισμένες επιθέσεις · 3 εντολές',cmd_orders:'Εντολές',cmd_new:'Νέα',cmd_stats:'Στατιστικά',cmd_caption:'Προγραμματισμένες εντολές',cmd_land:'Χερσαία επίθεση',cmd_naval:'Ναυτική επίθεση',cmd_support:'Υποστήριξη συμμάχου',cmd_arrival:'Άφιξη',cmd_arrived:'Έφθασε στις',state_active:'Σε εξέλιξη',state_pending:'Εκκρεμεί',state_success:'Επιτυχία',cmd_precision:'Ακρίβεια',cmd_plan:'+ Προγραμματισμός',trader_sub:'Αυτ. εμπόριο · Premium',trader_cities:'Πόλεις',trader_queue:'Ουρά',trader_caption:'Ρόλοι πόλεων',trader_provider:'Προμηθευτής',trader_consumer:'Καταναλωτής',trader_disabled:'Απενεργοποιημένο',trader_mode:'Λειτουργία εμπορίου',trader_mode_threshold:'Όριο',trader_mode_fixed:'Σταθερό',trader_interval:'Διάστημα',trader_enable:'Ενεργοποίηση εμπόρου',trader_next:'Επόμενη περιστροφή',recruiter_sub:'Αυτ. στρατολόγηση · Premium',rec_barracks:'Στρατώνας',rec_docks:'Λιμάνι',rec_queue_title:'Ουρά στρατώνα',rec_available:'Διαθέσιμες μονάδες',rec_queue:'Ουρά στρατολόγησης',rec_slots:'Θέσεις στρατώνα',rec_enable:'Ενεργοποίηση στρατολόγου',rec_ongoing:'Σε εξέλιξη',unit_archer:'Τοξότης',unit_sword:'Ξιφομάχος',unit_hoplite:'Οπλίτης',unit_cavalry:'Ιππέας',unit_catapult:'Καταπέλτης',features_label:'Λειτουργίες',features_title:'Όλα όσα χρειάζεστε',feat_heraut:'Ανίχνευση επιθέσεων, αυτόματη πολιτοφυλακή.',feat_cmd:'Σχεδιασμός χρονισμένων επιθέσεων με ακρίβεια δευτερολέπτου.',feat_dodge_name:'Αυτο-αποφυγή',feat_dodge:'Στέλνει αυτόματα τα στρατεύματά σας εκτός πόλης πριν από επίθεση.',feat_research:'Αυτόματες έρευνες στην ακαδημία.',feat_farm:'Αυτόματη συλλογή σε χωριά.',feat_trader:'Αυτόματο εμπόριο μεταξύ πόλεων.',feat_recruiter:'Συνεχής στρατολόγηση.',feat_foreman:'Αυτόματη ουρά κατασκευών.',feat_wonder_name:'Θαύμα',feat_wonder:'Αυτόματη αποστολή πόρων στο θαύμα της συμμαχίας.',install_label:'Εγκατάσταση',install_title:'3 απλά βήματα',step1_title:'Εγκατάσταση Tampermonkey',step1_desc:'Το Tampermonkey είναι δωρεάν επέκταση προγράμματος περιήγησης για τη φόρτωση του GrepoPlus. Εγκαταστήστε παρακάτω.',step1_btn:'Εγκατάσταση Tampermonkey',step2_title:'Εγκατάσταση GrepoPlus',step2_desc:'Κάντε κλικ παρακάτω. Το Tampermonkey ανοίγει και προτείνει εγκατάσταση του script. Κάντε κλικ στο <strong style="color:var(--gold)">Εγκατάσταση</strong>.',step2_btn:'Εγκατάσταση GrepoPlus',step3_title:'Εκκίνηση Grepolis',step3_desc:'Ανοίξτε το Grepolis κανονικά. Το GrepoPlus φορτώνει αυτόματα.',contact_label:'Επικοινωνία & Υποστήριξη',contact_title:'Γίνετε μέλος της κοινότητας',contact_desc:'Ερωτήσεις, σφάλμα ή θέλετε να παρακολουθείτε ενημερώσεις; Εγγραφείτε στον διακομιστή Discord.',scroll_discover:'Ανακάλυψη',footer_for:'Για Grepolis'};
 
+// Czech (cs)
+T['cs']={flag:'🇨🇿',badge:'Bot pro Grepolis',hero_sub:'Automatizuj. Dominuj. Opakuj.',hero_desc:'Automatický sběrač, Stavitel, N¾borar, Herold, Velitel, Auto-úhyb a další — vše v jednom.',btn_install:'Nainstalovat nyní',btn_discord:'Discord',btn_join_discord:'Připojit se k Discordu',mockup_label:'Náhled bota v akci',mock_senat:'Záložka Senát',mock_heraut:'Záložka Herold',mock_cmd:'Záložka Velitel',mock_trader:'Modul Obchodník',mock_recruiter:'Modul Náborář',nav_senat:'Senát',nav_heraut:'Herold',nav_cmd:'Velitel',nav_research:'Výzkumník',nav_farm:'Sběrač',nav_trader:'Obchodník',nav_foreman:'Stavitel',nav_recruiter:'Náborář',nav_options:'Možnosti',senat_sub:'v1.0 · Aktivní moduly',senat_caption:'Přehled modulů',status_active:'Aktivní',status_stopped:'Zastaveno',status_premium:'Premium',footer_towns:'měst',heraut_sub:'Detekce útoků · 3 hrozby',heraut_my_towns:'Moje města',heraut_all:'Vše',heraut_alerts:'Upozornění',hw_in:'za',hw_dodge:'🌀 Úhyb',hw_militia:'🔱 Milice',hw_dodging:'🌀 Úhyb probíhá…',hw_confirmed:'✓ Potvrzeno',hw_autododge:'Auto-úhyb',hw_mute:'🔕 Ztlumit zvuk',cmd_sub:'Časované útoky · 3 rozkazy',cmd_orders:'Rozkazy',cmd_new:'Nový',cmd_stats:'Statistiky',cmd_caption:'Naplánované rozkazy',cmd_land:'Pozemní útok',cmd_naval:'Námořní útok',cmd_support:'Podpora spojence',cmd_arrival:'Příchod',cmd_arrived:'Dorazil v',state_active:'Probíhá',state_pending:'Čeká',state_success:'Úspěch',cmd_precision:'Přesnost',cmd_plan:'+ Naplánovat',trader_sub:'Auto-obchod · Premium',trader_cities:'Města',trader_queue:'Fronta',trader_caption:'Role měst',trader_provider:'Dodavatel',trader_consumer:'Spotřebitel',trader_disabled:'Vypnuto',trader_mode:'Režim obchodu',trader_mode_threshold:'Práh',trader_mode_fixed:'Pevný',trader_interval:'Interval',trader_enable:'Aktivovat obchodníka',trader_next:'Další rotace',recruiter_sub:'Auto-nábor · Premium',rec_barracks:'Kasárna',rec_docks:'Doky',rec_queue_title:'Fronta kasáren',rec_available:'Dostupné jednotky',rec_queue:'Fronta náboru',rec_slots:'Sloty kasáren',rec_enable:'Aktivovat náboráře',rec_ongoing:'Probíhá',unit_archer:'Lučištník',unit_sword:'Šermíř',unit_hoplite:'Hoplit',unit_cavalry:'Jezdec',unit_catapult:'Katapult',features_label:'Funkce',features_title:'Vše co potřebujete',feat_heraut:'Detekce útoků, automatická milice.',feat_cmd:'Plánování časovaných útoků s přesností na sekundu.',feat_dodge_name:'Auto-úhyb',feat_dodge:'Automaticky odesílá vaše vojska z města před útokem.',feat_research:'Automatický výzkum v akademii podle fronty priorit.',feat_farm:'Automatický sběr ve vesnicích v nastavitelných intervalech.',feat_trader:'Automatický obchod mezi městy podle nastavených prahů.',feat_recruiter:'Nepřetržitý nábor vojsk podle priorit.',feat_foreman:'Automatická fronta výstavby s prioritami a urychlením dokončení.',feat_wonder_name:'Zázrak',feat_wonder:'Automatické odesílání zdrojů k zázraku aliance.',install_label:'Instalace',install_title:'3 jednoduché kroky',step1_title:'Nainstalovat Tampermonkey',step1_desc:'Tampermonkey je bezplatné rozšíření prohlížeče pro načítání GrepoPlus. Nainstalujte níže.',step1_btn:'Nainstalovat Tampermonkey',step2_title:'Nainstalovat GrepoPlus',step2_desc:'Klikněte níže. Tampermonkey se otevře a navrhne instalaci skriptu. Klikněte na <strong style="color:var(--gold)">Instalovat</strong>.',step2_btn:'Nainstalovat GrepoPlus',step3_title:'Spustit Grepolis',step3_desc:'Otevřete Grepolis normálně. GrepoPlus se načte automaticky — uvidíte tlačítka bota v herním rozhraní.',contact_label:'Kontakt & Podpora',contact_title:'Přidejte se ke komunitě',contact_desc:'Otázky, chyba nebo chcete sledovat aktualizace? Připojte se k serveru Discord.',scroll_discover:'Objevit',footer_for:'Pro Grepolis'};
 
-  // Particules
-  var container = document.getElementById('particles');
-  for (var i = 0; i < 30; i++) {
-    var p = document.createElement('div');
-    p.className = 'particle';
-    p.style.left = Math.random() * 100 + '%';
-    p.style.animationDuration = (8 + Math.random() * 12) + 's';
-    p.style.animationDelay = (Math.random() * 10) + 's';
-    p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
-    p.style.opacity = Math.random() * 0.6;
-    container.appendChild(p);
-  }
+// Hungarian (hu)
+T['hu']={flag:'🇭🇺',badge:'Bot a Gropolishoz',hero_sub:'Automatizálj. Dominálj. Ismételd.',hero_desc:'Automatikus gyűjtő, Építő, Tobورzó, Hírnok, Parancsnok, Automatikus kitérés — minden egyben.',btn_install:'Telepítés most',btn_discord:'Discord',btn_join_discord:'Csatlakozás Discordhoz',mockup_label:'Bot előnézete működés közben',mock_senat:'Szenátus fül',mock_heraut:'Hírnok fül',mock_cmd:'Parancsnok fül',mock_trader:'Kereskedő modul',mock_recruiter:'Tobورzó modul',nav_senat:'Szenátus',nav_heraut:'Hírnok',nav_cmd:'Parancsnok',nav_research:'Kutató',nav_farm:'Gyűjtő',nav_trader:'Kereskedő',nav_foreman:'Építő',nav_recruiter:'Tobورzó',nav_options:'Beállítások',senat_sub:'v1.0 · Aktív modulok',senat_caption:'Modulok áttekintése',status_active:'Aktív',status_stopped:'Leállítva',status_premium:'Premium',footer_towns:'város',heraut_sub:'Támadásfelismerés · 3 fenyegetés',heraut_my_towns:'Saját városaim',heraut_all:'Összes',heraut_alerts:'Riadók',hw_in:'ból',hw_dodge:'🌀 Kitérés',hw_militia:'🔱 Milícia',hw_dodging:'🌀 Kitérés folyamatban…',hw_confirmed:'✓ Megerősítve',hw_autododge:'Automatikus kitérés',hw_mute:'🔕 Hang némítása',cmd_sub:'Időzített támadások · 3 parancs',cmd_orders:'Parancsok',cmd_new:'Új',cmd_stats:'Statisztika',cmd_caption:'Ütemezett parancsok',cmd_land:'Szárazföldi támadás',cmd_naval:'Tengeri támadás',cmd_support:'Szövetséges támogatás',cmd_arrival:'Érkezés',cmd_arrived:'Megérkezett',state_active:'Folyamatban',state_pending:'Várakozás',state_success:'Siker',cmd_precision:'Pontosság',cmd_plan:'+ Ütemezés',trader_sub:'Automatikus kereskedelem · Premium',trader_cities:'Városok',trader_queue:'Sor',trader_caption:'Városok szerepei',trader_provider:'Szállító',trader_consumer:'Fogyasztó',trader_disabled:'Letiltva',trader_mode:'Kereskedelmi mód',trader_mode_threshold:'Küszob',trader_mode_fixed:'Rögzített',trader_interval:'Intervallum',trader_enable:'Kereskedő aktiválása',trader_next:'Következő rotáció',recruiter_sub:'Automatikus tobورzás · Premium',rec_barracks:'Laktanya',rec_docks:'Dokkok',rec_queue_title:'Laktanya sora',rec_available:'Elérhető egységek',rec_queue:'Tobورzási sor',rec_slots:'Laktanya helyek',rec_enable:'Tobورzó aktiválása',rec_ongoing:'Folyamatban',unit_archer:'Íjász',unit_sword:'Kardos',unit_hoplite:'Hopliton',unit_cavalry:'Lovas',unit_catapult:'Katapult',features_label:'Funkciók',features_title:'Minden amire szükséged van',feat_heraut:'Támadásfelismerés, automatikus milícia.',feat_cmd:'Időzített támadások tervezése másodpontos pontossággal.',feat_dodge_name:'Automatikus kitérés',feat_dodge:'Automatikusan küldí csapataidat a városból egy támadás előtt.',feat_research:'Automatikus kutatások az akadémián a prioritási sor szerint.',feat_farm:'Automatikus gyűjtés falvakban konfigurálható időközönként.',feat_trader:'Automatikus kereskedelem városok között a beállított küszobök alapján.',feat_recruiter:'Folyamatos csapattobورzás a prioritások szerint.',feat_foreman:'Automatikus építési sor prioritásokkal és befejezési gyorsítással.',feat_wonder_name:'Csoda',feat_wonder:'Automatikus erőforrás küldés a szövetség csodájához.',install_label:'Telepítés',install_title:'3 egyszerű lépés',step1_title:'Tampermonkey telepítése',step1_desc:'A Tampermonkey egy ingyenes böngészőbővítmény a GrepoPlus betöltéséhez. Telepítsd az alábbiakban.',step1_btn:'Tampermonkey telepítése',step2_title:'GrepoPlus telepítése',step2_desc:'Kattints az alábbiakban. A Tampermonkey megnyilik és felajánja a szkript telepítését. Kattints a <strong style="color:var(--gold)">Telepítés</strong> gombra.',step2_btn:'GrepoPlus telepítése',step3_title:'Grepolis indítása',step3_desc:'Nyisd meg a Gropolist normálisan. A GrepoPlus automatikusan töltődik be.',contact_label:'Kapcsolat & Támogatás',contact_title:'Csatlakozz a közösséghez',contact_desc:'Kérdések, hiba vagy követni szeretnéd a frissítéseket? Csatlakozz a Discord szerverhez.',scroll_discover:'Felfedfezés',footer_for:'A Gropolishoz'};
 
-  // Reveal steps on scroll
-  var steps = document.querySelectorAll('.step');
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e, i) {
-      if (e.isIntersecting) {
-        setTimeout(function() { e.target.classList.add('visible'); }, i * 120);
-      }
-    });
-  }, { threshold: 0.2 });
-  steps.forEach(function(s) { observer.observe(s); });
+// Romanian (ro)
+T['ro']={flag:'🇷🇴',badge:'Bot pentru Grepolis',hero_sub:'Automatizează. Domină. Repetă.',hero_desc:'Colector automat, Constructor, Recrutor, Crainic, Comandant, Auto-evitare — totul într-unul.',btn_install:'Instalează acum',btn_discord:'Discord',btn_join_discord:'Alătură-te Discord',mockup_label:'Previzualizare bot în acţiune',mock_senat:'Fila Senat',mock_heraut:'Fila Crainic',mock_cmd:'Fila Comandant',mock_trader:'Modulul Negustor',mock_recruiter:'Modulul Recrutor',nav_senat:'Senat',nav_heraut:'Crainic',nav_cmd:'Comandant',nav_research:'Cercetător',nav_farm:'Colector',nav_trader:'Negustor',nav_foreman:'Constructor',nav_recruiter:'Recrutor',nav_options:'Opţiuni',senat_sub:'v1.0 · Module active',senat_caption:'Prezentare module',status_active:'Activ',status_stopped:'Oprit',status_premium:'Premium',footer_towns:'oraşe',heraut_sub:'Detectare atacuri · 3 ameninţări',heraut_my_towns:'Oraşele mele',heraut_all:'Toate',heraut_alerts:'Alerte',hw_in:'în',hw_dodge:'🌀 Evitare',hw_militia:'🔱 Miliţie',hw_dodging:'🌀 Evitare în curs…',hw_confirmed:'✓ Confirmat',hw_autododge:'Auto-evitare',hw_mute:'🔕 Silenţios',cmd_sub:'Atacuri temporizate · 3 ordine',cmd_orders:'Ordine',cmd_new:'Nou',cmd_stats:'Statistici',cmd_caption:'Ordine planificate',cmd_land:'Atac terestru',cmd_naval:'Atac naval',cmd_support:'Suport aliat',cmd_arrival:'Sosire',cmd_arrived:'A sosit la',state_active:'În desfăşurare',state_pending:'În aşteptare',state_success:'Succes',cmd_precision:'Precizie',cmd_plan:'+ Planifică',trader_sub:'Comerţ auto · Premium',trader_cities:'Oraşe',trader_queue:'Coadă',trader_caption:'Rolurile oraşelor',trader_provider:'Furnizor',trader_consumer:'Consumator',trader_disabled:'Dezactivat',trader_mode:'Mod comerţ',trader_mode_threshold:'Prag',trader_mode_fixed:'Fix',trader_interval:'Interval',trader_enable:'Activează negustorul',trader_next:'Următoarea rotaţie',recruiter_sub:'Recrutare auto · Premium',rec_barracks:'Cazarmă',rec_docks:'Docuri',rec_queue_title:'Coada cazărmii',rec_available:'Unităţi disponibile',rec_queue:'Coada de recrutare',rec_slots:'Sloturi cazarmă',rec_enable:'Activează recrutorul',rec_ongoing:'În desfăşurare',unit_archer:'Arcaş',unit_sword:'Spadaşin',unit_hoplite:'Hoplit',unit_cavalry:'Călăreţ',unit_catapult:'Catapultă',features_label:'Funcţionalităţi',features_title:'Tot ce aveţi nevoie',feat_heraut:'Detectare atacuri, miliţie automată.',feat_cmd:'Planificarea atacurilor temporizate cu precizie la secundă.',feat_dodge_name:'Auto-evitare',feat_dodge:'Trimite automat trupele tale din oraş înainte de un atac.',feat_research:'Cercetări automate în academie conform cozii de priorităţi.',feat_farm:'Colectare automată din sate la intervale configurabile.',feat_trader:'Comerţ automat între oraşe conform pragurilor configurate.',feat_recruiter:'Recrutare continuă a trupelor conform priorităţilor.',feat_foreman:'Coadă de construcţie automată cu priorităţi şi accelerare a finalizării.',feat_wonder_name:'Minune',feat_wonder:'Trimitere automată de resurse la minunea alianţei.',install_label:'Instalare',install_title:'3 paşi simpli',step1_title:'Instalează Tampermonkey',step1_desc:'Tampermonkey este o extensie de browser gratuită pentru încărcarea GrepoPlus. Instalează mai jos.',step1_btn:'Instalează Tampermonkey',step2_title:'Instalează GrepoPlus',step2_desc:'Apasă mai jos. Tampermonkey se deschide şi propune instalarea scriptului. Apasă <strong style="color:var(--gold)">Instalează</strong>.',step2_btn:'Instalează GrepoPlus',step3_title:'Lansează Grepolis',step3_desc:'Deschide Grepolis normal. GrepoPlus se încadră automat — vei vedea butoanele botului în interfaja jocului.',contact_label:'Contact & Suport',contact_title:'Alătură-te comunităţii',contact_desc:'Întrebări, un bug sau vrei să urmăreşti actualizările? Alătură-te serverului Discord.',scroll_discover:'Descoperă',footer_for:'Pentru Grepolis'};
+
+// Danish (da)
+T['da']={flag:'🇩🇰',badge:'Bot til Grepolis',hero_sub:'Automatiser. Dominér. Gentag.',hero_desc:'Automatisk Indsamler, Bygger, Rekrutør, Herold, Kommandant, Auto-undvigelse og mere — alt i ét.',btn_install:'Installer nu',btn_discord:'Discord',btn_join_discord:'Tilmeld Discord',mockup_label:'Forhåndsvisning af bot i aktion',mock_senat:'Senat-fane',mock_heraut:'Herold-fane',mock_cmd:'Kommandant-fane',mock_trader:'Handelsmodul',mock_recruiter:'Rekrutørmodul',nav_senat:'Senat',nav_heraut:'Herold',nav_cmd:'Kommandant',nav_research:'Forsker',nav_farm:'Indsamler',nav_trader:'Handelsm.',nav_foreman:'Bygger',nav_recruiter:'Rekrutør',nav_options:'Indstillinger',senat_sub:'v1.0 · Aktive moduler',senat_caption:'Moduloversigt',status_active:'Aktiv',status_stopped:'Stoppet',status_premium:'Premium',footer_towns:'byer',heraut_sub:'Angrebsdetektion · 3 trusler',heraut_my_towns:'Mine byer',heraut_all:'Alle',heraut_alerts:'Advarsler',hw_in:'om',hw_dodge:'🌀 Undvig',hw_militia:'🔱 Milits',hw_dodging:'🌀 Undviger…',hw_confirmed:'✓ Bekræftet',hw_autododge:'Auto-undvigelse',hw_mute:'🔕 Slå lyd fra',cmd_sub:'Tidsbestemte angreb · 3 ordrer',cmd_orders:'Ordrer',cmd_new:'Ny',cmd_stats:'Stats',cmd_caption:'Planlagte ordrer',cmd_land:'Landangreb',cmd_naval:'Søangreb',cmd_support:'Allieret støtte',cmd_arrival:'Ankomst',cmd_arrived:'Ankom kl.',state_active:'I gang',state_pending:'Afventer',state_success:'Succes',cmd_precision:'Præcision',cmd_plan:'+ Planlæg',trader_sub:'Auto-handel · Premium',trader_cities:'Byer',trader_queue:'Kø',trader_caption:'Byroller',trader_provider:'Leverandør',trader_consumer:'Forbruger',trader_disabled:'Deaktiveret',trader_mode:'Handelstilstand',trader_mode_threshold:'Grænse',trader_mode_fixed:'Fast',trader_interval:'Interval',trader_enable:'Aktiver handelsm.',trader_next:'Næste rotation',recruiter_sub:'Auto-rekruttering · Premium',rec_barracks:'Kaserne',rec_docks:'Dokker',rec_queue_title:'Kasernekø',rec_available:'Tilgængelige enheder',rec_queue:'Rekrutteringskø',rec_slots:'Kasernepladser',rec_enable:'Aktiver rekrutør',rec_ongoing:'I gang',unit_archer:'Bueskytte',unit_sword:'Sværdkæmper',unit_hoplite:'Hoplit',unit_cavalry:'Rytter',unit_catapult:'Katapult',features_label:'Funktioner',features_title:'Alt hvad du har brug for',feat_heraut:'Angrebsdetektion, automatisk milits.',feat_cmd:'Planlæg tidsbestemte angreb med sekundpræcision.',feat_dodge_name:'Auto-undvigelse',feat_dodge:'Sender automatisk dine tropper ud af byen før et angreb.',feat_research:'Automatisk forskning i akademiet efter din prioritetskø.',feat_farm:'Automatisk indsamling i landsbyer med konfigurerbare intervaller.',feat_trader:'Automatisk handel mellem byer baseret på konfigurerede grænser.',feat_recruiter:'Kontinuerlig tropprekruttering efter dine prioriteter.',feat_foreman:'Automatisk byggekø med prioriteter og bygningsacceleration.',feat_wonder_name:'Vidunder',feat_wonder:'Automatisk afsendelse af ressourcer til alliancens vidunder.',install_label:'Installation',install_title:'3 enkle trin',step1_title:'Installer Tampermonkey',step1_desc:'Tampermonkey er en gratis browserudvidelse til at indlæse GrepoPlus. Installer nedenfor.',step1_btn:'Installer Tampermonkey',step2_title:'Installer GrepoPlus',step2_desc:'Klik nedenfor. Tampermonkey åbner og foreslår installation af scriptet. Klik på <strong style="color:var(--gold)">Installer</strong>.',step2_btn:'Installer GrepoPlus',step3_title:'Start Grepolis',step3_desc:'Åbn Grepolis normalt. GrepoPlus indlæses automatisk — du vil se bot-knapperne i spilgrænsefladen.',contact_label:'Kontakt & Support',contact_title:'Bliv en del af fællesskabet',contact_desc:'Spørgsmål, en fejl eller vil du følge opdateringer? Tilmeld dig Discord-serveren.',scroll_discover:'Opdag',footer_for:'Til Grepolis'};
+
+// Finnish (fi)
+T['fi']={flag:'🇫🇮',badge:'Botti Gropolikseen',hero_sub:'Automatisoi. Hallitse. Toista.',hero_desc:'Automaattinen kerääjä, Rakentaja, Värväri, Heraldi, Komentaja, Auto-väistö — kaikki yhdessä.',btn_install:'Asenna nyt',btn_discord:'Discord',btn_join_discord:'Liity Discordiin',mockup_label:'Botin esikatselu toiminnassa',mock_senat:'Senaatti-välilehti',mock_heraut:'Heraldi-välilehti',mock_cmd:'Komentaja-välilehti',mock_trader:'Kauppias-moduuli',mock_recruiter:'Värväri-moduuli',nav_senat:'Senaatti',nav_heraut:'Heraldi',nav_cmd:'Komentaja',nav_research:'Tutkija',nav_farm:'Kerääjä',nav_trader:'Kauppias',nav_foreman:'Rakentaja',nav_recruiter:'Värväri',nav_options:'Asetukset',senat_sub:'v1.0 · Aktiiviset moduulit',senat_caption:'Moduulit yhteenveto',status_active:'Aktiivinen',status_stopped:'Pysäytetty',status_premium:'Premium',footer_towns:'kaupunkia',heraut_sub:'Hyökkäysten havaitseminen · 3 uhkaa',heraut_my_towns:'Kaupunkini',heraut_all:'Kaikki',heraut_alerts:'Hälytykset',hw_in:'ssa',hw_dodge:'🌀 Väistö',hw_militia:'🔱 Miliisi',hw_dodging:'🌀 Väistetään…',hw_confirmed:'✓ Vahvistettu',hw_autododge:'Auto-väistö',hw_mute:'🔕 Mykistä ääni',cmd_sub:'Ajoitetut hyökkäykset · 3 käskYä',cmd_orders:'Käskyt',cmd_new:'Uusi',cmd_stats:'Tilastot',cmd_caption:'Ajoitetut käskyt',cmd_land:'Maahökkäys',cmd_naval:'Merihökkäys',cmd_support:'Liittolaistuki',cmd_arrival:'Saapuminen',cmd_arrived:'Saapui klo',state_active:'Käynnissä',state_pending:'Odottaa',state_success:'Onnistui',cmd_precision:'Tarkkuus',cmd_plan:'+ Aikatauluta',trader_sub:'Auto-kauppa · Premium',trader_cities:'Kaupungit',trader_queue:'Jono',trader_caption:'Kaupunkiroolit',trader_provider:'Toimittaja',trader_consumer:'Kuluttaja',trader_disabled:'Poistettu käytöstä',trader_mode:'Kauppatila',trader_mode_threshold:'Kynnys',trader_mode_fixed:'Kiinteä',trader_interval:'Väli',trader_enable:'Aktivoi kauppias',trader_next:'Seuraava kierto',recruiter_sub:'Auto-värväys · Premium',rec_barracks:'Kasarmi',rec_docks:'Telakat',rec_queue_title:'Kasarmin jono',rec_available:'Käytettävissä olevat yksiköt',rec_queue:'Värväysjono',rec_slots:'Kasarmin paikat',rec_enable:'Aktivoi värväri',rec_ongoing:'Käynnissä',unit_archer:'Jousimies',unit_sword:'Miekkamies',unit_hoplite:'Hopliitti',unit_cavalry:'Ratsuväki',unit_catapult:'Katapultti',features_label:'Ominaisuudet',features_title:'Kaikki mitä tarvitset',feat_heraut:'Hyökkäysten havaitseminen, automaattinen miliisi.',feat_cmd:'Ajoitettujen hyökkäysten suunnittelu sekuntitarkkuudella.',feat_dodge_name:'Auto-väistö',feat_dodge:'Lähettää joukot automaattisesti kaupungista ennen hyökkäystä.',feat_research:'Automaattiset tutkimukset akatemiassa prioriteettijonon mukaan.',feat_farm:'Automaattinen keräys kylissä määritettavin väliajoin.',feat_trader:'Automaattinen kauppa kaupunkien välillä asetettujen kynnysarvojen mukaan.',feat_recruiter:'Jatkuva joukkojen värväys prioriteettien mukaan.',feat_foreman:'Automaattinen rakennusjono prioriteeteilla ja rakentamisen nopeuttamisella.',feat_wonder_name:'Ihme',feat_wonder:'Automaattinen resurssien lähettäminen liiton ihmeeseen.',install_label:'Asennus',install_title:'3 yksinkertaista vaihetta',step1_title:'Asenna Tampermonkey',step1_desc:'Tampermonkey on ilmainen selainlaajennus GrepoPlus:n lataamiseen. Asenna alla.',step1_btn:'Asenna Tampermonkey',step2_title:'Asenna GrepoPlus',step2_desc:'Napsauta alla. Tampermonkey avautuu ja ehdottaa skriptin asentamista. Napsauta <strong style="color:var(--gold)">Asenna</strong>.',step2_btn:'Asenna GrepoPlus',step3_title:'Käynnistä Grepolis',step3_desc:'Avaa Grepolis normaalisti. GrepoPlus latautuu automaattisesti — näet bottinapit pelin käyttöliittymässä.',contact_label:'Yhteystiedot & Tuki',contact_title:'Liity yhteisöön',contact_desc:'Kysymyksiä, bugi tai haluatko seurata päivityksiä? Liity Discord-palvelimeen.',scroll_discover:'Tutustu',footer_for:'Gropolikseen'};
+
+// Norwegian Bokmål (nb)
+T['nb']={flag:'🇳🇴',badge:'Bot for Grepolis',hero_sub:'Automatiser. Dominér. Gjenta.',hero_desc:'Automatisk Samler, Bygger, Rekrutterer, Herold, Kommandant, Auto-unngåelse — alt i ett.',btn_install:'Installer nå',btn_discord:'Discord',btn_join_discord:'Bli med i Discord',mockup_label:'Forhåndsvisning av bot i aksjon',mock_senat:'Senat-fane',mock_heraut:'Herold-fane',mock_cmd:'Kommandant-fane',mock_trader:'Handelsmodul',mock_recruiter:'Rekruttørmodul',nav_senat:'Senat',nav_heraut:'Herold',nav_cmd:'Kommandant',nav_research:'Forsker',nav_farm:'Samler',nav_trader:'Handelsm.',nav_foreman:'Bygger',nav_recruiter:'Rekruttør',nav_options:'Innstillinger',senat_sub:'v1.0 · Aktive moduler',senat_caption:'Moduloversikt',status_active:'Aktiv',status_stopped:'Stoppet',status_premium:'Premium',footer_towns:'byer',heraut_sub:'Angrepsdeteксjon · 3 trusler',heraut_my_towns:'Mine byer',heraut_all:'Alle',heraut_alerts:'Varsler',hw_in:'om',hw_dodge:'🌀 Unngå',hw_militia:'🔱 Milits',hw_dodging:'🌀 Unngår…',hw_confirmed:'✓ Bekreftet',hw_autododge:'Auto-unngåelse',hw_mute:'🔕 Demp lyd',cmd_sub:'Tidsbestemte angrep · 3 ordrer',cmd_orders:'Ordrer',cmd_new:'Ny',cmd_stats:'Stats',cmd_caption:'Planlagte ordrer',cmd_land:'Landangrep',cmd_naval:'Sjøangrep',cmd_support:'Alliiert støtte',cmd_arrival:'Ankomst',cmd_arrived:'Ankom kl.',state_active:'Pågår',state_pending:'Venter',state_success:'Suksess',cmd_precision:'Presisjon',cmd_plan:'+ Planlegg',trader_sub:'Auto-handel · Premium',trader_cities:'Byer',trader_queue:'Kø',trader_caption:'Byroller',trader_provider:'Leverandør',trader_consumer:'Forbruker',trader_disabled:'Deaktivert',trader_mode:'Handelsmodus',trader_mode_threshold:'Grense',trader_mode_fixed:'Fast',trader_interval:'Intervall',trader_enable:'Aktiver handelsm.',trader_next:'Neste rotasjon',recruiter_sub:'Auto-rekruttering · Premium',rec_barracks:'Kaserne',rec_docks:'Dokker',rec_queue_title:'Kasernekø',rec_available:'Tilgjengelige enheter',rec_queue:'Rekrutteringskø',rec_slots:'Kaserneplasser',rec_enable:'Aktiver rekruttør',rec_ongoing:'Pågår',unit_archer:'Bueskytter',unit_sword:'Sverdkjemper',unit_hoplite:'Hoplit',unit_cavalry:'Rytter',unit_catapult:'Katapult',features_label:'Funksjoner',features_title:'Alt du trenger',feat_heraut:'Angrepsdeteксjon, automatisk milits.',feat_cmd:'Planlegg tidsbestemte angrep med sekundpresisjon.',feat_dodge_name:'Auto-unngåelse',feat_dodge:'Sender automatisk troppene dine ut av byen før et angrep.',feat_research:'Automatisk forskning i akademiet etter prioritetskøen din.',feat_farm:'Automatisk innsamling i landsbyer med konfigurerbare intervaller.',feat_trader:'Automatisk handel mellom byer basert på konfigurerte grenser.',feat_recruiter:'Kontinuerlig tropp-rekruttering etter dine prioriteter.',feat_foreman:'Automatisk byggekø med prioriteter og bygningsakselerasjon.',feat_wonder_name:'Under',feat_wonder:'Automatisk sending av ressurser til alliansens under.',install_label:'Installasjon',install_title:'3 enkle trinn',step1_title:'Installer Tampermonkey',step1_desc:'Tampermonkey er en gratis nettleserutvidelse for å laste inn GrepoPlus. Installer nedenfor.',step1_btn:'Installer Tampermonkey',step2_title:'Installer GrepoPlus',step2_desc:'Klikk nedenfor. Tampermonkey åpner og foreslår installasjon av skriptet. Klikk på <strong style="color:var(--gold)">Installer</strong>.',step2_btn:'Installer GrepoPlus',step3_title:'Start Grepolis',step3_desc:'Åpne Grepolis normalt. GrepoPlus laster automatisk — du vil se bot-knappene i spillgrensesnittet.',contact_label:'Kontakt & Support',contact_title:'Bli med i fellesskapet',contact_desc:'Spørsmål, en feil eller vil du følge oppdateringer? Bli med i Discord-serveren.',scroll_discover:'Oppdag',footer_for:'For Grepolis'};
+
+// Croatian (hr)
+T['hr']={flag:'🇭🇷',badge:'Bot za Grepolis',hero_sub:'Automatiziraj. Dominuj. Ponavljaj.',hero_desc:'Automatski Sakupljač, Graditelj, Regrutar, Glasnik, Zapovjednik, Auto-izbjegavanje — sve u jednom.',btn_install:'Instaliraj sada',btn_discord:'Discord',btn_join_discord:'Pridruži se Discordu',mockup_label:'Pregled bota u akciji',mock_senat:'Kartica Senat',mock_heraut:'Kartica Glasnik',mock_cmd:'Kartica Zapovjednik',mock_trader:'Modul Trgovac',mock_recruiter:'Modul Regrutar',nav_senat:'Senat',nav_heraut:'Glasnik',nav_cmd:'Zapovjednik',nav_research:'Istraživač',nav_farm:'Sakupljač',nav_trader:'Trgovac',nav_foreman:'Graditelj',nav_recruiter:'Regrutar',nav_options:'Mogućnosti',senat_sub:'v1.0 · Aktivni moduli',senat_caption:'Pregled modula',status_active:'Aktivan',status_stopped:'Zaustavljen',status_premium:'Premium',footer_towns:'gradova',heraut_sub:'Detekcija napada · 3 prijetnje',heraut_my_towns:'Moji gradovi',heraut_all:'Svi',heraut_alerts:'Upozorenja',hw_in:'za',hw_dodge:'🌀 Izbjegavanje',hw_militia:'🔱 Milicija',hw_dodging:'🌀 Izbjegavanje…',hw_confirmed:'✓ Potvrđeno',hw_autododge:'Auto-izbjegavanje',hw_mute:'🔕 Isključi zvuk',cmd_sub:'Vremenski napadi · 3 naredbe',cmd_orders:'Naredbe',cmd_new:'Nova',cmd_stats:'Statistike',cmd_caption:'Zakazane naredbe',cmd_land:'Kopneni napad',cmd_naval:'Pomorski napad',cmd_support:'Podrška saveznika',cmd_arrival:'Dolazak',cmd_arrived:'Stigao u',state_active:'U tijeku',state_pending:'Na čekanju',state_success:'Uspjeh',cmd_precision:'Preciznost',cmd_plan:'+ Zakaiži',trader_sub:'Auto-trgovina · Premium',trader_cities:'Gradovi',trader_queue:'Red čekanja',trader_caption:'Uloge gradova',trader_provider:'Dostavljač',trader_consumer:'Potrošač',trader_disabled:'Onemogućeno',trader_mode:'Način trgovine',trader_mode_threshold:'Prag',trader_mode_fixed:'Fiksno',trader_interval:'Interval',trader_enable:'Aktiviraj trgovca',trader_next:'Sljedeća rotacija',recruiter_sub:'Auto-regrutacija · Premium',rec_barracks:'Vojarna',rec_docks:'Dok',rec_queue_title:'Red čekanja vojarne',rec_available:'Dostupne jedinice',rec_queue:'Red čekanja regrutacije',rec_slots:'Mjesta vojarne',rec_enable:'Aktiviraj regrutara',rec_ongoing:'U tijeku',unit_archer:'Strijelac',unit_sword:'Mačevalac',unit_hoplite:'Hoplit',unit_cavalry:'Konjanik',unit_catapult:'Katapult',features_label:'Značajke',features_title:'Sve što vam treba',feat_heraut:'Detekcija napada, automatska milicija.',feat_cmd:'Planiranje vremenskih napada s preciznošću na sekundu.',feat_dodge_name:'Auto-izbjegavanje',feat_dodge:'Automatski šalje vaše trupe iz grada prije napada.',feat_research:'Automatska istraživanja u akademiji prema redu prioriteta.',feat_farm:'Automatsko prikupljanje u selima u podesivim intervalima.',feat_trader:'Automatska trgovina između gradova prema postavljenim pragovima.',feat_recruiter:'Kontinuirana regrutacija trupa prema prioritetima.',feat_foreman:'Automatski red izgradnje s prioritetima i ubrzanjem završetka gradnje.',feat_wonder_name:'Čudo',feat_wonder:'Automatsko slanje resursa čudu saveza.',install_label:'Instalacija',install_title:'3 jednostavna koraka',step1_title:'Instaliraj Tampermonkey',step1_desc:'Tampermonkey je besplatno proširenje preglednika za učitavanje GrepoPlusa. Instalirajte ispod.',step1_btn:'Instaliraj Tampermonkey',step2_title:'Instaliraj GrepoPlus',step2_desc:'Kliknite ispod. Tampermonkey se otvara i predlaže instalaciju skripte. Kliknite <strong style="color:var(--gold)">Instaliraj</strong>.',step2_btn:'Instaliraj GrepoPlus',step3_title:'Pokreni Grepolis',step3_desc:'Otvorite Grepolis normalno. GrepoPlus se učitava automatski — vidjet ćete gumbe bota u sučelju igre.',contact_label:'Kontakt & Podrška',contact_title:'Pridruži se zajednici',contact_desc:'Pitanja, greška ili želiš pratiti ažuriranja? Pridruži se Discord poslužitelju.',scroll_discover:'Otkrij',footer_for:'Za Grepolis'};
+
+// Fallback to English (never French) for any missing language
+(function(){Object.keys(typeof LANG_META!=='undefined'?LANG_META:{}).forEach(function(c){if(!T[c])T[c]=Object.assign({},T['en']);});})();
+
+// Slovak (sk)
+T['sk']={flag:'🇸🇰',badge:'Bot pre Grepolis',hero_sub:'Automatizuj. Dominuj. Opakuj.',hero_desc:'Automatický zberač, Staviteľ, Náborár, Herold, Veliteľ, Auto-únik a ďalšie — všetko v jednom.',btn_install:'Nainštalovať teraz',btn_discord:'Discord',btn_join_discord:'Pripojiť sa k Discordu',mockup_label:'Ukážka bota v akcii',mock_senat:'Záložka Senát',mock_heraut:'Záložka Herold',mock_cmd:'Záložka Veliteľ',mock_trader:'Modul Obchodník',mock_recruiter:'Modul Náborár',nav_senat:'Senát',nav_heraut:'Herold',nav_cmd:'Veliteľ',nav_research:'Výskumník',nav_farm:'Zberač',nav_trader:'Obchodník',nav_foreman:'Staviteľ',nav_recruiter:'Náborár',nav_options:'Možnosti',senat_sub:'v1.0 · Aktívne moduly',senat_caption:'Prehľad modulov',status_active:'Aktívny',status_stopped:'Zastavený',status_premium:'Premium',footer_towns:'miest',heraut_sub:'Detekcia útokov · 3 hrozby',heraut_my_towns:'Moje mestá',heraut_all:'Všetky',heraut_alerts:'Upozornenia',hw_in:'za',hw_dodge:'🌀 Únik',hw_militia:'🔱 Milícia',hw_dodging:'🌀 Únik prebieha…',hw_confirmed:'✓ Potvrdené',hw_autododge:'Auto-únik',hw_mute:'🔕 Stlmiť zvuk',cmd_sub:'Časované útoky · 3 rozkazy',cmd_orders:'Rozkazy',cmd_new:'Nový',cmd_stats:'Štatistiky',cmd_caption:'Naplánované rozkazy',cmd_land:'Pozemný útok',cmd_naval:'Námorný útok',cmd_support:'Podpora spojenca',cmd_arrival:'Príchod',cmd_arrived:'Dorazil o',state_active:'Prebieha',state_pending:'Čaká',state_success:'Úspech',cmd_precision:'Presnosť',cmd_plan:'+ Naplánovať',trader_sub:'Auto-obchod · Premium',trader_cities:'Mestá',trader_queue:'Fronta',trader_caption:'Roly miest',trader_provider:'Dodávateľ',trader_consumer:'Spotrebiteľ',trader_disabled:'Vypnuté',trader_mode:'Režim obchodu',trader_mode_threshold:'Prah',trader_mode_fixed:'Pevný',trader_interval:'Interval',trader_enable:'Aktivovať obchodníka',trader_next:'Ďalšia rotácia',recruiter_sub:'Auto-nábor · Premium',rec_barracks:'Kasárne',rec_docks:'Doky',rec_queue_title:'Fronta kasárne',rec_available:'Dostupné jednotky',rec_queue:'Fronta náboru',rec_slots:'Sloty kasárne',rec_enable:'Aktivovať náborára',rec_ongoing:'Prebieha',unit_archer:'Lukostrelec',unit_sword:'Šermiar',unit_hoplite:'Hoplita',unit_cavalry:'Jazdec',unit_catapult:'Katapult',features_label:'Funkcie',features_title:'Všetko čo potrebujete',feat_heraut:'Detekcia útokov, automatická milícia.',feat_cmd:'Plánovanie časovaných útokov s presnosťou na sekundu.',feat_dodge_name:'Auto-únik',feat_dodge:'Automaticky posiela vaše vojská z mesta pred útokom.',feat_research:'Automatický výskum v akadémii podľa vašej fronty priorít.',feat_farm:'Automatický zber v dedinách a zdrojoch v nastaviteľných intervaloch.',feat_trader:'Automatický obchod medzi mestami podľa nastavených prahov.',feat_recruiter:'Nepretržitý nábor vojsk podľa vašich priorít.',feat_foreman:'Automatická fronta výstavby s prioritami a urýchlením konca výstavby.',feat_wonder_name:'Zázrak',feat_wonder:'Automatické posielanie zdrojov k zázraku aliancie.',install_label:'Inštalácia',install_title:'3 jednoduché kroky',step1_title:'Nainštalovať Tampermonkey',step1_desc:'Tampermonkey je bezplatné rozšírenie prehliadača na načítanie GrepoPlus. Nainštalujte nižšie.',step1_btn:'Nainštalovať Tampermonkey',step2_title:'Nainštalovať GrepoPlus',step2_desc:'Kliknite nižšie. Tampermonkey sa otvorí a navrhne inštaláciu skriptu. Kliknite <strong style="color:var(--gold)">Inštalovať</strong>.',step2_btn:'Nainštalovať GrepoPlus',step3_title:'Spustiť Grepolis',step3_desc:'Otvorte Grepolis normálne. GrepoPlus sa načíta automaticky — uvidíte tlačidlá bota v hernom rozhraní.',contact_label:'Kontakt & Podpora',contact_title:'Pridajte sa ku komunite',contact_desc:'Otázky, chyba alebo chcete sledovať aktualizácie? Pripojte sa k serveru Discord.',scroll_discover:'Objaviť',footer_for:'Pre Grepolis'};
+
+// Swedish (sv)
+T['sv']={flag:'🇸🇪',badge:'Bot för Grepolis',hero_sub:'Automatisera. Dominera. Upprepa.',hero_desc:'Automatisk samlare, Byggare, Rekryterare, Härold, Befälhavare, Auto-undvikande och mer — allt i ett.',btn_install:'Installera nu',btn_discord:'Discord',btn_join_discord:'Gå med i Discord',mockup_label:'Förhandsgranskning av boten i aktion',mock_senat:'Senat-flik',mock_heraut:'Härold-flik',mock_cmd:'Befälhavare-flik',mock_trader:'Handelsman-modul',mock_recruiter:'Rekryterare-modul',nav_senat:'Senat',nav_heraut:'Härold',nav_cmd:'Befälhavare',nav_research:'Forskare',nav_farm:'Samlare',nav_trader:'Handelsman',nav_foreman:'Byggare',nav_recruiter:'Rekryterare',nav_options:'Alternativ',senat_sub:'v1.0 · Aktiva moduler',senat_caption:'Modulöversikt',status_active:'Aktiv',status_stopped:'Stoppad',status_premium:'Premium',footer_towns:'städer',heraut_sub:'Attackdetektering · 3 hot',heraut_my_towns:'Mina städer',heraut_all:'Alla',heraut_alerts:'Varningar',hw_in:'om',hw_dodge:'🌀 Undvik',hw_militia:'🔱 Milis',hw_dodging:'🌀 Undviker…',hw_confirmed:'✓ Bekräftad',hw_autododge:'Auto-undvikande',hw_mute:'🔕 Tysta ljud',cmd_sub:'Tidsinställda attacker · 3 order',cmd_orders:'Order',cmd_new:'Ny',cmd_stats:'Stats',cmd_caption:'Schemalagda order',cmd_land:'Landattack',cmd_naval:'Sjöattack',cmd_support:'Allierat stöd',cmd_arrival:'Ankomst',cmd_arrived:'Ankom kl.',state_active:'Pågår',state_pending:'Väntande',state_success:'Framgång',cmd_precision:'Precision',cmd_plan:'+ Schemalägg',trader_sub:'Auto-handel · Premium',trader_cities:'Städer',trader_queue:'Kö',trader_caption:'Stadsroller',trader_provider:'Leverantör',trader_consumer:'Konsument',trader_disabled:'Inaktiverad',trader_mode:'Handelsläge',trader_mode_threshold:'Tröskel',trader_mode_fixed:'Fast',trader_interval:'Intervall',trader_enable:'Aktivera handelsman',trader_next:'Nästa rotation',recruiter_sub:'Auto-rekrytering · Premium',rec_barracks:'Kasern',rec_docks:'Dockor',rec_queue_title:'Kasernkö',rec_available:'Tillgängliga enheter',rec_queue:'Rekryteringskö',rec_slots:'Kasernplatser',rec_enable:'Aktivera rekryterare',rec_ongoing:'Pågår',unit_archer:'Bågskytt',unit_sword:'Svärdsman',unit_hoplite:'Hoplit',unit_cavalry:'Ryttare',unit_catapult:'Katapult',features_label:'Funktioner',features_title:'Allt du behöver',feat_heraut:'Attackdetektering, automatisk milis.',feat_cmd:'Planera tidsinställda attacker med sekundprecision.',feat_dodge_name:'Auto-undvikande',feat_dodge:'Skickar automatiskt dina trupper ut ur staden innan en attack.',feat_research:'Automatisk forskning i akademin enligt din prioritetskö.',feat_farm:'Automatisk insamling i byar med konfigurerbara intervall.',feat_trader:'Automatisk handel mellan städer baserat på dina konfigurerade trösklar.',feat_recruiter:'Kontinuerlig trupprekrytering enligt dina prioriteringar.',feat_foreman:'Automatisk byggkö med prioriteringar och byggpåskyndning.',feat_wonder_name:'Under',feat_wonder:'Automatisk sändning av resurser till alliansundret.',install_label:'Installation',install_title:'3 enkla steg',step1_title:'Installera Tampermonkey',step1_desc:'Tampermonkey är ett gratis webbläsartillägg för att ladda GrepoPlus. Installera nedan.',step1_btn:'Installera Tampermonkey',step2_title:'Installera GrepoPlus',step2_desc:'Klicka nedan. Tampermonkey öppnas och föreslår installation av skriptet. Klicka på <strong style="color:var(--gold)">Installera</strong>.',step2_btn:'Installera GrepoPlus',step3_title:'Starta Grepolis',step3_desc:'Öppna Grepolis normalt. GrepoPlus laddas automatiskt — du ser botknapparna i spelgränssnittet.',contact_label:'Kontakt & Support',contact_title:'Gå med i gemenskapen',contact_desc:'Frågor, en bugg eller vill du följa uppdateringar? Gå med i Discord-servern.',scroll_discover:'Upptäck',footer_for:'För Grepolis'};
+
+// Turkish (tr)
+T['tr']={flag:'🇹🇷',badge:'Grepolis için Bot',hero_sub:'Otomatikleştir. Hükmet. Tekrarla.',hero_desc:'Otomatik Toplayıcı, İnşaatçı, İşçi Alımı, Haberci, Komutan, Otomatik-Kaçınma ve daha fazlası — hepsi bir arada.',btn_install:'Şimdi yükle',btn_discord:'Discord',btn_join_discord:'Discord\'a katıl',mockup_label:'Botu eylemde önizle',mock_senat:'Senato sekmesi',mock_heraut:'Haberci sekmesi',mock_cmd:'Komutan sekmesi',mock_trader:'Tüccar modülü',mock_recruiter:'İşe alım modülü',nav_senat:'Senato',nav_heraut:'Haberci',nav_cmd:'Komutan',nav_research:'Araştırmacı',nav_farm:'Toplayıcı',nav_trader:'Tüccar',nav_foreman:'İnşaatçı',nav_recruiter:'İşe alımcı',nav_options:'Seçenekler',senat_sub:'v1.0 · Aktif modüller',senat_caption:'Modüle genel bakış',status_active:'Aktif',status_stopped:'Durduruldu',status_premium:'Premium',footer_towns:'şehir',heraut_sub:'Saldırı tespiti · 3 tehdit',heraut_my_towns:'Şehirlerim',heraut_all:'Tümü',heraut_alerts:'Uyarılar',hw_in:'içinde',hw_dodge:'🌀 Kaçın',hw_militia:'🔱 Milis',hw_dodging:'🌀 Kaçınılıyor…',hw_confirmed:'✓ Onaylandı',hw_autododge:'Otomatik kaçınma',hw_mute:'🔕 Sesi kapat',cmd_sub:'Zamanlanmış saldırılar · 3 emir',cmd_orders:'Emirler',cmd_new:'Yeni',cmd_stats:'İstatistikler',cmd_caption:'Planlanmış emirler',cmd_land:'Kara saldırısı',cmd_naval:'Deniz saldırısı',cmd_support:'Müttefik desteği',cmd_arrival:'Varış',cmd_arrived:'Şurada geliyor:',state_active:'Devam ediyor',state_pending:'Bekliyor',state_success:'Başarı',cmd_precision:'Hassasiyet',cmd_plan:'+ Planla',trader_sub:'Otomatik ticaret · Premium',trader_cities:'Şehirler',trader_queue:'Kuyruk',trader_caption:'Şehir rolleri',trader_provider:'Tedarikçi',trader_consumer:'Tüketici',trader_disabled:'Devre dışı',trader_mode:'Ticaret modu',trader_mode_threshold:'Eşik',trader_mode_fixed:'Sabit',trader_interval:'Aralık',trader_enable:'Tüccarı etkinleştir',trader_next:'Sonraki rotasyon',recruiter_sub:'Otomatik işe alım · Premium',rec_barracks:'Kışla',rec_docks:'Liman',rec_queue_title:'Kışla kuyruğu',rec_available:'Mevcut birimler',rec_queue:'İşe alım kuyruğu',rec_slots:'Kışla yuvaları',rec_enable:'İşe alımcıyı etkinleştir',rec_ongoing:'Devam ediyor',unit_archer:'Okçu',unit_sword:'Kılıçlı',unit_hoplite:'Hoplite',unit_cavalry:'Süvari',unit_catapult:'Katapult',features_label:'Özellikler',features_title:'İhtiyacınız olan her şey',feat_heraut:'Saldırı tespiti, otomatik milis.',feat_cmd:'Saniye hassasiyetiyle zamanlanmış saldırılar planlayın.',feat_dodge_name:'Otomatik Kaçınma',feat_dodge:'Bir saldırıdan önce birliklerinizi otomatik olarak şehirden dışarı gönderir.',feat_research:'Öncelik kuyruğunuza göre akademide otomatik araştırmalar.',feat_farm:'Yapılandırılabilir aralıklarla köylerden otomatik toplama.',feat_trader:'Yapılandırılmış eşiklerinize göre şehirleriniz arasında otomatik ticaret.',feat_recruiter:'Önceliklerinize göre sürekli asker alımı.',feat_foreman:'Öncelikler ve inşaat hızlandırma ile otomatik inşaat kuyruğu.',feat_wonder_name:'Harika',feat_wonder:'İttifak harikasına otomatik kaynak gönderimi.',install_label:'Kurulum',install_title:'3 kolay adım',step1_title:'Tampermonkey\'i yükle',step1_desc:'Tampermonkey, GrepoPlus\'ı yüklemek için ücretsiz bir tarayıcı uzantısıdır. Aşağıya yükleyin.',step1_btn:'Tampermonkey\'i yükle',step2_title:'GrepoPlus\'ı yükle',step2_desc:'Aşağıya tıklayın. Tampermonkey açılır ve komut dosyasını yüklemenizi önerir. <strong style="color:var(--gold)">Yükle</strong> seçeneğine tıklayın.',step2_btn:'GrepoPlus\'ı yükle',step3_title:'Grepolis\'i başlat',step3_desc:'Grepolis\'i normal şekilde açın. GrepoPlus otomatik olarak yüklenir — bot düğmelerini oyun arayüzünde göreceksiniz.',contact_label:'İletişim & Destek',contact_title:'Topluluğa katıl',contact_desc:'Sorular, bir hata veya güncellemeleri takip etmek mi istiyorsunuz? Discord sunucusuna katılın.',scroll_discover:'Keşfet',footer_for:'Grepolis için'};
+
+// Ukrainian (uk)
+T['uk']={flag:'🇺🇦',badge:'Бот для Grepolis',hero_sub:'Автоматизуй. Домінуй. Повторюй.',hero_desc:'Автоматичний збирач, Будівельник, Вербувальник, Герольд, Командир, Авто-ухилення та більше — все в одному.',btn_install:'Встановити зараз',btn_discord:'Discord',btn_join_discord:'Приєднатися до Discord',mockup_label:'Попередній перегляд бота в дії',mock_senat:'Вкладка Сенат',mock_heraut:'Вкладка Герольд',mock_cmd:'Вкладка Командир',mock_trader:'Модуль Торговець',mock_recruiter:'Модуль Вербувальник',nav_senat:'Сенат',nav_heraut:'Герольд',nav_cmd:'Командир',nav_research:'Дослідник',nav_farm:'Збирач',nav_trader:'Торговець',nav_foreman:'Будівельник',nav_recruiter:'Вербувальник',nav_options:'Налаштування',senat_sub:'v1.0 · Активні модулі',senat_caption:'Огляд модулів',status_active:'Активний',status_stopped:'Зупинено',status_premium:'Преміум',footer_towns:'міст',heraut_sub:'Виявлення атак · 3 загрози',heraut_my_towns:'Мої міста',heraut_all:'Всі',heraut_alerts:'Сповіщення',hw_in:'через',hw_dodge:'🌀 Ухилення',hw_militia:'🔱 Міліція',hw_dodging:'🌀 Ухилення…',hw_confirmed:'✓ Підтверджено',hw_autododge:'Авто-ухилення',hw_mute:'🔕 Вимкнути звук',cmd_sub:'Атаки за таймером · 3 накази',cmd_orders:'Накази',cmd_new:'Новий',cmd_stats:'Статистика',cmd_caption:'Заплановані накази',cmd_land:'Наземна атака',cmd_naval:'Морська атака',cmd_support:'Підтримка союзника',cmd_arrival:'Прибуття',cmd_arrived:'Прибув о',state_active:'В процесі',state_pending:'Очікування',state_success:'Успіх',cmd_precision:'Точність',cmd_plan:'+ Запланувати',trader_sub:'Авто-торгівля · Преміум',trader_cities:'Міста',trader_queue:'Черга',trader_caption:'Ролі міст',trader_provider:'Постачальник',trader_consumer:'Споживач',trader_disabled:'Вимкнено',trader_mode:'Режим торгівлі',trader_mode_threshold:'Поріг',trader_mode_fixed:'Фіксований',trader_interval:'Інтервал',trader_enable:'Активувати торговця',trader_next:'Наступна ротація',recruiter_sub:'Авто-вербування · Преміум',rec_barracks:'Казарми',rec_docks:'Доки',rec_queue_title:'Черга казарм',rec_available:'Доступні одиниці',rec_queue:'Черга вербування',rec_slots:'Слоти казарм',rec_enable:'Активувати вербувальника',rec_ongoing:'В процесі',unit_archer:'Лучник',unit_sword:'Мечник',unit_hoplite:'Гопліт',unit_cavalry:'Вершник',unit_catapult:'Катапульта',features_label:'Функції',features_title:'Все що вам потрібно',feat_heraut:'Виявлення атак, автоматична міліція.',feat_cmd:'Планування атак за таймером з точністю до секунди.',feat_dodge_name:'Авто-ухилення',feat_dodge:'Автоматично відправляє ваші війська з міста до атаки.',feat_research:'Автоматичні дослідження в академії згідно черги пріоритетів.',feat_farm:'Автоматичний збір у селах з налаштовуваними інтервалами.',feat_trader:'Автоматична торгівля між містами згідно налаштованих порогів.',feat_recruiter:'Безперервне вербування військ згідно пріоритетів.',feat_foreman:'Автоматична черга будівництва з пріоритетами та прискоренням завершення.',feat_wonder_name:'Диво',feat_wonder:'Автоматичне надсилання ресурсів до дива альянсу.',install_label:'Встановлення',install_title:'3 прості кроки',step1_title:'Встановити Tampermonkey',step1_desc:'Tampermonkey — безкоштовне розширення браузера для завантаження GrepoPlus. Встановіть нижче.',step1_btn:'Встановити Tampermonkey',step2_title:'Встановити GrepoPlus',step2_desc:'Натисніть нижче. Tampermonkey відкриється та запропонує встановити скрипт. Натисніть <strong style="color:var(--gold)">Встановити</strong>.',step2_btn:'Встановити GrepoPlus',step3_title:'Запустити Grepolis',step3_desc:'Відкрийте Grepolis звичайним чином. GrepoPlus завантажується автоматично — ви побачите кнопки бота в інтерфейсі гри.',contact_label:'Контакти & Підтримка',contact_title:'Приєднуйтесь до спільноти',contact_desc:'Питання, баг або хочете стежити за оновленнями? Приєднуйтесь до сервера Discord.',scroll_discover:'Відкрити',footer_for:'Для Grepolis'};
+// Update flags for missing langs
+// Lang → CDN flag code mapping
+var LANG_META={
+  cs:{cdn:'cz',label:'CS',name:'Čeština'},
+  da:{cdn:'dk',label:'DA',name:'Dansk'},
+  de:{cdn:'de',label:'DE',name:'Deutsch'},
+  el:{cdn:'gr',label:'EL',name:'Ελληνικά'},
+  en:{cdn:'gb',label:'EN',name:'English'},
+  es:{cdn:'es',label:'ES',name:'Español'},
+  fi:{cdn:'fi',label:'FI',name:'Suomi'},
+  fr:{cdn:'fr',label:'FR',name:'Français'},
+  hr:{cdn:'hr',label:'HR',name:'Hrvatski'},
+  hu:{cdn:'hu',label:'HU',name:'Magyar'},
+  it:{cdn:'it',label:'IT',name:'Italiano'},
+  nb:{cdn:'no',label:'NB',name:'Norsk'},
+  nl:{cdn:'nl',label:'NL',name:'Nederlands'},
+  pl:{cdn:'pl',label:'PL',name:'Polski'},
+  pt:{cdn:'pt',label:'PT',name:'Português'},
+  ro:{cdn:'ro',label:'RO',name:'Română'},
+  ru:{cdn:'ru',label:'RU',name:'Русский'},
+  sk:{cdn:'sk',label:'SK',name:'Slovenčina'},
+  sv:{cdn:'se',label:'SV',name:'Svenska'},
+  tr:{cdn:'tr',label:'TR',name:'Türkçe'},
+  uk:{cdn:'ua',label:'UK',name:'Українська'}
+};
+
+function flagUrl(cdnCode){return'https://flagcdn.com/20x15/'+cdnCode+'.png';}
+
+function buildDropdown(){
+  var dd=document.getElementById('lang-dropdown');
+  dd.innerHTML='';
+  Object.keys(LANG_META).forEach(function(code){
+    var m=LANG_META[code];
+    var d=document.createElement('div');
+    d.className='lang-opt';
+    d.setAttribute('data-lang',code);
+    d.innerHTML='<img src="'+flagUrl(m.cdn)+'" alt="'+m.label+'" />'
+      +'<span>'+m.label+'</span>';
+    d.addEventListener('click',function(){setLang(code);closeLangPicker();});
+    dd.appendChild(d);
+  });
+}
+
+function toggleLangPicker(){
+  var p=document.getElementById('lang-picker');
+  p.classList.toggle('open');
+}
+function closeLangPicker(){
+  document.getElementById('lang-picker').classList.remove('open');
+}
+document.addEventListener('click',function(e){
+  var p=document.getElementById('lang-picker');
+  if(!p.contains(e.target))closeLangPicker();
+});
+
+function setLang(code){
+  if(!T[code])code='en';
+  var tr=T[code];
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n');
+    if(tr[k]!==undefined)el.innerHTML=tr[k];
+  });
+  // Update flag image
+  var m=LANG_META[code]||LANG_META['en'];
+  document.getElementById('lang-flag-img').src=flagUrl(m.cdn);
+  document.getElementById('lang-flag-img').alt=m.label;
+  // Update active state in dropdown
+  document.querySelectorAll('.lang-opt').forEach(function(el){
+    el.classList.toggle('active',el.getAttribute('data-lang')===code);
+  });
+  document.documentElement.lang=code;
+}
+
+(function(){
+  buildDropdown();
+  var nav=(navigator.language||navigator.userLanguage||'').split('-')[0].toLowerCase();
+  var code=T[nav]?nav:'en';
+  setLang(code);
+})();
+
+// Particles
+var c=document.getElementById('particles');
+for(var i=0;i<30;i++){var p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'%';p.style.animationDuration=(8+Math.random()*12)+'s';p.style.animationDelay=(Math.random()*10)+'s';p.style.width=p.style.height=(1+Math.random()*2)+'px';p.style.opacity=Math.random()*.6;c.appendChild(p);}
+
+// Steps reveal
+var steps=document.querySelectorAll('.step');
+var obs=new IntersectionObserver(function(entries){entries.forEach(function(e,i){if(e.isIntersecting)setTimeout(function(){e.target.classList.add('visible');},i*120);});},{threshold:.2});
+steps.forEach(function(s){obs.observe(s);});
+
+// Interactive
+document.querySelectorAll('.bw-toggle').forEach(function(t){t.addEventListener('click',function(){this.classList.toggle('bw-toggle-on');this.classList.toggle('bw-toggle-off');});});
+document.querySelectorAll('.hw-opt').forEach(function(o){o.addEventListener('click',function(){this.classList.toggle('active');});});
+
 </script>
 </body>
 </html>
