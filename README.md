@@ -49,12 +49,12 @@
 
 | Module | Description |
 |--------|-------------|
-| 📯 **Herald** | Attack detection and alerts |
+| 📯 **Herald** | Attack detection, alerts and auto-dodge (sends troops out before an attack) |
 | 🚩 **Commander** | Timed attacks down to the second |
-| 🛡️ **Auto-Dodge** | Sends your troops out of the city before an attack |
 | 🎓 **Researcher** | Automatic research in the academy |
 | 🌾 **Collector** | Automatic collection of villages and resources |
 | 🏺 **Merchant** | Automatic trading between your cities |
+| 💰 **Treasurer** | Automatic gold farming on the market |
 | ⚔️ **Recruiter** | Continuous troop recruitment |
 | 🏗️ **Builder** | Build queue with priorities |
 | 🏛️ **Wonder** | Send resources to your alliance wonder |
@@ -87,12 +87,12 @@ Questions or a bug? Join the Discord server:
 
 | Module | Description |
 |--------|-------------|
-| 📯 **Héraut** | Détection d'attaques et alertes |
+| 📯 **Héraut** | Détection d'attaques, alertes et auto-esquive (envoie les troupes hors de la ville avant une attaque) |
 | 🚩 **Commandant** | Attaques timées à la seconde près |
-| 🛡️ **Auto-Esquive** | Envoie vos troupes hors de la ville avant une attaque |
 | 🎓 **Chercheur** | Recherches automatiques dans l'académie |
 | 🌾 **Collecteur** | Collecte automatique des villages et ressources |
 | 🏺 **Marchand** | Commerce automatique entre vos villes |
+| 💰 **Trésorier** | Farm d'or automatique au marché |
 | ⚔️ **Recruteur** | Recrutement continu de vos troupes |
 | 🏗️ **Constructeur** | File de construction avec priorités |
 | 🏛️ **Merveille** | Envoi de ressources vers votre merveille d'alliance |
@@ -125,12 +125,12 @@ Des questions ou un bug ? Rejoins le serveur Discord :
 
 | Modul | Beschreibung |
 |-------|--------------|
-| 📯 **Herold** | Angriffserkennung und Warnungen |
+| 📯 **Herold** | Angriffserkennung, Warnungen und Auto-Ausweichen (schickt Truppen vor einem Angriff aus der Stadt) |
 | 🚩 **Kommandant** | Sekundengenau getimte Angriffe |
-| 🛡️ **Auto-Ausweichen** | Schickt Truppen vor einem Angriff aus der Stadt |
 | 🎓 **Forscher** | Automatische Forschung in der Akademie |
 | 🌾 **Sammler** | Automatisches Sammeln von Dörfern und Ressourcen |
 | 🏺 **Händler** | Automatischer Handel zwischen deinen Städten |
+| 💰 **Schatzmeister** | Automatisches Gold-Farming auf dem Markt |
 | ⚔️ **Rekrutierer** | Kontinuierliche Truppenrekrutierung |
 | 🏗️ **Baumeister** | Bauwarteschlange mit Prioritäten |
 | 🏛️ **Weltwunder** | Ressourcen an dein Allianz-Weltwunder senden |
@@ -163,12 +163,12 @@ Fragen oder ein Bug? Tritt dem Discord-Server bei:
 
 | Módulo | Descripción |
 |--------|-------------|
-| 📯 **Heraldo** | Detección de ataques y alertas |
+| 📯 **Heraldo** | Detección de ataques, alertas y auto-esquiva (envía tropas fuera de la ciudad antes de un ataque) |
 | 🚩 **Comandante** | Ataques cronometrados al segundo |
-| 🛡️ **Auto-Esquiva** | Envía tus tropas fuera de la ciudad antes de un ataque |
 | 🎓 **Investigador** | Investigaciones automáticas en la academia |
 | 🌾 **Recolector** | Recolección automática de aldeas y recursos |
 | 🏺 **Mercader** | Comercio automático entre tus ciudades |
+| 💰 **Tesorero** | Farmeo automático de oro en el mercado |
 | ⚔️ **Reclutador** | Reclutamiento continuo de tus tropas |
 | 🏗️ **Constructor** | Cola de construcción con prioridades |
 | 🏛️ **Maravilla** | Envío de recursos a la maravilla de tu alianza |
@@ -201,12 +201,12 @@ Fragen oder ein Bug? Tritt dem Discord-Server bei:
 
 | Modulo | Descrizione |
 |--------|-------------|
-| 📯 **Araldo** | Rilevamento attacchi e avvisi |
+| 📯 **Araldo** | Rilevamento attacchi, avvisi e auto-schivata (invia le truppe fuori dalla città prima di un attacco) |
 | 🚩 **Comandante** | Attacchi cronometrati al secondo |
-| 🛡️ **Auto-Schivata** | Invia le truppe fuori dalla città prima di un attacco |
 | 🎓 **Ricercatore** | Ricerche automatiche nell'accademia |
 | 🌾 **Raccoglitore** | Raccolta automatica di villaggi e risorse |
 | 🏺 **Mercante** | Commercio automatico tra le tue città |
+| 💰 **Tesoriere** | Farming automatico dell'oro al mercato |
 | ⚔️ **Reclutatore** | Reclutamento continuo delle truppe |
 | 🏗️ **Costruttore** | Coda di costruzione con priorità |
 | 🏛️ **Meraviglia** | Invio di risorse alla meraviglia dell'alleanza |
@@ -239,12 +239,12 @@ Domande o un bug? Unisciti al server Discord:
 
 | Módulo | Descrição |
 |--------|-----------|
-| 📯 **Arauto** | Deteção de ataques e alertas |
+| 📯 **Arauto** | Deteção de ataques, alertas e auto-esquiva (envia as tropas para fora da cidade antes de um ataque) |
 | 🚩 **Comandante** | Ataques cronometrados ao segundo |
-| 🛡️ **Auto-Esquiva** | Envia as tropas para fora da cidade antes de um ataque |
 | 🎓 **Pesquisador** | Pesquisas automáticas na academia |
 | 🌾 **Coletor** | Recolha automática de aldeias e recursos |
 | 🏺 **Mercador** | Comércio automático entre as suas cidades |
+| 💰 **Tesoureiro** | Farm automático de ouro no mercado |
 | ⚔️ **Recrutador** | Recrutamento contínuo das tropas |
 | 🏗️ **Construtor** | Fila de construção com prioridades |
 | 🏛️ **Maravilha** | Envio de recursos para a maravilha da aliança |
@@ -277,12 +277,12 @@ Perguntas ou um bug? Junte-se ao servidor Discord:
 
 | Module | Beschrijving |
 |--------|--------------|
-| 📯 **Heraut** | Aanvalsdetectie en waarschuwingen |
+| 📯 **Heraut** | Aanvalsdetectie, waarschuwingen en auto-ontwijken (stuurt troepen de stad uit vóór een aanval) |
 | 🚩 **Commandant** | Aanvallen getimed tot op de seconde |
-| 🛡️ **Auto-Ontwijken** | Stuurt troepen de stad uit vóór een aanval |
 | 🎓 **Onderzoeker** | Automatisch onderzoek in de academie |
 | 🌾 **Verzamelaar** | Automatische verzameling van dorpen en middelen |
 | 🏺 **Handelaar** | Automatische handel tussen je steden |
+| 💰 **Penningmeester** | Automatisch goud farmen op de markt |
 | ⚔️ **Rekruteur** | Voortdurende rekrutering van troepen |
 | 🏗️ **Bouwer** | Bouwwachtrij met prioriteiten |
 | 🏛️ **Wonder** | Middelen sturen naar het alliantie-wonder |
@@ -315,12 +315,12 @@ Vragen of een bug? Sluit je aan bij de Discord-server:
 
 | Moduł | Opis |
 |-------|------|
-| 📯 **Herold** | Wykrywanie ataków i alerty |
+| 📯 **Herold** | Wykrywanie ataków, alerty i auto-unik (wysyła wojska poza miasto przed atakiem) |
 | 🚩 **Dowódca** | Ataki z dokładnością do sekundy |
-| 🛡️ **Auto-Unik** | Wysyła wojska poza miasto przed atakiem |
 | 🎓 **Badacz** | Automatyczne badania w akademii |
 | 🌾 **Zbieracz** | Automatyczne zbieranie wiosek i zasobów |
 | 🏺 **Kupiec** | Automatyczny handel między miastami |
+| 💰 **Skarbnik** | Automatyczne farmienie złota na rynku |
 | ⚔️ **Rekruter** | Ciągły pobór wojska |
 | 🏗️ **Budowniczy** | Kolejka budowy z priorytetami |
 | 🏛️ **Cud Świata** | Wysyłanie zasobów do cudu świata sojuszu |
@@ -353,12 +353,12 @@ Pytania lub błąd? Dołącz do serwera Discord:
 
 | Модуль | Описание |
 |--------|----------|
-| 📯 **Герольд** | Обнаружение атак и оповещения |
+| 📯 **Герольд** | Обнаружение атак, оповещения и авто-уклонение (отправляет войска из города перед атакой) |
 | 🚩 **Командир** | Атаки с таймингом до секунды |
-| 🛡️ **Авто-уклонение** | Отправляет войска из города перед атакой |
 | 🎓 **Исследователь** | Автоматические исследования в академии |
 | 🌾 **Сборщик** | Автоматический сбор деревень и ресурсов |
 | 🏺 **Торговец** | Автоматическая торговля между городами |
+| 💰 **Казначей** | Автоматический фарм золота на рынке |
 | ⚔️ **Вербовщик** | Непрерывный набор войск |
 | 🏗️ **Строитель** | Очередь строительства с приоритетами |
 | 🏛️ **Чудо света** | Отправка ресурсов к чуду света альянса |
@@ -391,12 +391,12 @@ Pytania lub błąd? Dołącz do serwera Discord:
 
 | Modül | Açıklama |
 |-------|----------|
-| 📯 **Haberci** | Saldırı tespiti ve uyarılar |
+| 📯 **Haberci** | Saldırı tespiti, uyarılar ve otomatik kaçış (saldırıdan önce birliklerinizi şehir dışına gönderir) |
 | 🚩 **Komutan** | Saniyesi saniyesine zamanlanmış saldırılar |
-| 🛡️ **Otomatik Kaçış** | Saldırıdan önce birliklerinizi şehir dışına gönderir |
 | 🎓 **Araştırmacı** | Akademide otomatik araştırmalar |
 | 🌾 **Toplayıcı** | Köylerin ve kaynakların otomatik toplanması |
 | 🏺 **Tüccar** | Şehirleriniz arasında otomatik ticaret |
+| 💰 **Hazinedar** | Pazarda otomatik altın toplama |
 | ⚔️ **İşçi Toplayıcı** | Sürekli birlik istihdamı |
 | 🏗️ **İnşaatçı** | Öncelikli inşaat kuyruğu |
 | 🏛️ **Harika** | İttifak harikasına kaynak gönderimi |
@@ -429,12 +429,12 @@ Sorularınız veya bir hata mı var? Discord sunucusuna katılın:
 
 | Modul | Popis |
 |-------|-------|
-| 📯 **Hlasatel** | Detekce útoků a upozornění |
+| 📯 **Hlasatel** | Detekce útoků, upozornění a auto-únik (odešle vaše vojska z města před útokem) |
 | 🚩 **Velitel** | Útoky načasované na sekundu přesně |
-| 🛡️ **Auto-Únik** | Odešle vaše vojska z města před útokem |
 | 🎓 **Badatel** | Automatický výzkum v akademii |
 | 🌾 **Sběrač** | Automatický sběr vesnic a zdrojů |
 | 🏺 **Obchodník** | Automatický obchod mezi vašimi městy |
+| 💰 **Pokladník** | Automatické farmení zlata na trhu |
 | ⚔️ **Náborář** | Nepřetržitý nábor vojsk |
 | 🏗️ **Stavitel** | Fronta výstavby s prioritami |
 | 🏛️ **Div světa** | Odesílání zdrojů na div světa aliance |
@@ -467,12 +467,12 @@ Dotazy nebo chyba? Připojte se na Discord:
 
 | Modul | Leírás |
 |-------|--------|
-| 📯 **Hírnök** | Támadásészlelés és riasztások |
+| 📯 **Hírnök** | Támadásészlelés, riasztások és auto-kitérés (csapataid a városon kívülre küldi támadás előtt) |
 | 🚩 **Parancsnok** | Másodpontos támadások |
-| 🛡️ **Auto-Kitérés** | Csapataid a városon kívülre küldi támadás előtt |
 | 🎓 **Kutató** | Automatikus kutatás az akadémián |
 | 🌾 **Gyűjtő** | Falvak és erőforrások automatikus gyűjtése |
 | 🏺 **Kereskedő** | Automatikus kereskedelem városaid között |
+| 💰 **Kincstárnok** | Automatikus arany farmolás a piacon |
 | ⚔️ **Toborzó** | Folyamatos csapattoborzás |
 | 🏗️ **Építő** | Építési sor prioritásokkal |
 | 🏛️ **Csoda** | Erőforrások küldése a szövetség csodájához |
@@ -505,12 +505,12 @@ Kérdések vagy hiba? Csatlakozz a Discord szerverhez:
 
 | Modul | Descriere |
 |-------|-----------|
-| 📯 **Crainic** | Detectarea atacurilor și alerte |
+| 📯 **Crainic** | Detectarea atacurilor, alerte și auto-evitare (trimite trupele în afara orașului înainte de un atac) |
 | 🚩 **Comandant** | Atacuri temporizate la secundă |
-| 🛡️ **Auto-Evitare** | Trimite trupele în afara orașului înainte de un atac |
 | 🎓 **Cercetător** | Cercetări automate în academie |
 | 🌾 **Colector** | Colectare automată a satelor și resurselor |
 | 🏺 **Negustor** | Comerț automat între orașele tale |
+| 💰 **Trezorier** | Farming automat de aur la piață |
 | ⚔️ **Recrutor** | Recrutare continuă a trupelor |
 | 🏗️ **Constructor** | Coada de construcție cu priorități |
 | 🏛️ **Minune** | Trimitere de resurse la minunea alianței |
@@ -543,12 +543,12 @@ Kérdések vagy hiba? Csatlakozz a Discord szerverhez:
 
 | Modul | Beskrivning |
 |-------|-------------|
-| 📯 **Härold** | Attackdetektering och varningar |
+| 📯 **Härold** | Attackdetektering, varningar och auto-undvikande (skickar dina trupper utanför staden före en attack) |
 | 🚩 **Befälhavare** | Attacker timade till sekunden |
-| 🛡️ **Auto-Undvikande** | Skickar dina trupper utanför staden före en attack |
 | 🎓 **Forskare** | Automatisk forskning i akademin |
 | 🌾 **Samlare** | Automatisk insamling av byar och resurser |
 | 🏺 **Handlare** | Automatisk handel mellan dina städer |
+| 💰 **Skattmästare** | Automatisk guldfarmning på marknaden |
 | ⚔️ **Rekryterare** | Kontinuerlig trupprekrytering |
 | 🏗️ **Byggare** | Byggkö med prioriteringar |
 | 🏛️ **Under** | Skicka resurser till alliansens under |
@@ -581,12 +581,12 @@ Frågor eller en bugg? Gå med i Discord-servern:
 
 | Modul | Beskrivelse |
 |-------|-------------|
-| 📯 **Herold** | Angrepsdeteksjon og varsler |
+| 📯 **Herold** | Angrepsdeteksjon, varsler og auto-unnvikelse (sender troppene dine ut av byen før et angrep) |
 | 🚩 **Kommandant** | Angrep timet til sekundet |
-| 🛡️ **Auto-Unnvikelse** | Sender troppene dine ut av byen før et angrep |
 | 🎓 **Forsker** | Automatisk forskning i akademiet |
 | 🌾 **Samler** | Automatisk innsamling av landsbyer og ressurser |
 | 🏺 **Handelsmann** | Automatisk handel mellom byene dine |
+| 💰 **Skattemester** | Automatisk guldfarmning på markedet |
 | ⚔️ **Rekrutterer** | Kontinuerlig trupperekruttering |
 | 🏗️ **Byggherre** | Byggekø med prioriteringer |
 | 🏛️ **Under** | Send ressurser til alliansens under |
@@ -619,12 +619,12 @@ Spørsmål eller en feil? Bli med i Discord-serveren:
 
 | Modul | Beskrivelse |
 |-------|-------------|
-| 📯 **Herold** | Angrebsdetektering og advarsler |
+| 📯 **Herold** | Angrebsdetektering, advarsler og auto-undvigelse (sender dine tropper ud af byen før et angreb) |
 | 🚩 **Kommandant** | Angreb timet til sekundet |
-| 🛡️ **Auto-Undvigelse** | Sender dine tropper ud af byen før et angreb |
 | 🎓 **Forsker** | Automatisk forskning i akademiet |
 | 🌾 **Samler** | Automatisk indsamling af landsbyer og ressourcer |
 | 🏺 **Handelsrejsende** | Automatisk handel mellem dine byer |
+| 💰 **Skatmester** | Automatisk guldfarmning på markedet |
 | ⚔️ **Rekrutterer** | Løbende tropperekruttering |
 | 🏗️ **Bygmester** | Byggekø med prioriteter |
 | 🏛️ **Vidunder** | Send ressourcer til alliancens vidunder |
@@ -657,12 +657,12 @@ Spørgsmål eller en fejl? Tilslut dig Discord-serveren:
 
 | Moduuli | Kuvaus |
 |---------|--------|
-| 📯 **Heraldi** | Hyökkäysten tunnistus ja hälytykset |
+| 📯 **Heraldi** | Hyökkäysten tunnistus, hälytykset ja auto-väistö (lähettää joukot kaupungin ulkopuolelle ennen hyökkäystä) |
 | 🚩 **Komentaja** | Sekunnilleen ajoitetut hyökkäykset |
-| 🛡️ **Auto-Väistö** | Lähettää joukot kaupungin ulkopuolelle ennen hyökkäystä |
 | 🎓 **Tutkija** | Automaattiset tutkimukset akatemiassa |
 | 🌾 **Kerääjä** | Automaattinen kylien ja resurssien keräys |
 | 🏺 **Kauppias** | Automaattinen kaupankäynti kaupunkiesi välillä |
+| 💰 **Rahastonhoitaja** | Automaattinen kullan farmaus markkinoilla |
 | ⚔️ **Rekrytoija** | Jatkuva joukkojen rekrytointi |
 | 🏗️ **Rakentaja** | Rakennusjono prioriteeteilla |
 | 🏛️ **Ihme** | Resurssien lähettäminen liiton ihmeelle |
@@ -695,12 +695,12 @@ Kysymyksiä tai bugi? Liity Discord-palvelimelle:
 
 | Modul | Popis |
 |-------|-------|
-| 📯 **Hlásnik** | Detekcia útokov a upozornenia |
+| 📯 **Hlásnik** | Detekcia útokov, upozornenia a auto-únik (odošle vaše vojská z mesta pred útokom) |
 | 🚩 **Veliteľ** | Útoky načasované na sekundu presne |
-| 🛡️ **Auto-Únik** | Odošle vaše vojská z mesta pred útokom |
 | 🎓 **Bádateľ** | Automatický výskum v akadémii |
 | 🌾 **Zberač** | Automatický zber dedín a zdrojov |
 | 🏺 **Obchodník** | Automatický obchod medzi vašimi mestami |
+| 💰 **Pokladník** | Automatické farmenie zlata na trhu |
 | ⚔️ **Náborár** | Nepretržitý nábor vojsk |
 | 🏗️ **Staviteľ** | Rad výstavby s prioritami |
 | 🏛️ **Div sveta** | Odosielanie zdrojov na div sveta aliancie |
@@ -733,12 +733,12 @@ Otázky alebo chyba? Pripojte sa na Discord:
 
 | Modul | Opis |
 |-------|------|
-| 📯 **Glasnik** | Otkrivanje napada i upozorenja |
+| 📯 **Glasnik** | Otkrivanje napada, upozorenja i auto-izbjegavanje (šalje vaše postrojbe izvan grada prije napada) |
 | 🚩 **Zapovjednik** | Napadi tempiranimi na sekundu |
-| 🛡️ **Auto-Izbjegavanje** | Šalje vaše postrojbe izvan grada prije napada |
 | 🎓 **Istraživač** | Automatska istraživanja u akademiji |
 | 🌾 **Sakupljač** | Automatsko sakupljanje sela i resursa |
 | 🏺 **Trgovac** | Automatska trgovina između vaših gradova |
+| 💰 **Rizničar** | Automatsko farmanje zlata na tržnici |
 | ⚔️ **Regrutator** | Kontinuirano regrutiranje postrojbi |
 | 🏗️ **Graditelj** | Red gradnje s prioritetima |
 | 🏛️ **Čudo** | Slanje resursa prema čudu saveza |
@@ -771,12 +771,12 @@ Pitanja ili greška? Pridružite se Discord serveru:
 
 | Μονάδα | Περιγραφή |
 |--------|-----------|
-| 📯 **Κήρυκας** | Ανίχνευση επιθέσεων και ειδοποιήσεις |
+| 📯 **Κήρυκας** | Ανίχνευση επιθέσεων, ειδοποιήσεις και αυτόματη αποφυγή (στέλνει τα στρατεύματά σου έξω από την πόλη πριν από επίθεση) |
 | 🚩 **Διοικητής** | Επιθέσεις χρονομετρημένες στο δευτερόλεπτο |
-| 🛡️ **Αυτόματη Αποφυγή** | Στέλνει τα στρατεύματά σου έξω από την πόλη πριν από επίθεση |
 | 🎓 **Ερευνητής** | Αυτόματες έρευνες στην ακαδημία |
 | 🌾 **Συλλέκτης** | Αυτόματη συλλογή χωριών και πόρων |
 | 🏺 **Έμπορος** | Αυτόματο εμπόριο μεταξύ των πόλεών σου |
+| 💰 **Ταμίας** | Αυτόματο farming χρυσού στην αγορά |
 | ⚔️ **Στρατολόγος** | Συνεχής στρατολόγηση στρατευμάτων |
 | 🏗️ **Κατασκευαστής** | Ουρά κατασκευής με προτεραιότητες |
 | 🏛️ **Θαύμα** | Αποστολή πόρων στο θαύμα της συμμαχίας |
@@ -809,12 +809,12 @@ Pitanja ili greška? Pridružite se Discord serveru:
 
 | Модуль | Опис |
 |--------|------|
-| 📯 **Герольд** | Виявлення атак та сповіщення |
+| 📯 **Герольд** | Виявлення атак, сповіщення та авто-ухилення (відправляє військо за межі міста перед атакою) |
 | 🚩 **Командир** | Атаки з таймінгом до секунди |
-| 🛡️ **Авто-ухилення** | Відправляє військо за межі міста перед атакою |
 | 🎓 **Дослідник** | Автоматичні дослідження в академії |
 | 🌾 **Збирач** | Автоматичний збір сіл та ресурсів |
 | 🏺 **Торговець** | Автоматична торгівля між вашими містами |
+| 💰 **Скарбник** | Автоматичний фарм золота на ринку |
 | ⚔️ **Вербувальник** | Безперервний набір військ |
 | 🏗️ **Будівельник** | Черга будівництва з пріоритетами |
 | 🏛️ **Диво світу** | Відправка ресурсів до дива світу альянсу |
