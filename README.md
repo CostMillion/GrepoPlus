@@ -4,6 +4,8 @@
 
 ---
 
+### BEST GREPOLIS BOT 2026
+
 [![Installation](https://img.shields.io/badge/⬇️%20Installation-Install%20GrepoPlus-c9a84c?style=for-the-badge&labelColor=1a1508)](https://costmillion.github.io/GrepoPlus)
 &nbsp;&nbsp;
 [![Discord](https://img.shields.io/badge/💬%20Support-Join%20Discord-5865F2?style=for-the-badge&labelColor=23272a)](https://discord.gg/VWeEWQFUFE)
