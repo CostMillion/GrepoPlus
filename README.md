@@ -2,7 +2,7 @@
 
 [![GrepoPlus](banner.svg)](https://costmillion.github.io/GrepoPlus)
 
-<img src="preview.png" alt="GrepoPlus modules preview" width="400">
+<img src="preview.png" alt="GrepoPlus modules preview" width="300">
 
 ---
 
